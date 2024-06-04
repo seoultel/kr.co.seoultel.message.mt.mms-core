@@ -47,7 +47,7 @@
     <dependency>
       <groupId>kr.co.seoultel.message</groupId>
       <artifactId>message-core</artifactId>
-      <version>0.1.15rc</version>
+      <version>0.1.12</version>
     </dependency>
 
 
