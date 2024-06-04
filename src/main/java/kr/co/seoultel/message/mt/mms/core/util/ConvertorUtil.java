@@ -16,8 +16,6 @@ import java.util.Arrays;
 import java.util.Objects;
 
 @Slf4j
-@NoArgsConstructor
-@AllArgsConstructor
 public class ConvertorUtil {
     protected final static Gson gson  = new GsonBuilder().setObjectToNumberStrategy(ToNumberPolicy.LONG_OR_DOUBLE).create();
 

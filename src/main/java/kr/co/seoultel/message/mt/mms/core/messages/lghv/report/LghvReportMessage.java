@@ -4,6 +4,7 @@ package kr.co.seoultel.message.mt.mms.core.messages.lghv.report;
 import io.netty.buffer.ByteBuf;
 import kr.co.seoultel.message.mt.mms.core.messages.lghv.LghvMessage;
 import kr.co.seoultel.message.mt.mms.core.messages.lghv.LghvProtocol;
+import kr.co.seoultel.message.mt.mms.core.util.ConvertorUtil;
 import kr.co.seoultel.message.mt.mms.core.util.DateUtil;
 import lombok.Builder;
 import lombok.Getter;
