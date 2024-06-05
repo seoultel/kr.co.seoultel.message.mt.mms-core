@@ -1,0 +1,225 @@
+{
+  "createdTime": 1717550712123,
+  "umsMsgId": 586002620475326404,
+  "srcMsgId": 1834641,
+  "groupCode": "A000005",
+  "clientNo": 107,
+  "serviceCode": null,
+  "billCode": 55555,
+  "channel": "RCS",
+  "tenant": "A000005",
+  "type": "INFO",
+  "sender": "01079195283",
+  "callback": "01079195283",
+  "receiver": "01079195283",
+  "content": {
+    "fallbackFlag": true,
+    "buttons": [
+      {
+        "suggestions": [
+          {
+            "action": {
+              "urlAction": {
+                "openUrl": {
+                  "url": "https://www.google.com"
+                }
+              },
+              "displayText": "Open website or deep link",
+              "postback": {
+                "data": "set_by_chatbot_open_url"
+              }
+            }
+          },
+          {
+            "action": {
+              "urlAction": {
+                "openUrl": {
+                  "url": "https://www.google2.com"
+                }
+              },
+              "displayText": "Open website or deep link",
+              "postback": {
+                "data": "set_by_chatbot_open_url_2"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "suggestions": [
+          {
+            "action": {
+              "urlAction": {
+                "openUrl": {
+                  "url": "https://www.google2.com"
+                }
+              },
+              "displayText": "Open website or deep link",
+              "postback": {
+                "data": "set_by_chatbot_open_url_2"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "brandKey": "brandKey",
+    "rcsMessageType": "lms",
+    "footer": "010-7919-5283",
+    "agencyKey": "AK.4GQNlpeQUjwclvH",
+    "agencyId": "standard",
+    "body": {
+      "title": "메인 제목 1",
+      "description": "메인 내용 1",
+      "media": "maapfile://01079195283.583630706034126514"
+    },
+    "templateId": "Template001",
+    "expiryOption": 1.0,
+    "chatbotId": "01079195283",
+    "natCode": 82.0,
+    "header": 1.0,
+    "copyAllowed": "N",
+    "fallback": {
+      "channel": "MMS",
+      "subject": "대체 발송은 이렇겡",
+      "content": "대체 발송은 이런 내용으로 보낼랭",
+      "fileIds": [],
+      "result": {
+        "code": "",
+        "message": "",
+        "mnoCd": "",
+        "mnoResult": "",
+        "settleCode": "",
+        "srcSndDttm": "",
+        "srcRcvDttm": "",
+        "pfmSndDttm": "",
+        "pfmRcvDttm": "",
+        "triedMnos": []
+      }
+    }
+  },
+  "processHistory": [
+    {
+      "processedTime": 1717550712123,
+      "processorName": "STD-MESSAGE:220.95.214.13:4000",
+      "action": "MakeProtocol"
+    },
+    {
+      "processedTime": 1717550712125,
+      "processorName": "STD-MESSAGE:220.95.214.13:4000",
+      "action": "DuplicateCheck"
+    },
+    {
+      "processedTime": 1717550712127,
+      "processorName": "STD-MESSAGE:220.95.214.13:4000",
+      "action": "SendToQueue"
+    },
+    {
+      "processedTime": 1717550712129,
+      "processorName": "STD-ROUTER-TEST:220.95.214.14:6501",
+      "action": "MessageConsume"
+    },
+    {
+      "processedTime": 1717550712158,
+      "processorName": "STD-ROUTER-TEST:220.95.214.14:6501",
+      "action": "PTP"
+    },
+    {
+      "processedTime": 1717550712159,
+      "processorName": "STD-ROUTER-TEST:220.95.214.14:6501",
+      "action": "PNX"
+    },
+    {
+      "processedTime": 1717550712159,
+      "processorName": "STD-ROUTER-TEST:220.95.214.14:6501",
+      "action": "SearchRouting"
+    },
+    {
+      "processedTime": 1717550712159,
+      "processorName": "STD-ROUTER-TEST:220.95.214.14:6501",
+      "action": "SearchSender"
+    },
+    {
+      "processedTime": 1717550712161,
+      "processorName": "RCS Seneder01",
+      "action": "SubmitMessage"
+    },
+    {
+      "processedTime": 1717550712163,
+      "processorName": "RCS Sender03",
+      "action": "SubmitFailMessage"
+    },
+    {
+      "processedTime": 1717550712165,
+      "processorName": "RCS-Reporter:220.95.214.15:10000",
+      "action": "MessageInbound"
+    },
+    {
+      "processedTime": 1717550712165,
+      "processorName": "RCS-Reporter:220.95.214.15:10000",
+      "action": "ResultConvert"
+    },
+    {
+      "processedTime": 1717550712165,
+      "processorName": "RCS-Reporter:220.95.214.15:10000",
+      "action": "WebHookSend"
+    },
+    {
+      "processedTime": 1717550712175,
+      "processorName": "RCS-Reporter:220.95.214.15:10000",
+      "action": "PnxCheck"
+    },
+    {
+      "processedTime": 1717550712177,
+      "processorName": "RCS-Reporter:220.95.214.15:10000",
+      "action": "mr.rcs.loggerSend"
+    },
+    {
+      "processedTime": 1717550712178,
+      "processorName": "RCS-Reporter:220.95.214.15:10000",
+      "action": "Fallback-Send"
+    },
+    {
+      "processedTime": 1717550712178,
+      "processorName": "MMS-Reporter:220.95.214.15:10000",
+      "action": "WebHookSend"
+    },
+    {
+      "processedTime": 1717550712186,
+      "processorName": "MMS-Reporter:220.95.214.15:10000",
+      "action": "Logger-Send"
+    },
+    {
+      "processedTime": 1717550712188,
+      "processorName": "MMS-Reporter:220.95.214.15:10000",
+      "action": "mr.rcs.loggerSend"
+    }
+  ],
+  "serviceProvider": "skt",
+  "deliveryProcess": null,
+  "deliveryState": 10,
+  "deliveryType": 8,
+  "dstMsgId": null,
+  "result": {
+    "code": 40000.0,
+    "message": "test",
+    "mnoCd": "skt",
+    "mnoResult": 40000.0,
+    "settleCode": "D_R_SK01",
+    "srcSndDttm": "",
+    "srcRcvDttm": "20240605102512",
+    "pfmSndDttm": "20240605102512",
+    "pfmRcvDttm": "20240605102512",
+    "triedMnos": [
+      "skt"
+    ],
+    "autoReplyMsgId": "test",
+    "postbackId": "test",
+    "userContact": "test",
+    "chatbotId": "01079195283",
+    "bill": 0.0
+  },
+  "reportTo": "http://220.95.214.19:9913",
+  "timeToLive": 1717637112123,
+  "retryCount": 0
+}

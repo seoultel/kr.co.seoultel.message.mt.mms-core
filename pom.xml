@@ -4,7 +4,7 @@
 
   <groupId>kr.co.seoultel.message</groupId>
   <artifactId>mms-core</artifactId>
-  <version>1.0.0</version>
+  <version>1.1.0</version>
   <packaging>jar</packaging>
 
   <name>kr.co.seoultel.message.mt.mms-core</name>
@@ -47,7 +47,7 @@
     <dependency>
       <groupId>kr.co.seoultel.message</groupId>
       <artifactId>message-core</artifactId>
-      <version>0.1.12</version>
+      <version>0.1.15rc</version>
     </dependency>
 
 
@@ -62,6 +62,14 @@
       <groupId>io.netty</groupId>
       <artifactId>netty-buffer</artifactId>
       <version>4.1.107.Final</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/junit/junit -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.12</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 </project>

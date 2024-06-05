@@ -7,10 +7,17 @@ import lombok.NonNull;
 
 // TODO : 이거 굳이 처리할 필요없을 수도 있음.
 public class MessageFormatException extends FormatException {
-
-    public MessageFormatException(@NonNull MessageDelivery messageDelivery) {
+    public MessageFormatException(@NonNull MessageDelivery messageDelivery, int deliveryType) {
         super(String.format("[SUBMIT-ERR] STASH MESSAGE[%s] FORMAT ERR", messageDelivery.getUmsMsgId()),
-                Constants.MESSAGE_IMAGE_IS_EMPTY_MNO_RESULT);
-        this.messageDelivery = messageDelivery;
+                messageDelivery, Constants.MESSAGE_IMAGE_IS_EMPTY_MNO_RESULT, deliveryType);
+    }
+
+    @Override
+    public String toString() {
+        return "MessageFormatException{" +
+                ", mnoResult='" + mnoResult + '\'' +
+                ", deliveryType=" + deliveryType +
+                ", reportMessage='" + reportMessage + '\'' +
+                '}';
     }
 }

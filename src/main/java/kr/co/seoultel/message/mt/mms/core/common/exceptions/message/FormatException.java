@@ -11,15 +11,30 @@ public abstract class FormatException extends Exception {
 
     protected MessageDelivery messageDelivery;
 
-    protected String reportMessage = Constants.FORMAT_ERROR;
     protected String mnoResult;
+    protected int deliveryType;
+
+    protected String reportMessage = Constants.FORMAT_ERROR;
 
     public FormatException(String message) {
         super(message);
     }
 
-    public FormatException(String message, String mnoResult) {
+
+    public FormatException(String message, MessageDelivery messageDelivery, String mnoResult, int deliveryType) {
         super(message);
+
+        this.messageDelivery = messageDelivery;
         this.mnoResult = mnoResult;
+        this.deliveryType = deliveryType;
+    }
+
+    @Override
+    public String toString() {
+        return "FormatException{" +
+                ", mnoResult='" + mnoResult + '\'' +
+                ", deliveryType=" + deliveryType +
+                ", reportMessage='" + reportMessage + '\'' +
+                '}';
     }
 }

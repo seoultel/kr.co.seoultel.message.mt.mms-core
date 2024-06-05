@@ -15,7 +15,7 @@ import static kr.co.seoultel.message.mt.mms.core.messages.lghv.LghvProtocol.*;
 public class LghvLinkAckMessage extends LghvMessage {
 
 
-    private String result;              // °á°ú°ª
+    private String result;              // result vault
 
     @Builder
     public LghvLinkAckMessage(String result) {
