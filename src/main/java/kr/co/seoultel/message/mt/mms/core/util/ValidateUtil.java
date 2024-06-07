@@ -6,6 +6,7 @@ import kr.co.seoultel.message.core.dto.mms.Submit;
 import kr.co.seoultel.message.mt.mms.core.common.exceptions.message.*;
 import kr.co.seoultel.message.mt.mms.core.common.exceptions.message.fallback.FallbackMessageFormatException;
 import kr.co.seoultel.message.mt.mms.core.common.exceptions.message.fallback.FallbackOriginCodeFormatException;
+import kr.co.seoultel.message.mt.mms.core.entity.DeliveryType;
 import lombok.NonNull;
 
 import java.util.List;
@@ -53,7 +54,7 @@ public class ValidateUtil {
     public static void validateMessageDelivery(@NonNull MessageDelivery messageDelivery) throws FormatException {
         String umsMsgId = messageDelivery.getUmsMsgId();
         if (!validateUmsMsgIdFormat(umsMsgId)){
-            throw new UmsMsgIdFormatException(messageDelivery, MessageDelivery.TYPE_SUBMIT);
+            throw new UmsMsgIdFormatException(messageDelivery, DeliveryType.SUBMIT);
         }
 
         String callback = messageDelivery.getCallback();
@@ -61,12 +62,12 @@ public class ValidateUtil {
         String sender = messageDelivery.getSender();
 
         if (!isConsistOnlyNumericValue(callback) && !validatePhoneNumber(receiver) && !isConsistOnlyNumericValue(sender)) {
-            throw new PhoneNumberFormatException(messageDelivery, MessageDelivery.TYPE_SUBMIT);
+            throw new PhoneNumberFormatException(messageDelivery, DeliveryType.SUBMIT);
         }
 
         String originCode = (String) messageDelivery.getContent().get(Submit.ORIGIN_CODE);
         if (!validateOriginCode(originCode)) {
-            throw new OriginCodeFormatException(messageDelivery, originCode, MessageDelivery.TYPE_SUBMIT);
+            throw new OriginCodeFormatException(messageDelivery, originCode, DeliveryType.SUBMIT);
         }
 
         Map<String, Object> content = messageDelivery.getContent();
@@ -74,7 +75,7 @@ public class ValidateUtil {
         String message = (String) content.get(Submit.MESSAGE);
 
         if (message == null && imageIds.isEmpty()) {
-            throw new MessageFormatException(messageDelivery, MessageDelivery.TYPE_SUBMIT);
+            throw new MessageFormatException(messageDelivery, DeliveryType.SUBMIT);
         }
     }
 
@@ -88,7 +89,7 @@ public class ValidateUtil {
     public static void validateFallbackMessageDelivery(@NonNull MessageDelivery messageDelivery) throws FormatException {
         String umsMsgId = messageDelivery.getUmsMsgId();
         if (!validateUmsMsgIdFormat(umsMsgId)){
-            throw new UmsMsgIdFormatException(messageDelivery, TYPE_FALLBACK_SUBMIT);
+            throw new UmsMsgIdFormatException(messageDelivery, DeliveryType.FALLBACK_SUBMIT);
         }
 
         String callback = messageDelivery.getCallback();
@@ -96,18 +97,18 @@ public class ValidateUtil {
         String sender = messageDelivery.getSender();
 
         if (!isConsistOnlyNumericValue(callback) && !validatePhoneNumber(receiver) && !isConsistOnlyNumericValue(sender)) {
-            throw new PhoneNumberFormatException(messageDelivery, TYPE_FALLBACK_SUBMIT);
+            throw new PhoneNumberFormatException(messageDelivery, DeliveryType.FALLBACK_SUBMIT);
         }
 
         String originCode = FallbackUtil.getFallbackOriginCode(messageDelivery);
         if (!validateOriginCode(originCode)) {
-            throw new FallbackOriginCodeFormatException(messageDelivery, originCode, TYPE_FALLBACK_SUBMIT);
+            throw new FallbackOriginCodeFormatException(messageDelivery, originCode, DeliveryType.FALLBACK_SUBMIT);
         }
 
         List<String> imageIds = FallbackUtil.getFallbackFileIds(messageDelivery);
         String message = FallbackUtil.getFallbackMessage(messageDelivery);
         if (message == null && imageIds.isEmpty()) {
-            throw new FallbackMessageFormatException(messageDelivery, TYPE_FALLBACK_SUBMIT);
+            throw new FallbackMessageFormatException(messageDelivery, DeliveryType.FALLBACK_SUBMIT);
         }
     }
 

@@ -1,13 +1,18 @@
 package kr.co.seoultel.message.mt.mms.core.util;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.List;
 import java.util.Objects;
 
 import kr.co.seoultel.message.core.dto.MessageDelivery;
+import kr.co.seoultel.message.core.dto.Result;
 import kr.co.seoultel.message.core.dto.fallback.Fallback;
 import kr.co.seoultel.message.core.dto.mms.Submit;
 import kr.co.seoultel.message.core.module.DeliveryParser;
+import kr.co.seoultel.message.mt.mms.core.entity.DeliveryType;
+
+import static kr.co.seoultel.message.mt.mms.core.entity.DeliveryType.*;
 
 /**
  * The type Fallback util.
@@ -104,6 +109,15 @@ public class FallbackUtil {
         return DeliveryParser.getFallback(messageDelivery).getOriginCode();
     }
 
+    /**
+     * Gets fallback result.
+     *
+     * @param messageDelivery the message delivery
+     * @return the fallback result
+     */
+    public static List<String> getFallbackTriedMnos(MessageDelivery messageDelivery) {
+        return (List<String>) Objects.requireNonNull(DeliveryParser.getFallback(messageDelivery).getResult()).getOrDefault(Result.TRIED_MNOS, new ArrayList<String>());
+    }
 
     /**
      * Gets fallback result.
@@ -201,6 +215,18 @@ public class FallbackUtil {
      * @param messageDelivery MessageDelivery be routed from MCMP Platform
      * @return the result in messageDelivery
      */
+    public static List<String> getTriedMnos(MessageDelivery messageDelivery) {
+        return isFallback(messageDelivery) ? getFallbackTriedMnos(messageDelivery)
+                                        : (List<String>) messageDelivery.getResult().getOrDefault(Result.TRIED_MNOS, new ArrayList<String>());
+    }
+
+    /**
+     * if is fallback message, get fallback result
+     * else default result
+     *
+     * @param messageDelivery MessageDelivery be routed from MCMP Platform
+     * @return the result in messageDelivery
+     */
     public static Map<String, Object> getResult(MessageDelivery messageDelivery) {
         return isFallback(messageDelivery) ? getFallbackResult(messageDelivery) :  messageDelivery.getResult();
     }
@@ -282,6 +308,20 @@ public class FallbackUtil {
         fallback.setServiceProvider(serviceProvider);
 
         messageDelivery.getContent().put(Fallback.FALLBACK, fallback);
+    }
+
+
+    /**
+     * Sets fallback result.
+     *
+     * @param messageDelivery MessageDelivery be routed from MCMP Platform
+     * @param triedMnos          the result, assign to fallback's triedMnos
+     */
+    public static void setFallbackTriedMnos(MessageDelivery messageDelivery, List<String> triedMnos) {
+        Fallback fallback = getFallback(messageDelivery);
+        fallback.getResult().put(Result.TRIED_MNOS, triedMnos);
+
+        messageDelivery.getContent().replace(Fallback.FALLBACK, fallback);
     }
 
     /**
@@ -371,6 +411,19 @@ public class FallbackUtil {
         else messageDelivery.setServiceProvider(serviceProvider);
     }
 
+
+    /**
+     * if messageDelivery is fallback, Sets fallback result
+     * else set default result
+     *
+     * @param messageDelivery MessageDelivery be routed from MCMP Platform
+     * @param triedMno          the result
+     */
+    public static void setTriedMno(MessageDelivery messageDelivery, List<String> triedMno) {
+        if (isFallback(messageDelivery)) setFallbackTriedMnos(messageDelivery, triedMno);
+        else messageDelivery.getContent().replace(Result.TRIED_MNOS, triedMno);
+    }
+
     /**
      * if messageDelivery is fallback, Sets fallback result
      * else set default result
@@ -382,5 +435,4 @@ public class FallbackUtil {
         if (isFallback(messageDelivery)) setFallbackResult(messageDelivery, result);
         else messageDelivery.setResult(result);
     }
-
 }

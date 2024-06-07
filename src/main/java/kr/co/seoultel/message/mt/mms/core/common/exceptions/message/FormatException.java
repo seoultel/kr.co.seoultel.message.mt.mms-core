@@ -2,6 +2,7 @@ package kr.co.seoultel.message.mt.mms.core.common.exceptions.message;
 
 import kr.co.seoultel.message.core.dto.MessageDelivery;
 import kr.co.seoultel.message.mt.mms.core.common.constant.Constants;
+import kr.co.seoultel.message.mt.mms.core.entity.DeliveryType;
 import lombok.Getter;
 
 
@@ -12,7 +13,7 @@ public abstract class FormatException extends Exception {
     protected MessageDelivery messageDelivery;
 
     protected String mnoResult;
-    protected int deliveryType;
+    protected DeliveryType deliveryType;
 
     protected String reportMessage = Constants.FORMAT_ERROR;
 
@@ -21,7 +22,7 @@ public abstract class FormatException extends Exception {
     }
 
 
-    public FormatException(String message, MessageDelivery messageDelivery, String mnoResult, int deliveryType) {
+    public FormatException(String message, MessageDelivery messageDelivery, String mnoResult, DeliveryType deliveryType) {
         super(message);
 
         this.messageDelivery = messageDelivery;
