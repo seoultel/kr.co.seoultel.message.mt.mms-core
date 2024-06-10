@@ -1,7 +1,6 @@
 package kr.co.seoultel.message.mt.mms.core.util;
 
 import kr.co.seoultel.message.core.dto.MessageDelivery;
-import kr.co.seoultel.message.core.dto.fallback.Fallback;
 import kr.co.seoultel.message.core.dto.mms.Submit;
 import kr.co.seoultel.message.mt.mms.core.common.exceptions.message.*;
 import kr.co.seoultel.message.mt.mms.core.common.exceptions.message.fallback.FallbackMessageFormatException;
@@ -9,14 +8,16 @@ import kr.co.seoultel.message.mt.mms.core.common.exceptions.message.fallback.Fal
 import kr.co.seoultel.message.mt.mms.core.entity.DeliveryType;
 import lombok.NonNull;
 
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import static kr.co.seoultel.message.core.dto.MessageDelivery.TYPE_FALLBACK_SUBMIT;
 
 public class ValidateUtil {
 
+    private static final DateTimeFormatter dttmDateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
 
     /*
      * ============================================================================
@@ -111,7 +112,17 @@ public class ValidateUtil {
             throw new FallbackMessageFormatException(messageDelivery, DeliveryType.FALLBACK_SUBMIT);
         }
     }
-
+    public static boolean isDttmDateTimeFormat(String dateTimeString) {
+        try {
+            // parse dateTimeString to dttmFormat;
+            dttmDateTimeFormatter.parse(dateTimeString);
+            // if parsing is success, return true;
+            return true;
+        } catch (DateTimeParseException e) {
+            // if parsing is failed, return false;
+            return false;
+        }
+    }
 
     /**
      * Assign default subject if null or empty.

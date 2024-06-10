@@ -13,6 +13,12 @@ public class DateUtil {
     private static final DateTimeFormatter mcmpLocalDateFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
     private static final DateTimeFormatter fullLocalDateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
 
+    public static String getDate() {
+        LocalDateTime future = LocalDateTime.now();
+        return future.format(mcmpLocalDateFormatter);
+    }
+
+
     public static String getDate(int plusSecond) {
         LocalDateTime future = LocalDateTime.now().plusSeconds(plusSecond);
         return future.format(mcmpLocalDateFormatter);

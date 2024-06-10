@@ -1,16 +1,13 @@
-package kr.co.seoultel.message.mt.mms.core.fallback;
+package kr.co.seoultel.message.mt.mms.core.util;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import kr.co.seoultel.message.core.dto.MessageDelivery;
-import kr.co.seoultel.message.mt.mms.core.util.FallbackUtil;
-import kr.co.seoultel.message.mt.mms.core.util.FileUtil;
-import kr.co.seoultel.message.mt.mms.core.util.ValidateUtil;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-public class FallbackTest {
+public class FallbackUtilTest {
 
     private static final Gson gson = new GsonBuilder().create();
     private static final String fallbackJsonFilePath = "/Users/simjeonghun/github/seoultel/libraries/kr.co.seoultel.message.mt.mms-core/src/test/resources/fallbackMessageDelivery.json";

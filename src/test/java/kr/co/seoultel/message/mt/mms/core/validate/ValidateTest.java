@@ -1,7 +1,7 @@
 package kr.co.seoultel.message.mt.mms.core.validate;
 
 import kr.co.seoultel.message.mt.mms.core.util.DateUtil;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 
