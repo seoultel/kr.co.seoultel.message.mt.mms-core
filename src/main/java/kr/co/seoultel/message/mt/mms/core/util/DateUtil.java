@@ -12,6 +12,11 @@ public class DateUtil {
 
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
 
+    public static String getDate() {
+        LocalDateTime future = LocalDateTime.now();
+        return future.format(formatter);
+    }
+
     public static String getDate(int plusSecond) {
         LocalDateTime future = LocalDateTime.now().plusSeconds(plusSecond);
         return future.format(formatter);

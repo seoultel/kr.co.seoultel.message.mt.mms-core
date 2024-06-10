@@ -89,4 +89,17 @@ public class SmtntReportMessage extends SmtntMessage {
                 ", userData='" + userData + '\'' +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SmtntReportMessage that = (SmtntReportMessage) o;
+        return msgType == that.msgType && result == that.result && Objects.equals(userMsgId, that.userMsgId) && Objects.equals(userMsgSubId, that.userMsgSubId) && Objects.equals(serverMsgId, that.serverMsgId) && Objects.equals(phoneNo, that.phoneNo) && Objects.equals(resultMessage, that.resultMessage) && Objects.equals(telecom, that.telecom) && Objects.equals(deliveryTime, that.deliveryTime) && Objects.equals(userId, that.userId) && Objects.equals(userData, that.userData);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userMsgId, userMsgSubId, serverMsgId, msgType, phoneNo, result, resultMessage, telecom, deliveryTime, userId, userData);
+    }
 }

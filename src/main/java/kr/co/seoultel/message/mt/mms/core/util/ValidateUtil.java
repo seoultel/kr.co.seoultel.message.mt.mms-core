@@ -5,11 +5,14 @@ import kr.co.seoultel.message.core.dto.mms.Submit;
 import kr.co.seoultel.message.mt.mms.core.common.exceptions.message.*;
 import lombok.NonNull;
 
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Map;
 
 public class ValidateUtil {
 
+    private static final DateTimeFormatter dttmDateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
 
     /*
      * ============================================================================
@@ -29,6 +32,17 @@ public class ValidateUtil {
     }
     public static boolean isContainsWhitespace(String str) {
         return str.contains(" ");
+    }
+    public static boolean isDttmDateTimeFormat(String dateTimeString) {
+        try {
+            // parse dateTimeString to dttmFormat;
+            dttmDateTimeFormatter.parse(dateTimeString);
+            // if parsing is success, return true;
+            return true;
+        } catch (DateTimeParseException e) {
+            // if parsing is failed, return false;
+            return false;
+        }
     }
 
 

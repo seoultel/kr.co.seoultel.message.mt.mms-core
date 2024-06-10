@@ -6,6 +6,8 @@ import kr.co.seoultel.message.mt.mms.core.messages.smtnt.SmtntProtocol;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.util.Objects;
+
 
 @Getter
 public class SmtntReportAckMessage extends SmtntMessage {
@@ -44,5 +46,18 @@ public class SmtntReportAckMessage extends SmtntMessage {
                     ", serverMsgId='" + serverMsgId + '\'' +
                     ", result=" + result +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SmtntReportAckMessage that = (SmtntReportAckMessage) o;
+        return result == that.result && Objects.equals(userMsgId, that.userMsgId) && Objects.equals(userMsgSubId, that.userMsgSubId) && Objects.equals(serverMsgId, that.serverMsgId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userMsgId, userMsgSubId, serverMsgId, result);
     }
 }

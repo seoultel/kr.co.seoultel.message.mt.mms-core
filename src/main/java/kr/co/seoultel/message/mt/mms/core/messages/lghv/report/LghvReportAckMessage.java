@@ -16,9 +16,9 @@ import static kr.co.seoultel.message.mt.mms.core.messages.lghv.LghvProtocol.*;
 public class LghvReportAckMessage extends LghvMessage {
 
 
-    private String result;              // 결과값
-    private String msgId;               // 메세지고유값
-    private String reserved;            // 예비
+    private String result;
+    private String msgId;
+    private String reserved;
 
     @Builder
     public LghvReportAckMessage(String msgId) {

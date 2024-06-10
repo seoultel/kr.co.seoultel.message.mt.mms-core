@@ -12,7 +12,7 @@ import static kr.co.seoultel.message.mt.mms.core.messages.lghv.LghvProtocol.*;
 @Getter
 @NoArgsConstructor
 public class LghvLinkMessage extends LghvMessage {
-    private String code;              // °á°ú°ª
+    private String code;
 
     @Builder
     public LghvLinkMessage(String code) {

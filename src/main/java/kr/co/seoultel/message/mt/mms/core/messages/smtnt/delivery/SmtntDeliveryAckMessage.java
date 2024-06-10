@@ -27,7 +27,7 @@ public class SmtntDeliveryAckMessage extends SmtntMessage {
     protected int result;   // 메세지 발송 결과, 발송결과코드
 
     @SerializedName("ResultMessage")
-    protected String resultMessage;   // 메세지 발송 결과, 발송결과코드
+    protected String resultMessage = "";   // 메세지 발송 결과, 발송결과코드
 
     @SerializedName("UserData")
     protected String userData = ""; // 사용자 데이터
@@ -75,5 +75,19 @@ public class SmtntDeliveryAckMessage extends SmtntMessage {
                     ", resultMessage='" + resultMessage + '\'' +
                     ", userData='" + userData + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        SmtntDeliveryAckMessage that = (SmtntDeliveryAckMessage) o;
+        return msgType == that.msgType && result == that.result && Objects.equals(userMsgId, that.userMsgId) && Objects.equals(userMsgSubId, that.userMsgSubId) && Objects.equals(phoneNo, that.phoneNo) && Objects.equals(resultMessage, that.resultMessage) && Objects.equals(userData, that.userData);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), userMsgId, userMsgSubId, phoneNo, msgType, result, resultMessage, userData);
     }
 }
