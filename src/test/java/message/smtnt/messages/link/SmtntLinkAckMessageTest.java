@@ -11,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class SmtntLinkAckMessageTest {
 
+
     /**
      * {@link SmtntLinkAckMessage}의 기본 생성자를 테스트합니다.
      * 메시지가 올바르게 생성되었는지 확인합니다.

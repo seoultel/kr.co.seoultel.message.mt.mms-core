@@ -11,6 +11,8 @@ import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 
 import java.nio.charset.Charset;
+import java.util.Arrays;
+import java.util.Objects;
 
 import static kr.co.seoultel.message.mt.mms.core.common.constant.Constants.EUC_KR;
 
@@ -136,6 +138,21 @@ public class LghvDeliveryMultipartData implements ConvertableToByteBuf {
                 ", message='" + message + '\'' +
                 ", imageBytes.length=" + imageBytes.length +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        LghvDeliveryMultipartData that = (LghvDeliveryMultipartData) object;
+        return dataSize == that.dataSize && Objects.equals(temp1, that.temp1) && Objects.equals(dataType, that.dataType) && Objects.equals(fileName, that.fileName) && Objects.equals(fileKey, that.fileKey) && Objects.equals(fileSize, that.fileSize) && Objects.equals(message, that.message) && Arrays.equals(imageBytes, that.imageBytes);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(temp1, dataType, fileName, fileKey, dataSize, fileSize, message);
+        result = 31 * result + Arrays.hashCode(imageBytes);
+        return result;
     }
 }
 

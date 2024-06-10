@@ -7,18 +7,23 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.Objects;
+
 import static kr.co.seoultel.message.mt.mms.core.messages.lghv.LghvProtocol.*;
 
 @Getter
-@NoArgsConstructor
 public class LghvLinkMessage extends LghvMessage {
-    private String code;
+    private String code = "";
+
+    public LghvLinkMessage() {
+        super(LINK_MSG_TYPE, LINK_CODE_LENGTH);
+    }
 
     @Builder
     public LghvLinkMessage(String code) {
         super(LINK_MSG_TYPE, LINK_CODE_LENGTH);
 
-        this.code = code;
+        this.code = Objects.requireNonNullElse(code, "");
     }
 
     @Override
@@ -50,5 +55,18 @@ public class LghvLinkMessage extends LghvMessage {
                 ", tail='" + tail + '\'' +
                 ", code='" + code + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        LghvLinkMessage that = (LghvLinkMessage) object;
+        return Objects.equals(code, that.code);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(code);
     }
 }

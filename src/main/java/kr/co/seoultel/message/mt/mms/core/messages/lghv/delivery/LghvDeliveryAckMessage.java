@@ -7,30 +7,35 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.Objects;
+
 import static kr.co.seoultel.message.mt.mms.core.messages.lghv.LghvProtocol.*;
 
 
 @Getter
-@NoArgsConstructor
 public class LghvDeliveryAckMessage extends LghvMessage {
 
-    private String result;              // 결과값
-    private String deliveryType;        // 전송타입
-    private String msgId;               // 메세지고유값
-    private String msgMsec;             // 전송처리시간
-    private String destAddr;            // 수신번호
-    private String reserved;            // 예비
+    private String result = "";              // 결과값
+    private String deliveryType = "";        // 전송타입
+    private String msgId = "";               // 메세지고유값
+    private String msgMsec = "";             // 전송처리시간
+    private String destAddr = "";            // 수신번호
+    private String reserved = "";            // 예비
+
+    public LghvDeliveryAckMessage() {
+        super(DELIVERY_ACK_MSG_TYPE, DELIVERY_ACK_BODY_LEN);
+    }
 
     @Builder
     public LghvDeliveryAckMessage(int msgLen, String result, String deliveryType, String msgId, String msgMsec, String destAddr, String reserved) {
         super(DELIVERY_ACK_MSG_TYPE, DELIVERY_ACK_BODY_LEN);
 
-        this.result = result;
-        this.deliveryType = deliveryType;
-        this.msgId = msgId;
-        this.msgMsec = msgMsec;
-        this.destAddr = destAddr;
-        this.reserved = reserved;
+        this.result = Objects.requireNonNullElse(result, "");
+        this.deliveryType = Objects.requireNonNullElse(deliveryType, "");
+        this.msgId = Objects.requireNonNullElse(msgId, "");
+        this.msgMsec = Objects.requireNonNullElse(msgMsec, "");
+        this.destAddr = Objects.requireNonNullElse(destAddr, "");
+        this.reserved = Objects.requireNonNullElse(reserved, "");
     }
 
     @Override
@@ -76,5 +81,18 @@ public class LghvDeliveryAckMessage extends LghvMessage {
                 ", destAddr='" + destAddr + '\'' +
                 ", reserved='" + reserved + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        LghvDeliveryAckMessage that = (LghvDeliveryAckMessage) object;
+        return Objects.equals(result, that.result) && Objects.equals(deliveryType, that.deliveryType) && Objects.equals(msgId, that.msgId) && Objects.equals(msgMsec, that.msgMsec) && Objects.equals(destAddr, that.destAddr) && Objects.equals(reserved, that.reserved);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(result, deliveryType, msgId, msgMsec, destAddr, reserved);
     }
 }

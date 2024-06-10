@@ -10,15 +10,17 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Objects;
+
 @Getter @Setter
 public class LghvReportMessage extends LghvMessage {
 
-    private String result;          // 결과값
-    private String deliveryType;    // 전송타입
-    private String rtnType;           // 최종처리타입
-    private String msgId;           // 메세지고유값
-    private String deliveryTime;    // MSG 전송시간
-    private String netId;
+    private String result = "";          // 결과값
+    private String deliveryType = "";    // 전송타입
+    private String rtnType = "";           // 최종처리타입
+    private String msgId = "";           // 메세지고유값
+    private String deliveryTime = "";    // MSG 전송시간
+    private String netId = "";
 
 
     public LghvReportMessage() {
@@ -29,12 +31,12 @@ public class LghvReportMessage extends LghvMessage {
     public LghvReportMessage(int msgLen, String result, String deliveryType, String rtnType, String msgId, String deliveryTime, String netId) {
         super(LghvProtocol.REPORT_MSG_TYPE, LghvProtocol.REPORT_BODY_LEN);
 
-        this.result = result;
-        this.deliveryType = deliveryType;
-        this.rtnType = rtnType;
-        this.msgId = msgId;
-        this.deliveryTime = deliveryTime;
-        this.netId = netId;
+        this.result = Objects.requireNonNullElse(result, "");
+        this.deliveryType = Objects.requireNonNullElse(deliveryType, "");
+        this.rtnType = Objects.requireNonNullElse(rtnType, "");
+        this.msgId = Objects.requireNonNullElse(msgId, "");
+        this.deliveryTime = Objects.requireNonNullElse(deliveryTime, "");
+        this.netId = Objects.requireNonNullElse(netId, "");
     }
 
     @Override
@@ -112,5 +114,18 @@ public class LghvReportMessage extends LghvMessage {
                 ", deliveryTime='" + deliveryTime + '\'' +
                 ", netId='" + netId + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        LghvReportMessage that = (LghvReportMessage) object;
+        return Objects.equals(result, that.result) && Objects.equals(deliveryType, that.deliveryType) && Objects.equals(rtnType, that.rtnType) && Objects.equals(msgId, that.msgId) && Objects.equals(deliveryTime, that.deliveryTime) && Objects.equals(netId, that.netId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(result, deliveryType, rtnType, msgId, deliveryTime, netId);
     }
 }

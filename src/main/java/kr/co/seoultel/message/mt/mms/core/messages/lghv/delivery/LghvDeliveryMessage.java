@@ -239,4 +239,19 @@ public class LghvDeliveryMessage extends LghvMessage {
 
         addMsgLen(textLENGTH);
     }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        LghvDeliveryMessage that = (LghvDeliveryMessage) object;
+        return dataCnt == that.dataCnt && Objects.equals(encode, that.encode) && Objects.equals(deliveryType, that.deliveryType) && Objects.equals(msgId, that.msgId) && Objects.equals(gubun, that.gubun) && Objects.equals(contentsType, that.contentsType) && Objects.equals(destAddr, that.destAddr) && Objects.equals(callback, that.callback) && Objects.equals(reseller, that.reseller) && Objects.equals(subject, that.subject) && Objects.equals(adFlag, that.adFlag) && Objects.equals(reserved, that.reserved) && Objects.equals(text, that.text) && Objects.equals(ksubject, that.ksubject) && Arrays.equals(multipartDatas, that.multipartDatas);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(encode, deliveryType, msgId, gubun, contentsType, destAddr, callback, reseller, subject, adFlag, reserved, text, ksubject, dataCnt);
+        result = 31 * result + Arrays.hashCode(multipartDatas);
+        return result;
+    }
 }
