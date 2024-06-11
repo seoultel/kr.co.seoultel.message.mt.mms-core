@@ -3,6 +3,7 @@ package message.hist.messages.delivery.lms;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import kr.co.seoultel.message.mt.mms.core.messages.hist.HistProtocol;
+import kr.co.seoultel.message.mt.mms.core.messages.hist.delivery.HistDeliveryMultipartData;
 import kr.co.seoultel.message.mt.mms.core.messages.hist.delivery.lms.HistLmsDeliveryMessage;
 import org.junit.jupiter.api.Test;
 
@@ -39,7 +40,7 @@ public class HistLmsDeliveryMessageTest {
 
     @Test
     public void testParameterizedConstructor() {
-        HistLmsDeliveryMessage message = new HistLmsDeliveryMessage(MSG_TYPE, DA_ADDR, CALLBACK, ENCODING, TEXT, SERIAL, SENDER_CODE, MEDIA_CNT, EXT_SIZE);
+        HistLmsDeliveryMessage message = new HistLmsDeliveryMessage(MSG_TYPE, DA_ADDR, CALLBACK, ENCODING, TEXT, SERIAL, SENDER_CODE, EXT_SIZE, "message");
 
         assertNotNull(message);
         assertEquals(MSG_TYPE, message.getMsgType());
@@ -56,9 +57,9 @@ public class HistLmsDeliveryMessageTest {
 
     @Test
     public void testToByteBuf() {
-        HistLmsDeliveryMessage message = new HistLmsDeliveryMessage(MSG_TYPE, DA_ADDR, CALLBACK, ENCODING, TEXT, SERIAL, SENDER_CODE, MEDIA_CNT, EXT_SIZE);
         ByteBuf byteBuf = Unpooled.buffer();
 
+        HistLmsDeliveryMessage message = new HistLmsDeliveryMessage(MSG_TYPE, DA_ADDR, CALLBACK, ENCODING, TEXT, SERIAL, SENDER_CODE, EXT_SIZE, "message");
         message.toByteBuf(byteBuf);
 
         byte[] byteArray = new byte[byteBuf.readableBytes()];
@@ -74,9 +75,10 @@ public class HistLmsDeliveryMessageTest {
 
     @Test
     public void testFromByteBuf() {
-        HistLmsDeliveryMessage originalMessage = new HistLmsDeliveryMessage(MSG_TYPE, DA_ADDR, CALLBACK, ENCODING, TEXT, SERIAL, SENDER_CODE, MEDIA_CNT, EXT_SIZE);
         ByteBuf byteBuf = Unpooled.buffer();
 
+        HistLmsDeliveryMessage originalMessage = new HistLmsDeliveryMessage(MSG_TYPE, DA_ADDR, CALLBACK, ENCODING, TEXT, SERIAL, SENDER_CODE, EXT_SIZE, "message");
+        HistDeliveryMultipartData multipartData = new HistDeliveryMultipartData("message");
         originalMessage.toByteBuf(byteBuf);
 
         HistLmsDeliveryMessage message = new HistLmsDeliveryMessage();
@@ -87,9 +89,9 @@ public class HistLmsDeliveryMessageTest {
 
     @Test
     public void testEqualsAndHashCode() {
-        HistLmsDeliveryMessage message1 = new HistLmsDeliveryMessage(MSG_TYPE, DA_ADDR, CALLBACK, ENCODING, TEXT, SERIAL, SENDER_CODE, MEDIA_CNT, EXT_SIZE);
-        HistLmsDeliveryMessage message2 = new HistLmsDeliveryMessage(MSG_TYPE, DA_ADDR, CALLBACK, ENCODING, TEXT, SERIAL, SENDER_CODE, MEDIA_CNT, EXT_SIZE);
-        HistLmsDeliveryMessage message3 = new HistLmsDeliveryMessage("DIFFERENT", DA_ADDR, CALLBACK, ENCODING, TEXT, SERIAL, SENDER_CODE, MEDIA_CNT, EXT_SIZE);
+        HistLmsDeliveryMessage message2 = new HistLmsDeliveryMessage(MSG_TYPE, DA_ADDR, CALLBACK, ENCODING, TEXT, SERIAL, SENDER_CODE, EXT_SIZE, "message");
+        HistLmsDeliveryMessage message1 = new HistLmsDeliveryMessage(MSG_TYPE, DA_ADDR, CALLBACK, ENCODING, TEXT, SERIAL, SENDER_CODE, EXT_SIZE, "message");
+        HistLmsDeliveryMessage message3 = new HistLmsDeliveryMessage("DIFFERENT", DA_ADDR, CALLBACK, ENCODING, TEXT, SERIAL, SENDER_CODE, EXT_SIZE, "message");
 
         assertEquals(message1, message2);
         assertNotEquals(message1, message3);

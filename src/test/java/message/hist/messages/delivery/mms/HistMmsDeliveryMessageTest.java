@@ -64,8 +64,6 @@ public class HistMmsDeliveryMessageTest {
         HistDeliveryMultipartData multipartData1 = new HistDeliveryMultipartData("JPG", "sampleImage".getBytes(Charset.forName(EUC_KR)));
         originalMessage.addMedia(multipartData1);
 
-        System.out.println(originalMessage);
-
         ByteBuf buffer = Unpooled.buffer();
         originalMessage.toByteBuf(buffer);
 

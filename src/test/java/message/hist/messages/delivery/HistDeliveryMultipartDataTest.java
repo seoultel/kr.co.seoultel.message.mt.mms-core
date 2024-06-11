@@ -7,7 +7,6 @@ import kr.co.seoultel.message.mt.mms.core.messages.hist.delivery.HistDeliveryMul
 import org.junit.jupiter.api.Test;
 
 import java.nio.charset.Charset;
-import java.util.Arrays;
 
 import static kr.co.seoultel.message.mt.mms.core.common.constant.Constants.EUC_KR;
 import static org.junit.jupiter.api.Assertions.*;
@@ -28,7 +27,7 @@ public class HistDeliveryMultipartDataTest {
         assertNull(data.getMType());
         assertEquals(HistProtocol.EUC_KR_ENCODING, data.getEncoding());
         assertEquals(0, data.getMFileLen());
-        assertNull(data.getMedia());
+        assertNull(data.getBytes());
     }
 
     @Test
@@ -41,7 +40,7 @@ public class HistDeliveryMultipartDataTest {
         assertEquals(HistProtocol.M_TYPE_11, data.getMType());
         assertEquals(HistProtocol.EUC_KR_ENCODING, data.getEncoding());
         assertEquals(expectedBytes.length, data.getMFileLen());
-        assertArrayEquals(expectedBytes, data.getMedia());
+        assertArrayEquals(expectedBytes, data.getBytes());
     }
 
     @Test
@@ -52,7 +51,7 @@ public class HistDeliveryMultipartDataTest {
         assertEquals(HistProtocol.M_TYPE_21, data.getMType());
         assertEquals(HistProtocol.EUC_KR_ENCODING, data.getEncoding());
         assertEquals(MEDIA_FILE_BYTES.length, data.getMFileLen());
-        assertArrayEquals(MEDIA_FILE_BYTES, data.getMedia());
+        assertArrayEquals(MEDIA_FILE_BYTES, data.getBytes());
     }
 
 
