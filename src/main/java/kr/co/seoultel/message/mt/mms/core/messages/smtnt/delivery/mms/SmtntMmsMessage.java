@@ -54,7 +54,7 @@ public class SmtntMmsMessage extends SmtntDeliveryMessage {
 
     @Override
     public String toString() {
-        return "SmtntMmsMessage{" +
+        return "SmtntDeliveryMessage{" +
                 "method='" + method + '\'' +
                 ", userMsgId='" + userMsgId + '\'' +
                 ", userMsgSubId='" + userMsgSubId + '\'' +

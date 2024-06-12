@@ -3,6 +3,7 @@ package kr.co.seoultel.message.mt.mms.core.messages.smtnt.delivery;
 import com.google.gson.annotations.SerializedName;
 import kr.co.seoultel.message.mt.mms.core.messages.smtnt.SmtntMessage;
 import kr.co.seoultel.message.mt.mms.core.messages.smtnt.SmtntProtocol;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.util.Objects;
@@ -137,5 +138,72 @@ public class SmtntDeliveryMessage extends SmtntMessage {
         // this.rcsBrandKey = Objects.requireNonNullElse(rcsBrandKey, "");
         // this.rcsAgencyKey = Objects.requireNonNullElse(rcsAgencyKey, "");
         this.resellerCode = Objects.requireNonNullElse(resellerCode, "");
+    }
+
+
+    @Override
+    public String toString() {
+        return "SmtntDeliveryMessage{" +
+                "method='" + method + '\'' +
+                ", userMsgId='" + userMsgId + '\'' +
+                ", userMsgSubId='" + userMsgSubId + '\'' +
+                ", msgType=" + msgType +
+                ", phoneNo='" + phoneNo + '\'' +
+                ", callbackNo='" + callbackNo + '\'' +
+                ", tranId='" + tranId + '\'' +
+                ", subject='" + subject + '\'' +
+                ", message='" + message + '\'' +
+                ", kakaoAdFlag='" + kakaoAdFlag + '\'' +
+                ", kakaoNationCode='" + kakaoNationCode + '\'' +
+                ", kakaoSenderKey='" + kakaoSenderKey + '\'' +
+                ", kakaoTemplateCode='" + kakaoTemplateCode + '\'' +
+                ", kakaoTimeout=" + kakaoTimeout +
+                ", kakaoButton='" + kakaoButton + '\'' +
+                ", fileCount=" + fileCount +
+                ", fileType1='" + fileType1 + '\'' +
+                ", fileName1='" + fileName1 + '\'' +
+                ", fileType2='" + fileType2 + '\'' +
+                ", fileName2='" + fileName2 + '\'' +
+                ", fileType3='" + fileType3 + '\'' +
+                ", fileName3='" + fileName3 + '\'' +
+                ", userData='" + userData + '\'' +
+                ", resellerCode='" + resellerCode + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || !(o instanceof SmtntDeliveryMessage)) return false;
+        if (!super.equals(o)) return false;
+        SmtntDeliveryMessage that = (SmtntDeliveryMessage) o;
+        return msgType == that.msgType &&
+                kakaoTimeout == that.kakaoTimeout &&
+                fileCount == that.fileCount &&
+                Objects.equals(userMsgId, that.userMsgId) &&
+                Objects.equals(userMsgSubId, that.userMsgSubId) &&
+                Objects.equals(phoneNo, that.phoneNo) &&
+                Objects.equals(callbackNo, that.callbackNo) &&
+                Objects.equals(tranId, that.tranId) &&
+                Objects.equals(subject, that.subject) &&
+                Objects.equals(message, that.message) &&
+                Objects.equals(kakaoAdFlag, that.kakaoAdFlag) &&
+                Objects.equals(kakaoNationCode, that.kakaoNationCode) &&
+                Objects.equals(kakaoSenderKey, that.kakaoSenderKey) &&
+                Objects.equals(kakaoTemplateCode, that.kakaoTemplateCode) &&
+                Objects.equals(kakaoButton, that.kakaoButton) &&
+                Objects.equals(fileType1, that.fileType1) &&
+                Objects.equals(fileName1, that.fileName1) &&
+                Objects.equals(fileType2, that.fileType2) &&
+                Objects.equals(fileName2, that.fileName2) &&
+                Objects.equals(fileType3, that.fileType3) &&
+                Objects.equals(fileName3, that.fileName3) &&
+                Objects.equals(userData, that.userData) &&
+                Objects.equals(resellerCode, that.resellerCode);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), userMsgId, userMsgSubId, msgType, phoneNo, callbackNo, tranId, subject, message, kakaoAdFlag, kakaoNationCode, kakaoSenderKey, kakaoTemplateCode, kakaoTimeout, kakaoButton, fileCount, fileType1, fileName1, fileType2, fileName2, fileType3, fileName3, userData, resellerCode);
     }
 }

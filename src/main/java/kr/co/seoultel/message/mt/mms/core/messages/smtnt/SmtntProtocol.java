@@ -2,7 +2,7 @@ package kr.co.seoultel.message.mt.mms.core.messages.smtnt;
 
 public class SmtntProtocol {
     public static final String SMTNT = "SMTNT";
-    public static final String SMTNT_GROUP = "SMTT";
+    public static final String SMTNT_GROUP = "SMTNT";
 
     public static final String SMTNT_HEADER = "Header";
     public static final String SMTNT_BODY = "Body";

@@ -36,7 +36,7 @@ public class FallbackUtil {
      * @return the boolean
      */
     public static boolean isFallback(MessageDelivery messageDelivery) {
-        return (boolean) messageDelivery.getContent().get(Fallback.FALLBACK_FLAG);
+        return messageDelivery.getContent().containsKey(Fallback.FALLBACK_FLAG);
     }
 
     /**
@@ -161,7 +161,7 @@ public class FallbackUtil {
      * @return the dstMsgId in messageDelivery
      */
     public static String getSubject(MessageDelivery messageDelivery) {
-        return isFallback(messageDelivery) ? getSubject(messageDelivery) : (String) messageDelivery.getContent().getOrDefault(Submit.SUBJECT, "���� ����");
+        return isFallback(messageDelivery) ? getFallbackSubject(messageDelivery) : (String) messageDelivery.getContent().getOrDefault(Submit.SUBJECT, "���� ����");
     }
 
     /**
@@ -194,7 +194,7 @@ public class FallbackUtil {
      * @return the mediaFiles(fileIds) in messageDelivery
      */
     public static List<String> getMediaFiles(MessageDelivery messageDelivery) {
-        return isFallback(messageDelivery) ? getMediaFiles(messageDelivery) : (List<String>) messageDelivery.getContent().getOrDefault(Submit.MEDIA_FILES, List.of());
+        return isFallback(messageDelivery) ? getFallbackFileIds(messageDelivery) : (List<String>) messageDelivery.getContent().getOrDefault(Submit.MEDIA_FILES, List.of());
     }
 
     /**
@@ -205,7 +205,7 @@ public class FallbackUtil {
      * @return the originCode in messageDelivery
      */
     public static String getOriginCode(MessageDelivery messageDelivery) {
-        return isFallback(messageDelivery) ? getOriginCode(messageDelivery) : (String) messageDelivery.getContent().get(Submit.ORIGIN_CODE);
+        return isFallback(messageDelivery) ? getFallbackOriginCode(messageDelivery) : (String) messageDelivery.getContent().get(Submit.ORIGIN_CODE);
     }
 
     /**

@@ -8,25 +8,36 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.Objects;
+
 import static kr.co.seoultel.message.mt.mms.core.messages.lghv.LghvProtocol.*;
 
 @Getter
-@ToString
-@NoArgsConstructor
 public class LghvReportAckMessage extends LghvMessage {
 
+    private String result = "";
+    private String msgId = "";
+    private String reserved = "";
 
-    private String result;              // 결과값
-    private String msgId;               // 메세지고유값
-    private String reserved;            // 예비
+    public LghvReportAckMessage() {
+        super(REPORT_ACK_MSG_TYPE, REPORT_ACK_BODY_LEN);
+    }
 
-    @Builder
     public LghvReportAckMessage(String msgId) {
         super(REPORT_ACK_MSG_TYPE, REPORT_ACK_BODY_LEN);
 
         this.result = REPORT_ACK_RESULT;
         this.msgId = msgId;
         this.reserved = "";
+    }
+
+    @Builder
+    public LghvReportAckMessage(String result, String msgId, String reserved) {
+        super(REPORT_ACK_MSG_TYPE, REPORT_ACK_BODY_LEN);
+
+        this.result = Objects.requireNonNullElse(result, "");
+        this.msgId = Objects.requireNonNullElse(msgId, "");
+        this.reserved = Objects.requireNonNullElse(reserved, "");
     }
 
     @Override
@@ -63,5 +74,18 @@ public class LghvReportAckMessage extends LghvMessage {
                 ", msgId='" + msgId + '\'' +
                 ", reserved='" + reserved + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        LghvReportAckMessage that = (LghvReportAckMessage) object;
+        return Objects.equals(result, that.result) && Objects.equals(msgId, that.msgId) && Objects.equals(reserved, that.reserved);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(result, msgId, reserved);
     }
 }

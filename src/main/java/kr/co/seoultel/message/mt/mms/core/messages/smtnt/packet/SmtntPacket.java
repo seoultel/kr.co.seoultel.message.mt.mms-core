@@ -34,6 +34,7 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 
 
 /**
@@ -268,16 +269,40 @@ public class SmtntPacket implements ConvertableToByteBuf, ConvertableToJson {
                         "method='" + method + '\'' +
                     "}";
         }
-    }
 
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Header header = (Header) o;
+            return Objects.equals(method, header.method);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hashCode(method);
+        }
+    }
 
 
     @Override
     public String toString() {
-
         return "SmtntPacket{" +
                 "header=" + header +
                 ", body='" + body + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SmtntPacket that = (SmtntPacket) o;
+        return Objects.equals(header, that.header) && Objects.equals(body, that.body);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(header, body);
     }
 }

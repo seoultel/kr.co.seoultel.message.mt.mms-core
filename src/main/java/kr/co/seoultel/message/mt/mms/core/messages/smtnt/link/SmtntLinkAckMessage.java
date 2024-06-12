@@ -22,6 +22,4 @@ public class SmtntLinkAckMessage extends SmtntMessage {
                 "method='" + method + '\'' +
                 '}';
     }
-
-
 }

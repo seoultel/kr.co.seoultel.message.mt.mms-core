@@ -23,7 +23,6 @@ public class ConvertorUtil {
         try {
             return gson.fromJson(new String(body), cls);
         } catch (Exception var3) {
-            log.error("[EXCEPTION] ", var3);
             throw new MessageDeserializationException("[DESERIALIZED EXCEPTION] FAILED TO byte[] to MessageDelivery.class");
         }
     }
@@ -36,7 +35,6 @@ public class ConvertorUtil {
         try {
             return gson.fromJson(json, cls);
         } catch (JsonSyntaxException var3) {
-            log.error("json : {}", json, var3);
             return null;
         }
     }
@@ -53,10 +51,10 @@ public class ConvertorUtil {
         return temp;
     }
 
-    public static byte[] convertPropertyToBytesByEucKr(int property, int maxLength) {
-        String propertyStr = Objects.isNull(property) ? "" : String.valueOf(property);
+    public static byte[] convertPropertyToBytesByEucKr(Integer property, int maxLength) {
+        String propertyStr = property == null ? "" : String.valueOf(property);
         byte[] temp = new byte[maxLength];
-        Arrays.fill(temp, (byte)0);
+        Arrays.fill(temp, (byte) 0);
         byte[] propertyBytes = propertyStr.getBytes(Charset.forName("euc-kr"));
         System.arraycopy(propertyBytes, 0, temp, 0, propertyBytes.length > maxLength ? maxLength : propertyBytes.length);
         return temp;

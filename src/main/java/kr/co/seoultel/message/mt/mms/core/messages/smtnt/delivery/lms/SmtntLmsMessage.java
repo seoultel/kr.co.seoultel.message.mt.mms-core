@@ -8,9 +8,10 @@ import lombok.Getter;
 
 @Getter
 public class SmtntLmsMessage extends SmtntDeliveryMessage {
+
     @Builder
     public SmtntLmsMessage(String userMsgId, String userMsgSubId, String phoneNo, String callbackNo,
-                            String tranId, String subject, String message, String userData , String resellerCode) {
+                                String tranId, String subject, String message, String userData , String resellerCode) {
         this.userMsgId = userMsgId == null ? "" : userMsgId;
         this.userMsgSubId = userMsgSubId == null ? "" : userMsgSubId;
         this.msgType = SmtntProtocol.MMS_MSG_TYPE;
@@ -25,7 +26,7 @@ public class SmtntLmsMessage extends SmtntDeliveryMessage {
 
     @Override
     public String toString() {
-        return "SmtntLmsMessage{" +
+        return "SmtntDeliveryMessage{" +
                     "method='" + method + '\'' +
                     ", userMsgId='" + userMsgId + '\'' +
                     ", userMsgSubId='" + userMsgSubId + '\'' +

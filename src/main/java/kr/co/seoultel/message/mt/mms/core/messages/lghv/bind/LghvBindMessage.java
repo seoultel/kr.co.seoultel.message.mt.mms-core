@@ -4,32 +4,39 @@ import io.netty.buffer.ByteBuf;
 import kr.co.seoultel.message.mt.mms.core.messages.lghv.LghvMessage;
 import kr.co.seoultel.message.mt.mms.core.util.ConvertorUtil;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.Objects;
 
 import static kr.co.seoultel.message.mt.mms.core.messages.lghv.LghvProtocol.*;
 
-@NoArgsConstructor
+@Getter
 public class LghvBindMessage extends LghvMessage {
 
-    private String encode;
-    private String lineType;
-    private String userId;
-    private String agentId;
-    private String userPwd;
-    private String report;
-    private String info;
+    private String encode = BIND_DEFAULT_ENCODE;
+    private String lineType = "";
+    private String userId = "";
+    private String agentId = "";
+    private String userPwd = "";
+    private String report = REQUIRED_VALUE_REPORT;
+    private String info = INFO_VALUE;
+
+    public LghvBindMessage() {
+        super(BIND_MSG_TYPE, BIND_BODY_LENGTH);
+    }
 
     @Builder
     public LghvBindMessage(String encode, String lineType, String userId, String agentId, String userPwd, String report, String info) {
         super(BIND_MSG_TYPE, BIND_BODY_LENGTH);
         
-        this.encode = encode;
-        this.lineType = lineType;
-        this.userId = userId;
-        this.agentId = agentId;
-        this.userPwd = userPwd;
-        this.report = report;
-        this.info = info;
+        this.encode = Objects.requireNonNullElse(encode, BIND_DEFAULT_ENCODE);
+        this.lineType = Objects.requireNonNullElse(lineType, "");
+        this.userId = Objects.requireNonNullElse(userId, "");
+        this.agentId = Objects.requireNonNullElse(agentId, "");
+        this.userPwd = Objects.requireNonNullElse(userPwd, "");
+        this.report = Objects.requireNonNullElse(report, REQUIRED_VALUE_REPORT);
+        this.info = Objects.requireNonNullElse(info, INFO_VALUE);
     }
 
     @Override
@@ -105,5 +112,18 @@ public class LghvBindMessage extends LghvMessage {
                 ", report='" + report + '\'' +
                 ", info='" + info + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        LghvBindMessage that = (LghvBindMessage) object;
+        return Objects.equals(encode, that.encode) && Objects.equals(lineType, that.lineType) && Objects.equals(userId, that.userId) && Objects.equals(agentId, that.agentId) && Objects.equals(userPwd, that.userPwd) && Objects.equals(report, that.report) && Objects.equals(info, that.info);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(encode, lineType, userId, agentId, userPwd, report, info);
     }
 }

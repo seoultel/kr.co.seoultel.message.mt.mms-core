@@ -19,28 +19,24 @@ import static kr.co.seoultel.message.mt.mms.core.common.constant.Constants.EUC_K
 @Slf4j
 @Getter
 public class LghvDeliveryMessage extends LghvMessage {
+    private String encode;          // 인코딩 타입
+    private String deliveryType;    // 전송 타입
+    private String msgId;           // 메세지 고유값
+    private String gubun;           // 상세구분
+    private String contentsType;    // 컨텐츠 타입
+    private String destAddr;        // 수신번호
+    private String callback;        // 회신번호
+    private String reseller;        // 식별코드
+    private String subject;         // 메세지 제목
 
-    /* SMS */
-    protected String encode;          // 인코딩 타입
-    protected String deliveryType;    // 전송 타입
-    protected String msgId;           // 메세지 고유값
-    protected String gubun;           // 상세구분
-    protected String contentsType;    // 컨텐츠 타입
-    protected String destAddr;        // 수신번호
-    protected String callback;        // 회신번호
-    protected String reseller;        // 식별코드
-    protected String text;            // 메세지 내용
+    private String adFlag;          // 친구톡 광고문구여부
+    private String reserved;        // 예비 필드
 
-    /* LMS */
-    protected String subject;         // 메세지 제목
+    private String text;            // 메세지 내용
+    private String ksubject;        // 친구톡용 제목
+    private int dataCnt = 0;         // 데이터 개수(1~4)
 
-    /* MMS */
-    protected String adFlag;          // 친구톡 광고문구여부
-    protected String reserved;        // 예비 필드
-    protected String ksubject;        // 친구톡용 제목
-
-    protected int dataCnt = 0;         // 데이터 개수(1~4)
-    protected LghvDeliveryMultipartData[] multipartDatas = new LghvDeliveryMultipartData[4];
+    private LghvDeliveryMultipartData[] multipartDatas = new LghvDeliveryMultipartData[4];
 
     public LghvDeliveryMessage() {
         super(LghvProtocol.DELIVERY_MSG_TYPE);
@@ -242,5 +238,20 @@ public class LghvDeliveryMessage extends LghvMessage {
         this.text = text;
 
         addMsgLen(textLENGTH);
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        LghvDeliveryMessage that = (LghvDeliveryMessage) object;
+        return dataCnt == that.dataCnt && Objects.equals(encode, that.encode) && Objects.equals(deliveryType, that.deliveryType) && Objects.equals(msgId, that.msgId) && Objects.equals(gubun, that.gubun) && Objects.equals(contentsType, that.contentsType) && Objects.equals(destAddr, that.destAddr) && Objects.equals(callback, that.callback) && Objects.equals(reseller, that.reseller) && Objects.equals(subject, that.subject) && Objects.equals(adFlag, that.adFlag) && Objects.equals(reserved, that.reserved) && Objects.equals(text, that.text) && Objects.equals(ksubject, that.ksubject) && Arrays.equals(multipartDatas, that.multipartDatas);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(encode, deliveryType, msgId, gubun, contentsType, destAddr, callback, reseller, subject, adFlag, reserved, text, ksubject, dataCnt);
+        result = 31 * result + Arrays.hashCode(multipartDatas);
+        return result;
     }
 }

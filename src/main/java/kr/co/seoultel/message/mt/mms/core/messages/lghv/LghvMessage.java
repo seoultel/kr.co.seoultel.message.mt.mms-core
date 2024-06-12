@@ -29,7 +29,7 @@ public abstract class LghvMessage extends Message implements ConvertableToByteBu
     @Getter
     protected String msgType;
 
-    @Setter
+    @Getter @Setter
     protected int msgLen;
 
     @Getter
