@@ -1,4 +1,4 @@
-package message.smtnt.messages.report;
+package kr.co.seoultel.message.mt.mms.core.message.smtnt.messages.report;
 
 
 import org.junit.jupiter.api.Test;

@@ -1,34 +1,41 @@
 package kr.co.seoultel.message.mt.mms.core.messages.hist.cert;
 
 import io.netty.buffer.ByteBuf;
-import kr.co.seoultel.message.mt.mms.core.common.interfaces.ConvertableToByteBuf;
+import io.netty.buffer.ByteBufUtil;
+import kr.co.seoultel.message.mt.mms.core.common.exceptions.CryptoException;
+import kr.co.seoultel.message.mt.mms.core.encrpyt.HistEncryptor;
 import kr.co.seoultel.message.mt.mms.core.messages.hist.HistMessage;
 import kr.co.seoultel.message.mt.mms.core.messages.hist.HistProtocol;
 import kr.co.seoultel.message.mt.mms.core.util.ConvertorUtil;
+import kr.co.seoultel.message.mt.mms.core.util.ValidateUtil;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Objects;
 
+import static kr.co.seoultel.message.mt.mms.core.messages.hist.HistProtocol.VERSION_LENGTH;
+
+@Slf4j
 @Getter
 public class HistCertMessage extends HistMessage {
+
     protected String id = "";        // 인증 ID
     protected String pwd = "";       // 인증 PWD
-    protected String version = "";   // 연동 규격 버전
-    protected String keypos = "";    // 암호화 Key Offset
+    protected final String version = HistProtocol.HIST_VERSION;   // 연동 규격 버전
+    protected int keypos;    // 암호화 Key Offset
 
     public HistCertMessage() {
         super(HistProtocol.HIST_CERT_HEAD_TYPE, HistProtocol.HIST_CERT_MSG_LENG);
     }
 
     @Builder
-    public HistCertMessage(String id, String pwd, String version, String keypos) {
+    public HistCertMessage(String id, String pwd, String keypos) {
         super(HistProtocol.HIST_CERT_HEAD_TYPE, HistProtocol.HIST_CERT_MSG_LENG);
 
         this.id = Objects.requireNonNullElse(id, "");
         this.pwd = Objects.requireNonNullElse(pwd, "");
-        this.version = Objects.requireNonNullElse(version, "");
-        this.keypos = Objects.requireNonNullElse(keypos, "");
+        this.keypos = ValidateUtil.isConsistOnlyNumericValue(keypos) ? Integer.parseInt(keypos) : 0;
     }
 
 
@@ -36,7 +43,7 @@ public class HistCertMessage extends HistMessage {
     protected void writeBody(ByteBuf byteBuf) {
         byteBuf.writeBytes(ConvertorUtil.convertPropertyToBytes(id, HistProtocol.ID_LENGTH));
         byteBuf.writeBytes(ConvertorUtil.convertPropertyToBytes(pwd, HistProtocol.PWD_LENGTH));
-        byteBuf.writeBytes(ConvertorUtil.convertPropertyToBytes(version, HistProtocol.VERSION_LENGTH));
+        byteBuf.writeBytes(ConvertorUtil.convertPropertyToBytes(version, VERSION_LENGTH));
         byteBuf.writeBytes(ConvertorUtil.convertPropertyToBytes(keypos, HistProtocol.KEYPOS_LENGTH));
     }
 
@@ -52,8 +59,8 @@ public class HistCertMessage extends HistMessage {
 
         this.id = ConvertorUtil.getStrPropertyInByteBuf(byteBuf, HistProtocol.ID_LENGTH);
         this.pwd = ConvertorUtil.getStrPropertyInByteBuf(byteBuf, HistProtocol.PWD_LENGTH);
-        this.version = ConvertorUtil.getStrPropertyInByteBuf(byteBuf, HistProtocol.VERSION_LENGTH);
-        this.keypos = ConvertorUtil.getStrPropertyInByteBuf(byteBuf, HistProtocol.KEYPOS_LENGTH);
+        byteBuf.skipBytes(VERSION_LENGTH);
+        this.keypos = ConvertorUtil.getIntPropertyInByteBuf(byteBuf, HistProtocol.KEYPOS_LENGTH);
     }
 
     @Override

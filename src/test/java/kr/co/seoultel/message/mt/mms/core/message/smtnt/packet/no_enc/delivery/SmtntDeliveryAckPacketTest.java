@@ -1,4 +1,4 @@
-package message.smtnt.packet.no_enc.delivery;
+package kr.co.seoultel.message.mt.mms.core.message.smtnt.packet.no_enc.delivery;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -6,7 +6,7 @@ import kr.co.seoultel.message.mt.mms.core.common.exceptions.CryptoException;
 import kr.co.seoultel.message.mt.mms.core.messages.smtnt.delivery.SmtntDeliveryAckMessage;
 import kr.co.seoultel.message.mt.mms.core.messages.smtnt.delivery.SmtntDeliveryMessage;
 import kr.co.seoultel.message.mt.mms.core.messages.smtnt.packet.SmtntPacket;
-import message.smtnt.packet.no_enc.SmtntDefaultPacketTest;
+import kr.co.seoultel.message.mt.mms.core.message.smtnt.packet.no_enc.SmtntDefaultPacketTest;
 import org.junit.jupiter.api.Test;
 
 import static kr.co.seoultel.message.mt.mms.core.messages.smtnt.SmtntProtocol.DELIVERY_RESULT_SUCCESS;

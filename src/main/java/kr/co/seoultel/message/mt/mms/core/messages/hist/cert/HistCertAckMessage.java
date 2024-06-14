@@ -1,10 +1,10 @@
 package kr.co.seoultel.message.mt.mms.core.messages.hist.cert;
 
 import io.netty.buffer.ByteBuf;
-import kr.co.seoultel.message.mt.mms.core.common.interfaces.ConvertableToByteBuf;
+import kr.co.seoultel.message.mt.mms.core.entity.ServerInfo;
+import kr.co.seoultel.message.mt.mms.core.entity.ServerType;
 import kr.co.seoultel.message.mt.mms.core.messages.hist.HistMessage;
 import kr.co.seoultel.message.mt.mms.core.messages.hist.HistProtocol;
-import kr.co.seoultel.message.mt.mms.core.messages.smtnt.SmtntProtocol;
 import kr.co.seoultel.message.mt.mms.core.util.ConvertorUtil;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,22 +17,22 @@ public class HistCertAckMessage extends HistMessage {
     protected String result = "";        // 결과 코드
     protected String certKey = "";       // Cert Key
     protected String serverIp = "";   // 연동할 G/W IP
-    protected int deliveryPort;    // Delivery Port
-    protected int reportPort;    // Report Port
+    protected String deliveryPort = "";    // Delivery Port
+    protected String reportPort = "";    // Report Port
 
     public HistCertAckMessage() {
         super(HistProtocol.HIST_CERT_ACK_HEAD_TYPE, HistProtocol.HIST_CERT_ACK_MSG_LENG);
     }
 
     @Builder
-    public HistCertAckMessage(String result, String certKey, String serverIp, int deliveryPort, int reportPort) {
+    public HistCertAckMessage(String result, String certKey, String serverIp, String deliveryPort, String reportPort) {
         super(HistProtocol.HIST_CERT_ACK_HEAD_TYPE, HistProtocol.HIST_CERT_ACK_MSG_LENG);
 
         this.result = Objects.requireNonNullElse(result, "");
         this.certKey = Objects.requireNonNullElse(certKey, "");
         this.serverIp = Objects.requireNonNullElse(serverIp, "");
-        this.deliveryPort = deliveryPort;
-        this.reportPort = reportPort;
+        this.deliveryPort = Objects.requireNonNullElse(deliveryPort, "");
+        this.reportPort = Objects.requireNonNullElse(reportPort, "");
     }
 
     @Override
@@ -57,8 +57,16 @@ public class HistCertAckMessage extends HistMessage {
         this.result = ConvertorUtil.getStrPropertyInByteBuf(byteBuf, HistProtocol.RESULT_LENGTH);
         this.certKey = ConvertorUtil.getStrPropertyInByteBuf(byteBuf, HistProtocol.CERT_KEY_LENGTH);
         this.serverIp = ConvertorUtil.getStrPropertyInByteBuf(byteBuf, HistProtocol.SERVER_IP_LENGTH);
-        this.deliveryPort = ConvertorUtil.getIntPropertyInByteBuf(byteBuf, HistProtocol.DELIVERY_PORT_LENGTH);
-        this.reportPort = ConvertorUtil.getIntPropertyInByteBuf(byteBuf, HistProtocol.REPORT_PORT_LENGTH);
+        this.deliveryPort = ConvertorUtil.getStrPropertyInByteBuf(byteBuf, HistProtocol.DELIVERY_PORT_LENGTH);
+        this.reportPort = ConvertorUtil.getStrPropertyInByteBuf(byteBuf, HistProtocol.REPORT_PORT_LENGTH);
+    }
+
+    public ServerInfo getDeliveryServerInfo() {
+        return new ServerInfo(serverIp, deliveryPort, ServerType.DELIVERY);
+    }
+
+    public ServerInfo getReportServerInfo() {
+        return new ServerInfo(serverIp, reportPort, ServerType.REPORT);
     }
 
     @Override
@@ -69,8 +77,8 @@ public class HistCertAckMessage extends HistMessage {
                 ", result='" + result + '\'' +
                 ", certKey='" + certKey + '\'' +
                 ", serverIp='" + serverIp + '\'' +
-                ", deliveryPort=" + deliveryPort +
-                ", reportPort=" + reportPort +
+                ", deliveryPort='" + deliveryPort + '\'' +
+                ", reportPort='" + reportPort + '\'' +
                 '}';
     }
 
@@ -80,7 +88,7 @@ public class HistCertAckMessage extends HistMessage {
         if (object == null || getClass() != object.getClass()) return false;
         if (!super.equals(object)) return false;
         HistCertAckMessage that = (HistCertAckMessage) object;
-        return deliveryPort == that.deliveryPort && reportPort == that.reportPort && Objects.equals(result, that.result) && Objects.equals(certKey, that.certKey) && Objects.equals(serverIp, that.serverIp);
+        return Objects.equals(result, that.result) && Objects.equals(certKey, that.certKey) && Objects.equals(serverIp, that.serverIp) && Objects.equals(deliveryPort, that.deliveryPort) && Objects.equals(reportPort, that.reportPort);
     }
 
     @Override

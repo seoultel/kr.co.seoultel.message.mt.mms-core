@@ -1,4 +1,4 @@
-package message.lghv.messages.report;
+package kr.co.seoultel.message.mt.mms.core.message.lghv.messages.report;
 
 import kr.co.seoultel.message.mt.mms.core.messages.lghv.LghvProtocol;
 import kr.co.seoultel.message.mt.mms.core.messages.lghv.bind.LghvBindMessage;

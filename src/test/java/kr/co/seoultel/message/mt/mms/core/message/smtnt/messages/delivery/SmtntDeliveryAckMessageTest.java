@@ -1,4 +1,4 @@
-package message.smtnt.messages.delivery;
+package kr.co.seoultel.message.mt.mms.core.message.smtnt.messages.delivery;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;

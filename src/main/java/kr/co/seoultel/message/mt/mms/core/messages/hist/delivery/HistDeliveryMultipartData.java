@@ -1,9 +1,9 @@
 package kr.co.seoultel.message.mt.mms.core.messages.hist.delivery;
 
+import io.netty.buffer.ByteBufUtil;
 import kr.co.seoultel.message.mt.mms.core.util.ConvertorUtil;
 import lombok.Builder;
 
-import java.io.File;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Objects;
@@ -25,7 +25,7 @@ public class HistDeliveryMultipartData implements ConvertableToByteBuf {
     protected String mType;
     protected String encoding = HistProtocol.EUC_KR_ENCODING;
     protected int mFileLen;
-    protected byte[] media;
+    protected byte[] bytes;
 
     public HistDeliveryMultipartData(String message) {
         byte[] bytes = message.getBytes(Charset.forName(EUC_KR));
@@ -33,7 +33,7 @@ public class HistDeliveryMultipartData implements ConvertableToByteBuf {
         this.mType = HistProtocol.M_TYPE_11;
         this.encoding = HistProtocol.EUC_KR_ENCODING;
         this.mFileLen = bytes.length;
-        this.media = bytes;
+        this.bytes = bytes;
     }
 
 
@@ -41,7 +41,7 @@ public class HistDeliveryMultipartData implements ConvertableToByteBuf {
         this.mType = getMType(extension);
         this.encoding = HistProtocol.EUC_KR_ENCODING;
         this.mFileLen = mediaFileBytes.length;
-        this.media = mediaFileBytes;
+        this.bytes = mediaFileBytes;
     }
 
     @Builder
@@ -49,7 +49,7 @@ public class HistDeliveryMultipartData implements ConvertableToByteBuf {
         this.mType = Objects.requireNonNull(mType);
         this.encoding = HistProtocol.EUC_KR_ENCODING;
         this.mFileLen = mFileLen;
-        this.media = media;
+        this.bytes = media;
     }
 
     @Override
@@ -57,7 +57,7 @@ public class HistDeliveryMultipartData implements ConvertableToByteBuf {
         byteBuf.writeBytes(ConvertorUtil.convertPropertyToBytes(mType, HistProtocol.M_TYPE_LENGTH));
         byteBuf.writeBytes(ConvertorUtil.convertPropertyToBytes(encoding, HistProtocol.ENCODING_LENGTH));
         byteBuf.writeBytes(ConvertorUtil.convertPropertyToBytes(mFileLen, HistProtocol.M_FILE_LEN_LENGTH));
-        byteBuf.writeBytes(media);
+        byteBuf.writeBytes(bytes);
     }
 
     public String getMType(String extension) throws IllegalArgumentException {
@@ -77,7 +77,9 @@ public class HistDeliveryMultipartData implements ConvertableToByteBuf {
         this.mType = ConvertorUtil.getStrPropertyInByteBuf(byteBuf, HistProtocol.M_TYPE_LENGTH);
         this.encoding = ConvertorUtil.getStrPropertyInByteBuf(byteBuf, HistProtocol.ENCODING_LENGTH);
         this.mFileLen = ConvertorUtil.getIntPropertyInByteBuf(byteBuf, HistProtocol.M_FILE_LEN_LENGTH);
-        this.media = new byte[mFileLen]; // 센더는 MultipartData 를 읽어올 일이 없음.
+        this.bytes = ByteBufUtil.getBytes(byteBuf, byteBuf.readerIndex(), mFileLen);
+        // this.bytes = byteBuf.readBytes(mFileLen)
+        // this.bytes = new byte[mFileLen]; // 센더는 MultipartData 를 읽어올 일이 없음.
     }
 
     @Override
@@ -94,13 +96,13 @@ public class HistDeliveryMultipartData implements ConvertableToByteBuf {
         if (this == object) return true;
         if (object == null || getClass() != object.getClass()) return false;
         HistDeliveryMultipartData that = (HistDeliveryMultipartData) object;
-        return mFileLen == that.mFileLen && Objects.equals(mType, that.mType) && Objects.equals(encoding, that.encoding) && Arrays.equals(media, that.media);
+        return mFileLen == that.mFileLen && Objects.equals(mType, that.mType) && Objects.equals(encoding, that.encoding) && Arrays.equals(bytes, that.bytes);
     }
 
     @Override
     public int hashCode() {
         int result = Objects.hash(mType, encoding, mFileLen);
-        result = 31 * result + Arrays.hashCode(media);
+        result = 31 * result + Arrays.hashCode(bytes);
         return result;
     }
 }

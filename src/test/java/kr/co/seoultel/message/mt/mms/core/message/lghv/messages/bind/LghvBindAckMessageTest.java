@@ -1,4 +1,4 @@
-package message.lghv.messages.bind;
+package kr.co.seoultel.message.mt.mms.core.message.lghv.messages.bind;
 
 import kr.co.seoultel.message.mt.mms.core.messages.lghv.bind.LghvBindAckMessage;
 import org.junit.jupiter.api.Test;

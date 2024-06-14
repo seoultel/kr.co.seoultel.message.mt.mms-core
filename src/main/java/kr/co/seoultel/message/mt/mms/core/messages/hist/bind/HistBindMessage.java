@@ -18,15 +18,15 @@ public class HistBindMessage extends HistMessage  {
     protected String certKey = "";   // 연동 규격 버전
     protected String type = "";    // 암호화 Key Offset
     protected String kind = "";    // 암호화 Key Offset
-    protected String version = "";    // 암호화 Key Offset
-    protected String keypos = "";    // 암호화 Key Offset
+    protected final String version = HistProtocol.HIST_VERSION;    // 암호화 Key Offset
+    protected int keypos;    // 암호화 Key Offset
 
     public HistBindMessage() {
         super(HistProtocol.HIST_BIND_HEAD_TYPE, HistProtocol.HIST_BIND_MSG_LENG);
     }
 
     @Builder
-    public HistBindMessage(String headType, int msgLeng, String id, String pwd, String certKey, String type, String kind, String version, String keypos) {
+    public HistBindMessage(String id, String pwd, String certKey, String type, String kind, int keypos) {
         super(HistProtocol.HIST_BIND_HEAD_TYPE, HistProtocol.HIST_BIND_MSG_LENG);
 
         this.id = Objects.requireNonNullElse(id, "");
@@ -34,8 +34,7 @@ public class HistBindMessage extends HistMessage  {
         this.certKey = Objects.requireNonNullElse(certKey, "");
         this.type = Objects.requireNonNullElse(type, "");
         this.kind = Objects.requireNonNullElse(kind, "");
-        this.version = Objects.requireNonNullElse(version, "");
-        this.keypos = Objects.requireNonNullElse(keypos, "");
+        this.keypos = keypos;
     }
 
     @Override
@@ -46,7 +45,7 @@ public class HistBindMessage extends HistMessage  {
         byteBuf.writeBytes(ConvertorUtil.convertPropertyToBytes(type, HistProtocol.TYPE_LENGTH));
         byteBuf.writeBytes(ConvertorUtil.convertPropertyToBytes(kind, HistProtocol.KIND_LENGTH));
         byteBuf.writeBytes(ConvertorUtil.convertPropertyToBytes(version, HistProtocol.VERSION_LENGTH));
-        byteBuf.writeBytes(ConvertorUtil.convertPropertyToBytes(keypos, HistProtocol.KEYPOS_LENGTH));
+        byteBuf.writeBytes(ConvertorUtil.convertPropertyToBytes(String.valueOf(keypos), HistProtocol.KEYPOS_LENGTH));
     }
 
     @Override
@@ -64,8 +63,8 @@ public class HistBindMessage extends HistMessage  {
         this.certKey = ConvertorUtil.getStrPropertyInByteBuf(byteBuf, HistProtocol.CERT_KEY_LENGTH);
         this.type = ConvertorUtil.getStrPropertyInByteBuf(byteBuf, HistProtocol.TYPE_LENGTH);
         this.kind = ConvertorUtil.getStrPropertyInByteBuf(byteBuf, HistProtocol.KIND_LENGTH);
-        this.version = ConvertorUtil.getStrPropertyInByteBuf(byteBuf, HistProtocol.VERSION_LENGTH);
-        this.keypos = ConvertorUtil.getStrPropertyInByteBuf(byteBuf, HistProtocol.KEYPOS_LENGTH);
+        byteBuf.skipBytes(HistProtocol.VERSION_LENGTH);
+        this.keypos = ConvertorUtil.getIntPropertyInByteBuf(byteBuf, HistProtocol.KEYPOS_LENGTH);
     }
 
     @Override

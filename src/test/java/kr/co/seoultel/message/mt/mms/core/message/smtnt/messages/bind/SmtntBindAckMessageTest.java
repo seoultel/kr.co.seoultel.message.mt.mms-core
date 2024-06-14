@@ -1,4 +1,4 @@
-package message.smtnt.messages.bind;
+package kr.co.seoultel.message.mt.mms.core.message.smtnt.messages.bind;
 
 import kr.co.seoultel.message.mt.mms.core.messages.smtnt.bind.SmtntBindAckMessage;
 import org.junit.jupiter.api.Test;

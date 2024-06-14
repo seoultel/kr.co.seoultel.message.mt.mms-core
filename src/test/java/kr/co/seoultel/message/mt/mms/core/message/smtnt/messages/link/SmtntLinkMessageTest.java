@@ -1,4 +1,4 @@
-package message.smtnt.messages.link;
+package kr.co.seoultel.message.mt.mms.core.message.smtnt.messages.link;
 
 import kr.co.seoultel.message.mt.mms.core.messages.smtnt.link.SmtntLinkMessage;
 import org.junit.jupiter.api.Test;

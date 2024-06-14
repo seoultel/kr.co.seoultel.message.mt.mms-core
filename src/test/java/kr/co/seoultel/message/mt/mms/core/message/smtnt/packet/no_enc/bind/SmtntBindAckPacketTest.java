@@ -1,4 +1,4 @@
-package message.smtnt.packet.no_enc.bind;
+package kr.co.seoultel.message.mt.mms.core.message.smtnt.packet.no_enc.bind;
 
 
 import io.netty.buffer.ByteBuf;
@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import static kr.co.seoultel.message.mt.mms.core.messages.smtnt.SmtntProtocol.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import message.smtnt.packet.no_enc.SmtntDefaultPacketTest;
+import kr.co.seoultel.message.mt.mms.core.message.smtnt.packet.no_enc.SmtntDefaultPacketTest;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import kr.co.seoultel.message.mt.mms.core.util.ConvertorUtil;
 

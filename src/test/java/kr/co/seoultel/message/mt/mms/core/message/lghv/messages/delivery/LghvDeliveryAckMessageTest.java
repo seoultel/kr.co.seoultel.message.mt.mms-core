@@ -1,4 +1,4 @@
-package message.lghv.messages.delivery;
+package kr.co.seoultel.message.mt.mms.core.message.lghv.messages.delivery;
 
 
 import org.junit.jupiter.api.Test;

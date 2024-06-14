@@ -44,6 +44,7 @@ public class HistMmsDeliveryMessage extends HistDeliveryMessage {
     protected void writeBody(ByteBuf byteBuf) {
         super.writeBody(byteBuf);
 
+        System.out.println(this);
         for (int i = 0; i < mediaCnt; i++) {
             media[i].toByteBuf(byteBuf);
         }
@@ -62,6 +63,8 @@ public class HistMmsDeliveryMessage extends HistDeliveryMessage {
         for (int i = 0; i < mediaCnt; i++) {
             HistDeliveryMultipartData multipartData = new HistDeliveryMultipartData();
             multipartData.fromByteBuf(byteBuf);
+
+            media[i] = multipartData;
         }
     }
 

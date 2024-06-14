@@ -1,10 +1,10 @@
-package message.smtnt.packet.no_enc.link;
+package kr.co.seoultel.message.mt.mms.core.message.smtnt.packet.no_enc.link;
 
 import kr.co.seoultel.message.mt.mms.core.common.exceptions.CryptoException;
 import kr.co.seoultel.message.mt.mms.core.messages.smtnt.link.SmtntLinkMessage;
 import kr.co.seoultel.message.mt.mms.core.messages.smtnt.packet.SmtntPacket;
 import kr.co.seoultel.message.mt.mms.core.util.ConvertorUtil;
-import message.smtnt.packet.no_enc.SmtntDefaultPacketTest;
+import kr.co.seoultel.message.mt.mms.core.message.smtnt.packet.no_enc.SmtntDefaultPacketTest;
 import org.junit.jupiter.api.Test;
 
 import static kr.co.seoultel.message.mt.mms.core.messages.smtnt.SmtntProtocol.SMTNT_LINK_METHOD_HEADER;

@@ -1,4 +1,4 @@
-package message.lghv.messages.report;
+package kr.co.seoultel.message.mt.mms.core.message.lghv.messages.report;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;

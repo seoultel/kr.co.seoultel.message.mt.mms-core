@@ -1,4 +1,4 @@
-package message.lghv.messages.link;
+package kr.co.seoultel.message.mt.mms.core.message.lghv.messages.link;
 
 import kr.co.seoultel.message.mt.mms.core.messages.lghv.LghvProtocol;
 import org.junit.jupiter.api.Assertions;

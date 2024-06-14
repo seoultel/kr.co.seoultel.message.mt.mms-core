@@ -1,4 +1,4 @@
-package message.smtnt.packet.no_enc;
+package kr.co.seoultel.message.mt.mms.core.message.smtnt.packet.no_enc;
 
 import kr.co.seoultel.message.mt.mms.core.common.exceptions.CryptoException;
 import kr.co.seoultel.message.mt.mms.core.messages.smtnt.encrypt.SmtntEncryptor;

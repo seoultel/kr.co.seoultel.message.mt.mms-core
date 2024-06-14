@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.ToNumberPolicy;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufUtil;
 import kr.co.seoultel.message.mt.mms.core.common.exceptions.message.FormatException;
 import kr.co.seoultel.message.mt.mms.core.common.exceptions.message.MessageDeserializationException;
 import lombok.AllArgsConstructor;
@@ -109,5 +110,9 @@ public class ConvertorUtil {
         int result = Integer.parseInt(getStrPropertyInByteBuf(byteBuf, length, skipBytesSizeBeforeToRead));
         byteBuf.skipBytes(skipByteSizeAfterToRead);
         return result;
+    }
+
+    public static String getHexDump(byte[] bytes) {
+        return ByteBufUtil.hexDump(bytes);
     }
 }

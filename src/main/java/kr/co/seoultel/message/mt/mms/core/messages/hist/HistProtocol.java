@@ -50,14 +50,14 @@ public class HistProtocol {
     public static final int REPORT_PORT_LENGTH = 8;
 
     /* BIND */
-    public static final int TYPE_LENGTH = 40;
+    public static final int TYPE_LENGTH = 2;
     public static final String DEFAULT_TYPE = "p";
     public static final String ENC_TYPE = "P";
 
-    public static final int KIND_LENGTH = 8;
+    public static final int KIND_LENGTH = 4;
     public static final String DELIVERY_KIND = "DLV";
     public static final String REPORT_KIND = "REP";
-    public static final String VERSION = "TV_2.0.0";
+    public static final String HIST_VERSION = "TV_2.0.0";
 
 
     /* BIND-ACK */
