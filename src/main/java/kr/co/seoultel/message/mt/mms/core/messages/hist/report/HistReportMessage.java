@@ -69,6 +69,20 @@ public class HistReportMessage extends HistMessage {
         this.telcoInfo = ConvertorUtil.getStrPropertyInByteBuf(byteBuf, HistProtocol.TELCO_INFO_LENGTH);
     }
 
+
+    public boolean isSuccess() {
+        return result.equals(HistProtocol.E_OK);
+    }
+
+    public boolean isTpsOver() {
+        return result.equals(HistProtocol.E_TPS_OVER);
+    }
+
+    public boolean isFailed() {
+        return !result.equals(HistProtocol.E_OK);
+    }
+
+
     @Override
     public String toString() {
         return "HistReportMessage{" +

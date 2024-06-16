@@ -28,7 +28,7 @@ public class HistDeliveryAckMessageTest {
 
     @Test
     public void testParameterizedConstructor() {
-        HistDeliveryAckMessage message = new HistDeliveryAckMessage(RESULT, DA_ADDR, SERIAL, "");
+        HistDeliveryAckMessage message = new HistDeliveryAckMessage(RESULT, DA_ADDR, SERIAL);
 
         assertNotNull(message);
         assertEquals(HistProtocol.HIST_DELIVERY_ACK_HEAD_TYPE, message.getHeadType());
@@ -40,7 +40,7 @@ public class HistDeliveryAckMessageTest {
 
     @Test
     public void testToByteBuf() {
-        HistDeliveryAckMessage message = new HistDeliveryAckMessage(RESULT, DA_ADDR, SERIAL, "");
+        HistDeliveryAckMessage message = new HistDeliveryAckMessage(RESULT, DA_ADDR, SERIAL);
 
         ByteBuf byteBuf = Unpooled.buffer();
         message.toByteBuf(byteBuf);
@@ -55,7 +55,7 @@ public class HistDeliveryAckMessageTest {
     public void testFromByteBuf() {
         ByteBuf byteBuf = Unpooled.buffer();
 
-        HistDeliveryAckMessage originalMessage = new HistDeliveryAckMessage(RESULT, DA_ADDR, SERIAL, "");
+        HistDeliveryAckMessage originalMessage = new HistDeliveryAckMessage(RESULT, DA_ADDR, SERIAL);
         originalMessage.toByteBuf(byteBuf);
 
         HistDeliveryAckMessage message = new HistDeliveryAckMessage();
@@ -68,9 +68,9 @@ public class HistDeliveryAckMessageTest {
 
     @Test
     public void testEqualsAndHashCode() {
-        HistDeliveryAckMessage message1 = new HistDeliveryAckMessage(RESULT, DA_ADDR, SERIAL, "");
-        HistDeliveryAckMessage message2 = new HistDeliveryAckMessage(RESULT, DA_ADDR, SERIAL, "");
-        HistDeliveryAckMessage message3 = new HistDeliveryAckMessage("DIFFERENT", "01098765432", "DIFFERENT", "");
+        HistDeliveryAckMessage message1 = new HistDeliveryAckMessage(RESULT, DA_ADDR, SERIAL);
+        HistDeliveryAckMessage message2 = new HistDeliveryAckMessage(RESULT, DA_ADDR, SERIAL);
+        HistDeliveryAckMessage message3 = new HistDeliveryAckMessage("DIFFERENT", "01098765432", "DIFFERENT");
 
         assertEquals(message1, message2);
         assertNotEquals(message1, message3);

@@ -22,12 +22,12 @@ public class HistDeliveryAckMessage extends HistMessage {
     }
 
     @Builder
-    public HistDeliveryAckMessage(String id, String pwd, String version, String keypos) {
+    public HistDeliveryAckMessage(String result, String daAddr, String serial) {
         super(HistProtocol.HIST_DELIVERY_ACK_HEAD_TYPE, HistProtocol.HIST_DELIVERY_ACK_MSG_LENG);
 
-        this.result = Objects.requireNonNullElse(id, "");
-        this.daAddr = Objects.requireNonNullElse(pwd, "");
-        this.serial = Objects.requireNonNullElse(version, "");
+        this.result = Objects.requireNonNullElse(result, "");
+        this.daAddr = Objects.requireNonNullElse(daAddr, "");
+        this.serial = Objects.requireNonNullElse(serial, "");
     }
 
 
@@ -51,6 +51,19 @@ public class HistDeliveryAckMessage extends HistMessage {
         this.result = ConvertorUtil.getStrPropertyInByteBuf(byteBuf, HistProtocol.RESULT_LENGTH);
         this.daAddr = ConvertorUtil.getStrPropertyInByteBuf(byteBuf, HistProtocol.DA_ADDR_LENGTH);
         this.serial = ConvertorUtil.getStrPropertyInByteBuf(byteBuf, HistProtocol.SERIAL_LENGTH);
+    }
+
+
+    public boolean isSuccess() {
+        return result.equals(HistProtocol.E_OK);
+    }
+
+    public boolean isTpsOver() {
+        return result.equals(HistProtocol.E_TPS_OVER);
+    }
+
+    public boolean isFailed() {
+        return !result.equals(HistProtocol.E_OK);
     }
 
     @Override

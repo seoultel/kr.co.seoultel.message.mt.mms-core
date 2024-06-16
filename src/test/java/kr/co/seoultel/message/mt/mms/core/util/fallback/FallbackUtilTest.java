@@ -1,8 +1,10 @@
-package kr.co.seoultel.message.mt.mms.core.util;
+package kr.co.seoultel.message.mt.mms.core.util.fallback;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import kr.co.seoultel.message.core.dto.MessageDelivery;
+import kr.co.seoultel.message.mt.mms.core.util.FallbackUtil;
+import kr.co.seoultel.message.mt.mms.core.util.FileUtil;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
