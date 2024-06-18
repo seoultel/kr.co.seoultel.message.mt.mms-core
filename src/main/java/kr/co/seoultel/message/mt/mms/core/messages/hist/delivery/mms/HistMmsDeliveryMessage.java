@@ -22,7 +22,7 @@ public class HistMmsDeliveryMessage extends HistDeliveryMessage {
     }
 
 
-    public HistMmsDeliveryMessage(String daAddr, String callback, String encoding, String text, String serial, String senderCode, String extSize) {
+    public HistMmsDeliveryMessage(String daAddr, String callback, String encoding, String text, String serial, String senderCode) {
         this.msgType = HistProtocol.MMS_MSG_TYPE;
         this.daAddr = Objects.requireNonNullElse(daAddr, "");
         this.callback = Objects.requireNonNullElse(callback, "");
@@ -31,7 +31,6 @@ public class HistMmsDeliveryMessage extends HistDeliveryMessage {
         this.serial = Objects.requireNonNullElse(serial, "");
         this.senderCode = Objects.requireNonNullElse(senderCode, "");
         this.mediaCnt = 0;
-        this.extSize = Objects.requireNonNullElse(extSize, "");
     }
 
     public void addMedia(HistDeliveryMultipartData multipartData) {

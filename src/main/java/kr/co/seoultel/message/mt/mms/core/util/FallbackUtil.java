@@ -183,7 +183,7 @@ public class FallbackUtil {
      * @return the serviceProvider in messageDelivery
      */
     public static String getServiceProvider(MessageDelivery messageDelivery) {
-        return isFallback(messageDelivery) ? getFallbackMessage(messageDelivery) : messageDelivery.getServiceProvider();
+        return isFallback(messageDelivery) ? getFallbackServiceProvider(messageDelivery) : messageDelivery.getServiceProvider();
     }
 
     /**

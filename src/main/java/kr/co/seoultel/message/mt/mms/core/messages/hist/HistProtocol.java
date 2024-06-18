@@ -104,6 +104,7 @@ public class HistProtocol {
     public static final int GW_SERIAL_LENGTH = 16;
     public static final int SEND_TIME_LENGTH = 15;
     public static final int TELCO_INFO_LENGTH = 4;
+    public static final int REPORT_MESSAGE_LENGTH = 15;
 
     /* EVENT */
     public static final int EVENT_TYPE_LENGTH = 16;

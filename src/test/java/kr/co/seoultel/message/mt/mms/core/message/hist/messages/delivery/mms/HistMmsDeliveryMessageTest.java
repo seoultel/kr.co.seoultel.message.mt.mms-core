@@ -25,7 +25,7 @@ public class HistMmsDeliveryMessageTest {
     private static final String SERIAL = "202112310012345";
     private static final String SENDER_CODE = "101280092";
     private static final int MEDIA_CNT = 1;
-    private static final String EXT_SIZE = "10";
+    private static final String EXT_SIZE = "0";
     @Test
     public void testHistMmsDeliveryMessageConstructor() {
         HistMmsDeliveryMessage message = new HistMmsDeliveryMessage();
@@ -38,12 +38,12 @@ public class HistMmsDeliveryMessageTest {
         assertEquals("", message.getSerial());
         assertEquals("", message.getSenderCode());
         assertEquals(0, message.getMediaCnt());
-        assertEquals("", message.getExtSize());
+        assertEquals("0", message.getExtSize());
     }
 
     @Test
     public void testHistMmsDeliveryMessageParameterizedConstructor() {
-        HistMmsDeliveryMessage message = new HistMmsDeliveryMessage(DA_ADDR, CALLBACK, ENCODING, TEXT, SERIAL, SENDER_CODE, EXT_SIZE);
+        HistMmsDeliveryMessage message = new HistMmsDeliveryMessage(DA_ADDR, CALLBACK, ENCODING, TEXT, SERIAL, SENDER_CODE);
 
         assertEquals(HistProtocol.MMS_MSG_TYPE, message.getMsgType());
         assertEquals(DA_ADDR, message.getDaAddr());
@@ -58,7 +58,7 @@ public class HistMmsDeliveryMessageTest {
 
     @Test
     public void testToByteBufAndFromByteBuf() {
-        HistMmsDeliveryMessage originalMessage = new HistMmsDeliveryMessage(DA_ADDR, CALLBACK, ENCODING, TEXT, SERIAL, SENDER_CODE, EXT_SIZE);
+        HistMmsDeliveryMessage originalMessage = new HistMmsDeliveryMessage(DA_ADDR, CALLBACK, ENCODING, TEXT, SERIAL, SENDER_CODE);
 
         // Prepare sample media data
         HistDeliveryMultipartData multipartData1 = new HistDeliveryMultipartData("JPG", "sampleImage".getBytes(Charset.forName(EUC_KR)));
@@ -75,8 +75,8 @@ public class HistMmsDeliveryMessageTest {
 
     @Test
     public void testEqualsAndHashCode() {
-        HistMmsDeliveryMessage message1 = new HistMmsDeliveryMessage(DA_ADDR, CALLBACK, ENCODING, TEXT, SERIAL, SENDER_CODE, EXT_SIZE);
-        HistMmsDeliveryMessage message2 = new HistMmsDeliveryMessage(DA_ADDR, CALLBACK, ENCODING, TEXT, SERIAL, SENDER_CODE, EXT_SIZE);
+        HistMmsDeliveryMessage message1 = new HistMmsDeliveryMessage(DA_ADDR, CALLBACK, ENCODING, TEXT, SERIAL, SENDER_CODE);
+        HistMmsDeliveryMessage message2 = new HistMmsDeliveryMessage(DA_ADDR, CALLBACK, ENCODING, TEXT, SERIAL, SENDER_CODE);
 
         HistDeliveryMultipartData multipartData1 = new HistDeliveryMultipartData("JPG", "sampleImage".getBytes(Charset.forName(EUC_KR)));
         message1.addMedia(multipartData1);
@@ -88,8 +88,8 @@ public class HistMmsDeliveryMessageTest {
 
     @Test
     public void testInequality() {
-        HistMmsDeliveryMessage message1 = new HistMmsDeliveryMessage(DA_ADDR, CALLBACK, ENCODING, TEXT, SERIAL, SENDER_CODE, EXT_SIZE);
-        HistMmsDeliveryMessage message2 = new HistMmsDeliveryMessage(DA_ADDR, CALLBACK, ENCODING, TEXT + ", diff", SERIAL, SENDER_CODE, EXT_SIZE);
+        HistMmsDeliveryMessage message1 = new HistMmsDeliveryMessage(DA_ADDR, CALLBACK, ENCODING, TEXT, SERIAL, SENDER_CODE);
+        HistMmsDeliveryMessage message2 = new HistMmsDeliveryMessage(DA_ADDR, CALLBACK, ENCODING, TEXT + ", diff", SERIAL, SENDER_CODE);
 
         assertNotEquals(message1, message2);
     }

@@ -36,6 +36,9 @@ public abstract class HistMessage extends Message implements ConvertableToByteBu
         this.msgLeng = ConvertorUtil.getIntPropertyInByteBuf(byteBuf, HistProtocol.HIST_MSG_LENG);
     }
 
+    protected void addMsgLeng(int alpha) {
+        this.msgLeng += alpha;
+    }
 
     @Override
     public boolean equals(Object object) {

@@ -3,6 +3,7 @@ package kr.co.seoultel.message.mt.mms.core.message.hist.messages.delivery.lms;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import kr.co.seoultel.message.mt.mms.core.messages.hist.HistProtocol;
+import kr.co.seoultel.message.mt.mms.core.messages.hist.delivery.HistDeliveryMessage;
 import kr.co.seoultel.message.mt.mms.core.messages.hist.delivery.HistDeliveryMultipartData;
 import kr.co.seoultel.message.mt.mms.core.messages.hist.delivery.lms.HistLmsDeliveryMessage;
 import org.junit.jupiter.api.Test;
@@ -19,7 +20,7 @@ public class HistLmsDeliveryMessageTest {
     private static final String SERIAL = "202112310012345";
     private static final String SENDER_CODE = "101280092";
     private static final int MEDIA_CNT = 1;
-    private static final String EXT_SIZE = "10";
+    private static final String EXT_SIZE = "0";
 
     @Test
     public void testDefaultConstructor() {
@@ -34,13 +35,13 @@ public class HistLmsDeliveryMessageTest {
         assertEquals("", message.getSerial());
         assertEquals("", message.getSenderCode());
         assertEquals(0, message.getMediaCnt());
-        assertEquals("", message.getExtSize());
+        assertEquals("0", message.getExtSize());
         assertNotNull(message.getMedia());
     }
 
     @Test
     public void testParameterizedConstructor() {
-        HistLmsDeliveryMessage message = new HistLmsDeliveryMessage(DA_ADDR, CALLBACK, ENCODING, TEXT, SERIAL, SENDER_CODE, EXT_SIZE, "message");
+        HistLmsDeliveryMessage message = new HistLmsDeliveryMessage(DA_ADDR, CALLBACK, ENCODING, TEXT, SERIAL, SENDER_CODE, "message");
 
         assertNotNull(message);
         assertEquals(MSG_TYPE, message.getMsgType());
@@ -59,7 +60,7 @@ public class HistLmsDeliveryMessageTest {
     public void testToByteBuf() {
         ByteBuf byteBuf = Unpooled.buffer();
 
-        HistLmsDeliveryMessage message = new HistLmsDeliveryMessage(DA_ADDR, CALLBACK, ENCODING, TEXT, SERIAL, SENDER_CODE, EXT_SIZE, "message");
+        HistLmsDeliveryMessage message = new HistLmsDeliveryMessage(DA_ADDR, CALLBACK, ENCODING, TEXT, SERIAL, SENDER_CODE, "message");
         message.toByteBuf(byteBuf);
 
         byte[] byteArray = new byte[byteBuf.readableBytes()];
@@ -77,7 +78,7 @@ public class HistLmsDeliveryMessageTest {
     public void testFromByteBuf() {
         ByteBuf byteBuf = Unpooled.buffer();
 
-        HistLmsDeliveryMessage originalMessage = new HistLmsDeliveryMessage(DA_ADDR, CALLBACK, ENCODING, TEXT, SERIAL, SENDER_CODE, EXT_SIZE, "message");
+        HistLmsDeliveryMessage originalMessage = new HistLmsDeliveryMessage(DA_ADDR, CALLBACK, ENCODING, TEXT, SERIAL, SENDER_CODE, "message");
         HistDeliveryMultipartData multipartData = new HistDeliveryMultipartData("message");
         originalMessage.toByteBuf(byteBuf);
 
@@ -89,9 +90,9 @@ public class HistLmsDeliveryMessageTest {
 
     @Test
     public void testEqualsAndHashCode() {
-        HistLmsDeliveryMessage message2 = new HistLmsDeliveryMessage(DA_ADDR, CALLBACK, ENCODING, TEXT, SERIAL, SENDER_CODE, EXT_SIZE, "message");
-        HistLmsDeliveryMessage message1 = new HistLmsDeliveryMessage(DA_ADDR, CALLBACK, ENCODING, TEXT, SERIAL, SENDER_CODE, EXT_SIZE, "message");
-        HistLmsDeliveryMessage message3 = new HistLmsDeliveryMessage(DA_ADDR, CALLBACK, ENCODING, TEXT, SERIAL, SENDER_CODE, EXT_SIZE, "message1");
+        HistLmsDeliveryMessage message2 = new HistLmsDeliveryMessage(DA_ADDR, CALLBACK, ENCODING, TEXT, SERIAL, SENDER_CODE, "message");
+        HistLmsDeliveryMessage message1 = new HistLmsDeliveryMessage(DA_ADDR, CALLBACK, ENCODING, TEXT, SERIAL, SENDER_CODE, "message");
+        HistLmsDeliveryMessage message3 = new HistLmsDeliveryMessage(DA_ADDR, CALLBACK, ENCODING, TEXT, SERIAL, SENDER_CODE, "message1");
 
         assertEquals(message1, message2);
         assertNotEquals(message1, message3);

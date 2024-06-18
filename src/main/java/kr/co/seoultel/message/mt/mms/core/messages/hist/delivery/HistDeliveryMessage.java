@@ -22,7 +22,7 @@ public class HistDeliveryMessage extends HistMessage {
     protected String serial = "";            // Serial Number
     protected String senderCode = "";        // 최초 발신사업자 식별 코드
     protected int mediaCnt = 0;              // 첨부 파일 개수
-    protected String extSize = "";           // 확장 필드 크기
+    protected String extSize = "0";           // 확장 필드 크기
 
 
     public HistDeliveryMessage() {
@@ -41,7 +41,7 @@ public class HistDeliveryMessage extends HistMessage {
         this.serial = Objects.requireNonNullElse(serial, "");
         this.senderCode = Objects.requireNonNullElse(senderCode, "");
         this.mediaCnt = mediaCnt;
-        this.extSize = Objects.requireNonNullElse(extSize, "");
+        this.extSize = Objects.requireNonNullElse(extSize, "0");
     }
 
 
@@ -54,7 +54,7 @@ public class HistDeliveryMessage extends HistMessage {
         byteBuf.writeBytes(ConvertorUtil.convertPropertyToBytes(text, HistProtocol.TEXT_LENGTH));
         byteBuf.writeBytes(ConvertorUtil.convertPropertyToBytes(serial, HistProtocol.SERIAL_LENGTH));
         byteBuf.writeBytes(ConvertorUtil.convertPropertyToBytes(senderCode, HistProtocol.SENDER_CODE_LENGTH));
-        byteBuf.writeBytes(ConvertorUtil.convertPropertyToBytes(mediaCnt, HistProtocol.MEDIA_CNT_LENGTH));
+        byteBuf.writeBytes(ConvertorUtil.convertPropertyToBytes(String.valueOf(mediaCnt), HistProtocol.MEDIA_CNT_LENGTH));
         byteBuf.writeBytes(ConvertorUtil.convertPropertyToBytes(extSize, HistProtocol.EXT_SIZE_LENGTH));
     }
 

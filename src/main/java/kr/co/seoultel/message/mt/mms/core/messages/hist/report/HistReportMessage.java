@@ -26,6 +26,7 @@ public class HistReportMessage extends HistMessage {
         super(HistProtocol.HIST_REPORT_HEAD_TYPE, HistProtocol.HIST_REPORT_MSG_LENG);
     }
 
+    @Builder
     public HistReportMessage(String result, String message, String daAddr, String serial, String gwSerial, String sendTime, String telcoInfo) {
         super(HistProtocol.HIST_REPORT_HEAD_TYPE, HistProtocol.HIST_REPORT_MSG_LENG);
 
@@ -42,7 +43,7 @@ public class HistReportMessage extends HistMessage {
     @Override
     protected void writeBody(ByteBuf byteBuf) {
         byteBuf.writeBytes(ConvertorUtil.convertPropertyToBytes(result, HistProtocol.RESULT_LENGTH));
-        byteBuf.writeBytes(ConvertorUtil.convertPropertyToBytes(message, HistProtocol.MESSAGE_LENGTH));
+        byteBuf.writeBytes(ConvertorUtil.convertPropertyToBytes(message, HistProtocol.REPORT_MESSAGE_LENGTH));
         byteBuf.writeBytes(ConvertorUtil.convertPropertyToBytes(daAddr, HistProtocol.DA_ADDR_LENGTH));
         byteBuf.writeBytes(ConvertorUtil.convertPropertyToBytes(serial, HistProtocol.SERIAL_LENGTH));
         byteBuf.writeBytes(ConvertorUtil.convertPropertyToBytes(gwSerial, HistProtocol.GW_SERIAL_LENGTH));
@@ -61,7 +62,7 @@ public class HistReportMessage extends HistMessage {
         super.fromByteBuf(byteBuf);
 
         this.result = ConvertorUtil.getStrPropertyInByteBuf(byteBuf, HistProtocol.RESULT_LENGTH);
-        this.message = ConvertorUtil.getStrPropertyInByteBuf(byteBuf, HistProtocol.MESSAGE_LENGTH);
+        this.message = ConvertorUtil.getStrPropertyInByteBuf(byteBuf, HistProtocol.REPORT_MESSAGE_LENGTH);
         this.daAddr = ConvertorUtil.getStrPropertyInByteBuf(byteBuf, HistProtocol.DA_ADDR_LENGTH);
         this.serial = ConvertorUtil.getStrPropertyInByteBuf(byteBuf, HistProtocol.SERIAL_LENGTH);
         this.gwSerial = ConvertorUtil.getStrPropertyInByteBuf(byteBuf, HistProtocol.GW_SERIAL_LENGTH);

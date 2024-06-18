@@ -38,7 +38,7 @@ public class HistDeliveryMessageTest {
         assertEquals("", message.getSerial());
         assertEquals("", message.getSenderCode());
         assertEquals(0, message.getMediaCnt());
-        assertEquals("", message.getExtSize());
+        assertEquals("0", message.getExtSize());
     }
 
     @Test

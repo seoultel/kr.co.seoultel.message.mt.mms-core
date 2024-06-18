@@ -22,7 +22,7 @@ public class HistLmsDeliveryMessage extends HistDeliveryMessage {
     }
 
 
-    public HistLmsDeliveryMessage(String daAddr, String callback, String encoding, String text, String serial, String senderCode, String extSize, String message) {
+    public HistLmsDeliveryMessage(String daAddr, String callback, String encoding, String text, String serial, String senderCode, String message) {
         this.msgType = HistProtocol.LMS_MSG_TYPE;
         this.daAddr = Objects.requireNonNullElse(daAddr, "");
         this.callback = Objects.requireNonNullElse(callback, "");
@@ -31,8 +31,8 @@ public class HistLmsDeliveryMessage extends HistDeliveryMessage {
         this.serial = Objects.requireNonNullElse(serial, "");
         this.senderCode = Objects.requireNonNullElse(senderCode, "");
         this.mediaCnt = 1;
-        this.extSize = Objects.requireNonNullElse(extSize, "");
         this.media = new HistDeliveryMultipartData(message);
+        addMsgLeng(HistProtocol.M_TYPE_LENGTH + HistProtocol.ENCODING_LENGTH + HistProtocol.M_FILE_LEN_LENGTH + media.getMFileLen());
     }
 
 
@@ -40,7 +40,6 @@ public class HistLmsDeliveryMessage extends HistDeliveryMessage {
     @Override
     protected void writeBody(ByteBuf byteBuf) {
         super.writeBody(byteBuf);
-
         media.toByteBuf(byteBuf);
     }
 
@@ -72,7 +71,6 @@ public class HistLmsDeliveryMessage extends HistDeliveryMessage {
                 ", senderCode='" + senderCode + '\'' +
                 ", mediaCnt=" + mediaCnt +
                 ", extSize='" + extSize + '\'' +
-                ", headType='" + headType + '\'' +
                 ", media=" + media +
                 '}';
     }
