@@ -9,6 +9,8 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 public class ValidateUtil {
 
@@ -110,5 +112,12 @@ public class ValidateUtil {
 
     public static boolean validateOriginCode(String originCode) {
         return !isNullOrBlankStr(originCode) && isConsistOnlyNumericValue(originCode) && validateStrLength(originCode, 9);
+    }
+
+
+    public static void containsSpecificWordsInMessage(MessageDelivery messageDelivery, List<String> words) throws BlockedSpecificWordInMessage {
+        String message = (String) messageDelivery.getContent().get(Submit.MESSAGE);
+        Optional<String> optional = words.stream().parallel().filter(message::contains).findFirst();
+        if (optional.isPresent()) throw new BlockedSpecificWordInMessage(messageDelivery, optional.get());
     }
 }

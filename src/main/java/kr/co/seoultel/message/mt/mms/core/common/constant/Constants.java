@@ -53,6 +53,7 @@ public class Constants {
     public final static String ORIGIN_CODE_VALIDATION_FAILED_MNO_RESULT = "62023";
 
     public final static String MESSAGE_IMAGE_IS_EMPTY_MNO_RESULT = "62024";
+    public final static String CONTAINS_SPAM_KEYWORD_MNO_RESULT = "62025";
 
     public final static String FAILED_TO_CREATE_SOAP_MNO_RESULT = "62030";
 

@@ -1,7 +1,15 @@
 package util;
 
+import kr.co.seoultel.message.core.dto.MessageDelivery;
+import kr.co.seoultel.message.core.dto.mms.Submit;
+import kr.co.seoultel.message.mt.mms.core.common.exceptions.message.BlockedSpecificWordInMessage;
 import kr.co.seoultel.message.mt.mms.core.util.ValidateUtil;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -10,6 +18,10 @@ import static org.junit.jupiter.api.Assertions.*;
  * {@link ValidateUtil} 클래스의 테스트를 위한 유닛 테스트 클래스입니다.
  */
 public class ValidationUtilTest {
+
+    public static final String message1 = "지금은 간단하게 설명을 드리고 있으나 방에 입장하시면 접근하는 방식부터 다양하게 설명드리고 있으니 입장하셔서 좋은정보 많이 받아가세요";
+    public static final String message2 = "지금은 간단하게 설명을 드리고 있으나 방에 입장하시면 접근하는 로또 방식부터 다양하게 설명드리고 있으니 입장하셔서 좋은정보 많이 받아가세요";
+    public static final String message3 = "지금은 간단하게 설명을 드리고 있으나 토토 방에 입장하시면 접근하는 방식부터 다양하게 설명드리고 있으니 입장하셔서 좋은정보 많이 받아가세요";
 
     /**
      * {@link ValidateUtil#isNullOrBlankStr(String)} 메서드를 테스트합니다.
@@ -99,5 +111,31 @@ public class ValidationUtilTest {
         assertFalse(ValidateUtil.validateOriginCode("")); // 빈 문자열
         assertFalse(ValidateUtil.validateOriginCode("12345678A")); // 숫자 이외의 문자 포함
         assertFalse(ValidateUtil.validateOriginCode("123456")); // 길이 부족
+    }
+
+    @Test
+    public void testContainsNonSpamKeyWordInMessage() throws BlockedSpecificWordInMessage {
+        List<String> testMessages = List.of(message1, message1 + "222", message1 + "dasfsdgsdg");
+
+        for (int i = 0; i < testMessages.size(); i++) {
+            MessageDelivery messageDelivery = new MessageDelivery();
+            Map<String, Object> contents = messageDelivery.getContent();
+            contents.put(Submit.MESSAGE, testMessages.get(i));
+
+            Assertions.assertThrows(BlockedSpecificWordInMessage.class, () -> ValidateUtil.containsSpecificWordsInMessage(messageDelivery, testMessages));
+        }
+    }
+
+    @Test
+    public void testContainsSpamKeyWordInMessage() throws BlockedSpecificWordInMessage {
+        List<String> testMessages = List.of(message1, message2, message3);
+
+        for (int i = 0; i < testMessages.size(); i++) {
+            MessageDelivery messageDelivery = new MessageDelivery();
+            Map<String, Object> contents = messageDelivery.getContent();
+            contents.put(Submit.MESSAGE, testMessages.get(i));
+
+            Assertions.assertThrows(BlockedSpecificWordInMessage.class, () -> ValidateUtil.containsSpecificWordsInMessage(messageDelivery, testMessages));
+        }
     }
 }
