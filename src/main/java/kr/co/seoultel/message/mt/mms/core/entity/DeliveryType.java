@@ -11,6 +11,7 @@ public enum DeliveryType {
     FALLBACK_SUBMIT(6, "FALLBACK_SUBMIT"), FALLBACK_SUBMIT_ACK(7, "FALLBACK_SUBMIT_ACK"),
     FALLBACK_REPORT(8, "FALLBACK_REPORT"), FALLBACK_REPORT_ACK(9, "FALLBACK_REPORT_ACK");
 
+
     private final int type;
     private final String typeEng;
 

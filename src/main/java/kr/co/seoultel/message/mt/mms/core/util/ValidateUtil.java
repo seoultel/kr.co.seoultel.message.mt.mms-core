@@ -55,7 +55,7 @@ public class ValidateUtil {
     public static void validateMessageDelivery(@NonNull MessageDelivery messageDelivery) throws FormatException {
         String umsMsgId = messageDelivery.getUmsMsgId();
         if (!validateUmsMsgIdFormat(umsMsgId)){
-            throw new UmsMsgIdFormatException(messageDelivery, DeliveryType.SUBMIT);
+            throw new UmsMsgIdFormatException(messageDelivery, DeliveryType.SUBMIT_ACK);
         }
 
         String callback = messageDelivery.getCallback();
@@ -63,12 +63,12 @@ public class ValidateUtil {
         String sender = messageDelivery.getSender();
 
         if (!isConsistOnlyNumericValue(callback) && !validatePhoneNumber(receiver) && !isConsistOnlyNumericValue(sender)) {
-            throw new PhoneNumberFormatException(messageDelivery, DeliveryType.SUBMIT);
+            throw new PhoneNumberFormatException(messageDelivery, DeliveryType.SUBMIT_ACK);
         }
 
         String originCode = (String) messageDelivery.getContent().get(Submit.ORIGIN_CODE);
         if (!validateOriginCode(originCode)) {
-            throw new OriginCodeFormatException(messageDelivery, originCode, DeliveryType.SUBMIT);
+            throw new OriginCodeFormatException(messageDelivery, originCode, DeliveryType.SUBMIT_ACK);
         }
 
         Map<String, Object> content = messageDelivery.getContent();
@@ -76,7 +76,7 @@ public class ValidateUtil {
         String message = (String) content.get(Submit.MESSAGE);
 
         if (message == null && imageIds.isEmpty()) {
-            throw new MessageFormatException(messageDelivery, DeliveryType.SUBMIT);
+            throw new MessageFormatException(messageDelivery, DeliveryType.SUBMIT_ACK);
         }
     }
 
@@ -90,7 +90,7 @@ public class ValidateUtil {
     public static void validateFallbackMessageDelivery(@NonNull MessageDelivery messageDelivery) throws FormatException {
         String umsMsgId = messageDelivery.getUmsMsgId();
         if (!validateUmsMsgIdFormat(umsMsgId)){
-            throw new UmsMsgIdFormatException(messageDelivery, DeliveryType.FALLBACK_SUBMIT);
+            throw new UmsMsgIdFormatException(messageDelivery, DeliveryType.FALLBACK_SUBMIT_ACK);
         }
 
         String callback = messageDelivery.getCallback();
@@ -98,18 +98,18 @@ public class ValidateUtil {
         String sender = messageDelivery.getSender();
 
         if (!isConsistOnlyNumericValue(callback) && !validatePhoneNumber(receiver) && !isConsistOnlyNumericValue(sender)) {
-            throw new PhoneNumberFormatException(messageDelivery, DeliveryType.FALLBACK_SUBMIT);
+            throw new PhoneNumberFormatException(messageDelivery, DeliveryType.FALLBACK_SUBMIT_ACK);
         }
 
         String originCode = FallbackUtil.getFallbackOriginCode(messageDelivery);
         if (!validateOriginCode(originCode)) {
-            throw new FallbackOriginCodeFormatException(messageDelivery, originCode, DeliveryType.FALLBACK_SUBMIT);
+            throw new FallbackOriginCodeFormatException(messageDelivery, originCode, DeliveryType.FALLBACK_SUBMIT_ACK);
         }
 
         List<String> imageIds = FallbackUtil.getFallbackFileIds(messageDelivery);
         String message = FallbackUtil.getFallbackMessage(messageDelivery);
         if (message == null && imageIds.isEmpty()) {
-            throw new FallbackMessageFormatException(messageDelivery, DeliveryType.FALLBACK_SUBMIT);
+            throw new FallbackMessageFormatException(messageDelivery, DeliveryType.FALLBACK_SUBMIT_ACK);
         }
     }
     public static boolean isDttmDateTimeFormat(String dateTimeString) {

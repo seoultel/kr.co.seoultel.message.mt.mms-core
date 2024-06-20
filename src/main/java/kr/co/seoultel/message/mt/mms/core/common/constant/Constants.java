@@ -1,11 +1,15 @@
 package kr.co.seoultel.message.mt.mms.core.common.constant;
 
+import java.util.List;
+
 public class Constants {
 
 
     public static final String SKT = "SKT";
     public static final String KTF = "KTF";
     public static final String LGT = "LGT";
+    public static final List<String> DIRECT_GROUP = List.of(SKT, KTF, LGT);
+
 
 
     public static final String UPLUS = "UPLUS";
