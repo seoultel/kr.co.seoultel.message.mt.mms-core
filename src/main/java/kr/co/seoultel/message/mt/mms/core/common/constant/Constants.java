@@ -87,4 +87,49 @@ public class Constants {
 
     public final static String FORMAT_ERROR = "FORMAT_ERROR";
     public final static String UNKNOWN_ERROR = "UNKNOWN_ERROR";
+
+
+
+
+
+    public static final String SOAP_ACTION = "\"\"";
+
+    //    public static long MMS_REPORT_WAIT_MAXIMUM_TIME = 0L; // -> 72 Hour : 3일
+    public static long MMS_REPORT_WAIT_MAXIMUM_TIME = 72L; // -> 72 Hour : 3일
+
+
+    public static String EXPIRED_REPORT_SITUATION = "MESSAGE EXPIRED";
+
+    public static String SUBMIT_ACK_REPORT_SITUATION = "SUBMIT-ACK REPORT";
+    public static String REPORT_SITUATION = "REPORT";
+    public static String FILE_SERVER_UNKNOWN_EXCEPTION_SITUATION = "SEND REQUEST FILE SERVER";
+    public static String SEND_MESSAGE_UNKNOWN_EXCEPTION = "SEND MESSAGE";
+
+//    public static String EXPIRED_REPORT_SITUATION = "MESSAGE EXPIRED";
+
+
+    //SKT
+    public static final String SKT_REQUEST_URL = "/mmsr41/mm7";
+    public static final String SKT_TRANSACTION_ID_URL = "http://www.3gpp.org/ftp/Specs/archive/23_series/23.140/schema/REL-5-MM7-1-0";
+    public static final String SKT_ENDPOINT_URI = "/mmsr41/mm7";
+    public static final String SKT_CONTENT_ID = "<start_MM7_SOAP>";
+
+    //KT
+    public static final String KTF_REQUEST_URL = "/";
+    public static final String KTF_TRANSACTION_ID_URL = "http://www.3gpp.org/ftp/Specs/archive/23_series/23.140/schema/REL-5-MM7-1-2";
+    public static final String KTF_ENDPOINT_URI = "/";
+    public static final String KTF_CONTENT_ID = "</tnn-200102/mm7-submit>";
+
+
+    //LG
+    public static final String LGT_REQUEST_URL = "/";
+    public static final String LGT_TRANSACTION_ID_URL = "http://www.3gpp.org/ftp/Specs/archive/23_series/23.140/schema/REL-5-MM7-1-2";  // TODO : submitReq(이모티콘) 체크
+    public static final String LGT_ENDPOINT_URI = "/";
+    public static final String LGT_CONTENT_ID = "</tnn-200102/mm7-submit>";
+
+
+
+    public final static String tmpFileName = "arreo_jpeg.jpeg";
+    public final static String tmpXtName = "arreo_xt.xt";
+    public final static String tmpSmiName = "arreo_smil.smi";
 }
