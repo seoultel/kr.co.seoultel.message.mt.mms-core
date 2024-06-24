@@ -17,7 +17,7 @@ public class ServerInfo {
 
     @Override
     public String toString() {
-        return "HistServerInfo{" +
+        return "ServerInfo{" +
                 "ip='" + ip + '\'' +
                 ", port=" + port +
                 ", sType=" + sType +

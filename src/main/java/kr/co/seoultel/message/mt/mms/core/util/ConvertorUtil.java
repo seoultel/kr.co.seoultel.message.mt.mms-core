@@ -6,12 +6,15 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.ToNumberPolicy;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
+import jakarta.xml.soap.MessageFactory;
+import jakarta.xml.soap.SOAPMessage;
 import kr.co.seoultel.message.mt.mms.core.common.exceptions.message.FormatException;
 import kr.co.seoultel.message.mt.mms.core.common.exceptions.message.MessageDeserializationException;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.ByteArrayInputStream;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Objects;
@@ -19,6 +22,15 @@ import java.util.Objects;
 @Slf4j
 public class ConvertorUtil {
     protected final static Gson gson  = new GsonBuilder().setObjectToNumberStrategy(ToNumberPolicy.LONG_OR_DOUBLE).create();
+
+
+    public static SOAPMessage convertSOAPMessageToString(String soapMessageStr) throws Exception {
+        MessageFactory factory = MessageFactory.newInstance();
+        return factory.createMessage(null, new ByteArrayInputStream(soapMessageStr.getBytes()));
+    }
+
+
+
 
     public static <T> T convertBytesToObject(byte[] body, Class<T> cls) throws FormatException {
         try {

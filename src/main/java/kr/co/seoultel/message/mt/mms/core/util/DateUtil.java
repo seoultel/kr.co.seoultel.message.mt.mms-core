@@ -24,6 +24,18 @@ public class DateUtil {
         return future.format(mcmpLocalDateFormatter);
     }
 
+    public static String getDate(String format) {
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
+        return now.format(formatter);
+    }
+
+    public static String getDate(int plusSeconds, String format) {
+        LocalDateTime future = LocalDateTime.now().plusSeconds((long) plusSeconds);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
+        return future.format(formatter);
+    }
+
     public static String parseFullLocalDateToMcmpLocalDateFormat(String localDateTimeString) {
         LocalDateTime fullLocalDateTime = LocalDateTime.parse(localDateTimeString, fullLocalDateFormatter);
         return fullLocalDateTime.format(mcmpLocalDateFormatter);
