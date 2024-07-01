@@ -203,8 +203,9 @@ public class KtfResMessage extends KtfSoapMessage {
 
     public void injectFieldsByKtrSubmitResMessageFromSOAPMessage(SOAPMessage soapMessage) throws SOAPException {
         SOAPHeader soapHeader = soapMessage.getSOAPHeader();
-        SOAPElement transactionIdElement = (SOAPElement) soapHeader.addHeaderElement(new QName(Constants.KTF_TRANSACTION_ID_URL, "TransactionID", "mm7"));
-        this.tid = transactionIdElement.getValue();
+
+        SOAPElement transactionIdElement = (SOAPElement) soapHeader.getChildElements(new QName(Constants.KTF_TRANSACTION_ID_URL, "TransactionID", "mm7")).next();
+        this.tid = transactionIdElement != null ? transactionIdElement.getValue() : null;
 
         SOAPBody soapBody = soapMessage.getSOAPBody();
         Document document = soapBody.extractContentAsDocument();
@@ -220,8 +221,8 @@ public class KtfResMessage extends KtfSoapMessage {
 
     public void injectFieldsByKtrDeliveryReportResMessageFromSOAPMessage(SOAPMessage soapMessage) throws SOAPException {
         SOAPHeader soapHeader = soapMessage.getSOAPHeader();
-        SOAPElement transactionIdElement = (SOAPElement) soapHeader.addHeaderElement(new QName(Constants.KTF_TRANSACTION_ID_URL, "TransactionID", "mm7"));
-        this.tid = transactionIdElement.getValue();
+        SOAPElement transactionIdElement = (SOAPElement) soapHeader.getChildElements(new QName(Constants.KTF_TRANSACTION_ID_URL, "TransactionID", "mm7")).next();
+        this.tid = transactionIdElement != null ? transactionIdElement.getValue() : null;
 
         SOAPBody soapBody = soapMessage.getSOAPBody();
         Document document = soapBody.extractContentAsDocument();
@@ -237,8 +238,8 @@ public class KtfResMessage extends KtfSoapMessage {
 
     public void injectFieldsByKtrErrorMessageFromSOAPMessage(SOAPMessage soapMessage) throws SOAPException {
         SOAPHeader soapHeader = soapMessage.getSOAPHeader();
-        SOAPElement transactionIdElement = (SOAPElement) soapHeader.addHeaderElement(new QName(Constants.KTF_TRANSACTION_ID_URL, "TransactionID", "mm7"));
-        this.tid = transactionIdElement.getValue();
+        SOAPElement transactionIdElement = (SOAPElement) soapHeader.getChildElements(new QName(Constants.KTF_TRANSACTION_ID_URL, "TransactionID", "mm7")).next();
+        this.tid = transactionIdElement != null ? transactionIdElement.getValue() : null;
 
         SOAPBody soapBody = soapMessage.getSOAPBody();
         Document document = soapBody.extractContentAsDocument();

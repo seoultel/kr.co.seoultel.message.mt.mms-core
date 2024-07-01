@@ -82,7 +82,7 @@ public class KtfSubmitReqMessage extends KtfSoapMessage {
         SOAPHeader soapHeader = envelope.getHeader();
         soapHeader.setPrefix("env");
         soapHeader.addHeaderElement(new QName(Constants.KTF_TRANSACTION_ID_URL, "TransactionID", "mm7"))
-                    .addTextNode(tid)
+                    .addTextNode(this.tid)
                     .setAttribute("env:mustUnderstand", "1");
 
         /* SOAP Body */
@@ -119,8 +119,9 @@ public class KtfSubmitReqMessage extends KtfSoapMessage {
     @Override
     public void fromSOAPMessage(SOAPMessage soapMessage) throws SOAPException {
         SOAPHeader soapHeader = soapMessage.getSOAPHeader();
-        SOAPElement transactionIdElement = (SOAPElement) soapHeader.addHeaderElement(new QName(Constants.KTF_TRANSACTION_ID_URL, "TransactionID", "mm7"));
-        this.tid = transactionIdElement.getValue();
+        // Directly access the TransactionID element by its QName
+        SOAPElement transactionIdElement = (SOAPElement) soapHeader.getChildElements(new QName(Constants.KTF_TRANSACTION_ID_URL, "TransactionID", "mm7")).next();
+        this.tid = transactionIdElement != null ? transactionIdElement.getValue() : null;
 
         SOAPBody soapBody = soapMessage.getSOAPBody();
         Document document = soapBody.extractContentAsDocument();
