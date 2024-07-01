@@ -2,11 +2,9 @@ package kr.co.seoultel.message.mt.mms.core.message.hist.messages.cert;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import kr.co.seoultel.message.mt.mms.core.messages.hist.HistProtocol;
+import kr.co.seoultel.message.mt.mms.core.common.protocol.HistProtocol;
 import kr.co.seoultel.message.mt.mms.core.messages.hist.cert.HistCertAckMessage;
 import org.junit.jupiter.api.Test;
-
-import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 

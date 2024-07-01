@@ -1,6 +1,6 @@
 package kr.co.seoultel.message.mt.mms.core.message.smtnt.messages.link;
 
-import kr.co.seoultel.message.mt.mms.core.messages.smtnt.SmtntProtocol;
+import kr.co.seoultel.message.mt.mms.core.common.protocol.SmtntProtocol;
 import kr.co.seoultel.message.mt.mms.core.messages.smtnt.link.SmtntLinkAckMessage;
 import org.junit.jupiter.api.Test;
 

@@ -5,11 +5,10 @@ import kr.co.seoultel.message.mt.mms.core.messages.lghv.LghvMessage;
 import kr.co.seoultel.message.mt.mms.core.util.ConvertorUtil;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.util.Objects;
 
-import static kr.co.seoultel.message.mt.mms.core.messages.lghv.LghvProtocol.*;
+import static kr.co.seoultel.message.mt.mms.core.common.protocol.LghvProtocol.*;
 
 
 @Getter

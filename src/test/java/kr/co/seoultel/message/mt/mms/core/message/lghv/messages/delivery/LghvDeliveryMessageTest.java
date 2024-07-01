@@ -11,7 +11,7 @@ import static kr.co.seoultel.message.mt.mms.core.common.constant.Constants.EUC_K
 import static kr.co.seoultel.message.mt.mms.core.messages.lghv.delivery.LghvDeliveryMultipartData.createTextMultipartData;
 import static org.junit.jupiter.api.Assertions.*;
 
-import static kr.co.seoultel.message.mt.mms.core.messages.lghv.LghvProtocol.*;
+import static kr.co.seoultel.message.mt.mms.core.common.protocol.LghvProtocol.*;
 import kr.co.seoultel.message.mt.mms.core.messages.lghv.delivery.LghvDeliveryMessage;
 
 

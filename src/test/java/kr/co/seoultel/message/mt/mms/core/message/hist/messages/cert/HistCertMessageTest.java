@@ -4,11 +4,11 @@ package kr.co.seoultel.message.mt.mms.core.message.hist.messages.cert;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import kr.co.seoultel.message.mt.mms.core.common.exceptions.CryptoException;
-import kr.co.seoultel.message.mt.mms.core.messages.hist.HistProtocol;
+import kr.co.seoultel.message.mt.mms.core.common.protocol.HistProtocol;
 import kr.co.seoultel.message.mt.mms.core.messages.hist.cert.HistCertMessage;
 import org.junit.jupiter.api.Test;
 
-import static kr.co.seoultel.message.mt.mms.core.messages.hist.HistProtocol.HIST_VERSION;
+import static kr.co.seoultel.message.mt.mms.core.common.protocol.HistProtocol.HIST_VERSION;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class HistCertMessageTest {

@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import kr.co.seoultel.message.mt.mms.core.messages.hist.HistProtocol;
+import kr.co.seoultel.message.mt.mms.core.common.protocol.HistProtocol;
 import kr.co.seoultel.message.mt.mms.core.messages.hist.delivery.HistDeliveryMessage;
 
 public class HistDeliveryMessageTest {

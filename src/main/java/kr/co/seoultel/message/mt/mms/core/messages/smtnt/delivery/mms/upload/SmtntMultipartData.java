@@ -1,6 +1,6 @@
 package kr.co.seoultel.message.mt.mms.core.messages.smtnt.delivery.mms.upload;
 
-import kr.co.seoultel.message.mt.mms.core.messages.smtnt.SmtntProtocol;
+import kr.co.seoultel.message.mt.mms.core.common.protocol.SmtntProtocol;
 import kr.co.seoultel.message.mt.mms.core.messages.smtnt.delivery.mms.upload.finish.SmtntFinishUploadAckMessage;
 import kr.co.seoultel.message.mt.mms.core.messages.smtnt.delivery.mms.upload.finish.SmtntFinishUploadMessage;
 import kr.co.seoultel.message.mt.mms.core.messages.smtnt.delivery.mms.upload.file.SmtntUploadFileAckMessage;

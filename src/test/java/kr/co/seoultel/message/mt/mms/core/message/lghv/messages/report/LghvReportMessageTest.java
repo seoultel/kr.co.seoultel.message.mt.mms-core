@@ -1,12 +1,11 @@
 package kr.co.seoultel.message.mt.mms.core.message.lghv.messages.report;
 
-import kr.co.seoultel.message.mt.mms.core.messages.lghv.LghvProtocol;
-import kr.co.seoultel.message.mt.mms.core.messages.lghv.bind.LghvBindMessage;
+import kr.co.seoultel.message.mt.mms.core.common.protocol.LghvProtocol;
 import kr.co.seoultel.message.mt.mms.core.messages.lghv.report.LghvReportMessage;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static kr.co.seoultel.message.mt.mms.core.messages.lghv.LghvProtocol.REPORT_BODY_LEN;
+import static kr.co.seoultel.message.mt.mms.core.common.protocol.LghvProtocol.REPORT_BODY_LEN;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 

@@ -4,13 +4,12 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import kr.co.seoultel.message.mt.mms.core.common.exceptions.CryptoException;
 import kr.co.seoultel.message.mt.mms.core.messages.smtnt.delivery.SmtntDeliveryAckMessage;
-import kr.co.seoultel.message.mt.mms.core.messages.smtnt.delivery.SmtntDeliveryMessage;
 import kr.co.seoultel.message.mt.mms.core.messages.smtnt.packet.SmtntPacket;
 import kr.co.seoultel.message.mt.mms.core.message.smtnt.packet.no_enc.SmtntDefaultPacketTest;
 import org.junit.jupiter.api.Test;
 
-import static kr.co.seoultel.message.mt.mms.core.messages.smtnt.SmtntProtocol.DELIVERY_RESULT_SUCCESS;
-import static kr.co.seoultel.message.mt.mms.core.messages.smtnt.SmtntProtocol.SMTNT_DELIVERY_ACK_METHOD_HEADER;
+import static kr.co.seoultel.message.mt.mms.core.common.protocol.SmtntProtocol.DELIVERY_RESULT_SUCCESS;
+import static kr.co.seoultel.message.mt.mms.core.common.protocol.SmtntProtocol.SMTNT_DELIVERY_ACK_METHOD_HEADER;
 import static org.junit.jupiter.api.Assertions.*;
 
 

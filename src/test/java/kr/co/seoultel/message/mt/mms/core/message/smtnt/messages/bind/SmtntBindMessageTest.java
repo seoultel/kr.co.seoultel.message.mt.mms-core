@@ -1,6 +1,6 @@
 package kr.co.seoultel.message.mt.mms.core.message.smtnt.messages.bind;
 
-import kr.co.seoultel.message.mt.mms.core.messages.smtnt.SmtntProtocol;
+import kr.co.seoultel.message.mt.mms.core.common.protocol.SmtntProtocol;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

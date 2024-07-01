@@ -3,13 +3,9 @@ package kr.co.seoultel.message.mt.mms.core.messages.hist.factory;
 import io.netty.buffer.ByteBufUtil;
 import kr.co.seoultel.message.mt.mms.core.common.exceptions.CryptoException;
 import kr.co.seoultel.message.mt.mms.core.encrpyt.HistEncryptor;
-import kr.co.seoultel.message.mt.mms.core.entity.ServerType;
-import kr.co.seoultel.message.mt.mms.core.messages.hist.HistProtocol;
+import kr.co.seoultel.message.mt.mms.core.common.protocol.HistProtocol;
 import kr.co.seoultel.message.mt.mms.core.messages.hist.bind.HistBindMessage;
 import kr.co.seoultel.message.mt.mms.core.messages.hist.cert.HistCertMessage;
-
-import java.nio.charset.StandardCharsets;
-import java.security.NoSuchAlgorithmException;
 
 public class HistMsgFactory {
 

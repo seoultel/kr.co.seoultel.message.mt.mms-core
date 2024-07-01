@@ -1,6 +1,6 @@
 package kr.co.seoultel.message.mt.mms.core.messages.smtnt.delivery.lms;
 
-import kr.co.seoultel.message.mt.mms.core.messages.smtnt.SmtntProtocol;
+import kr.co.seoultel.message.mt.mms.core.common.protocol.SmtntProtocol;
 import kr.co.seoultel.message.mt.mms.core.messages.smtnt.delivery.SmtntDeliveryMessage;
 import lombok.Builder;
 import lombok.Getter;

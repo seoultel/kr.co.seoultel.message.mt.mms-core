@@ -2,8 +2,7 @@ package kr.co.seoultel.message.mt.mms.core.messages.smtnt.delivery;
 
 import com.google.gson.annotations.SerializedName;
 import kr.co.seoultel.message.mt.mms.core.messages.smtnt.SmtntMessage;
-import kr.co.seoultel.message.mt.mms.core.messages.smtnt.SmtntProtocol;
-import lombok.Builder;
+import kr.co.seoultel.message.mt.mms.core.common.protocol.SmtntProtocol;
 import lombok.Getter;
 
 import java.util.Objects;

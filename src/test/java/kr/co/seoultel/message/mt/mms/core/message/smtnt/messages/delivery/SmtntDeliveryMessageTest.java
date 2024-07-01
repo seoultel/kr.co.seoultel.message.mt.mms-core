@@ -4,8 +4,8 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 import kr.co.seoultel.message.mt.mms.core.messages.smtnt.delivery.SmtntDeliveryMessage;
-import static kr.co.seoultel.message.mt.mms.core.messages.smtnt.SmtntProtocol.MMS_MSG_TYPE;
-import static kr.co.seoultel.message.mt.mms.core.messages.smtnt.SmtntProtocol.SMTNT_DELIVERY_METHOD_HEADER;
+import static kr.co.seoultel.message.mt.mms.core.common.protocol.SmtntProtocol.MMS_MSG_TYPE;
+import static kr.co.seoultel.message.mt.mms.core.common.protocol.SmtntProtocol.SMTNT_DELIVERY_METHOD_HEADER;
 
 /**
  * {@link SmtntDeliveryMessage}에 대한 테스트 클래스입니다.

@@ -7,7 +7,7 @@ import kr.co.seoultel.message.mt.mms.core.util.ConvertorUtil;
 import kr.co.seoultel.message.mt.mms.core.message.smtnt.packet.no_enc.SmtntDefaultPacketTest;
 import org.junit.jupiter.api.Test;
 
-import static kr.co.seoultel.message.mt.mms.core.messages.smtnt.SmtntProtocol.SMTNT_LINK_METHOD_HEADER;
+import static kr.co.seoultel.message.mt.mms.core.common.protocol.SmtntProtocol.SMTNT_LINK_METHOD_HEADER;
 import static org.junit.jupiter.api.Assertions.*;
 
 

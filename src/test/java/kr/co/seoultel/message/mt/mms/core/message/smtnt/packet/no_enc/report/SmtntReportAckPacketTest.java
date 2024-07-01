@@ -2,14 +2,13 @@ package kr.co.seoultel.message.mt.mms.core.message.smtnt.packet.no_enc.report;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import kr.co.seoultel.message.mt.mms.core.messages.smtnt.link.SmtntLinkMessage;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 import kr.co.seoultel.message.mt.mms.core.message.smtnt.packet.no_enc.SmtntDefaultPacketTest;
 import kr.co.seoultel.message.mt.mms.core.common.exceptions.CryptoException;
 import kr.co.seoultel.message.mt.mms.core.messages.smtnt.packet.SmtntPacket;
-import static kr.co.seoultel.message.mt.mms.core.messages.smtnt.SmtntProtocol.*;
+import static kr.co.seoultel.message.mt.mms.core.common.protocol.SmtntProtocol.*;
 import kr.co.seoultel.message.mt.mms.core.messages.smtnt.report.SmtntReportAckMessage;
 
 

@@ -1,4 +1,4 @@
-package kr.co.seoultel.message.mt.mms.core.messages.smtnt;
+package kr.co.seoultel.message.mt.mms.core.common.protocol;
 
 public class SmtntProtocol {
     public static final String SMTNT = "SMTNT";

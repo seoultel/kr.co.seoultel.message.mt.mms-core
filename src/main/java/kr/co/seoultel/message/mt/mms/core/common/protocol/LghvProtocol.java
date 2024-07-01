@@ -1,4 +1,4 @@
-package kr.co.seoultel.message.mt.mms.core.messages.lghv;
+package kr.co.seoultel.message.mt.mms.core.common.protocol;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j

@@ -11,7 +11,7 @@ import kr.co.seoultel.message.mt.mms.core.message.smtnt.packet.no_enc.SmtntDefau
 import org.junit.jupiter.api.Test;
 
 
-import static kr.co.seoultel.message.mt.mms.core.messages.smtnt.SmtntProtocol.*;
+import static kr.co.seoultel.message.mt.mms.core.common.protocol.SmtntProtocol.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**

@@ -1,7 +1,7 @@
 package kr.co.seoultel.message.mt.mms.core.messages.smtnt.delivery.mms.upload;
 
 
-import static kr.co.seoultel.message.mt.mms.core.messages.smtnt.SmtntProtocol.*;
+import static kr.co.seoultel.message.mt.mms.core.common.protocol.SmtntProtocol.*;
 
 public enum SmtntMultipartStatus {
 

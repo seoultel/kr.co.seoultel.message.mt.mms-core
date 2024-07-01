@@ -2,6 +2,7 @@ package kr.co.seoultel.message.mt.mms.core.messages.lghv;
 
 import io.netty.buffer.ByteBuf;
 import kr.co.seoultel.message.mt.mms.core.common.interfaces.ConvertableToByteBuf;
+import kr.co.seoultel.message.mt.mms.core.common.protocol.LghvProtocol;
 import kr.co.seoultel.message.mt.mms.core.messages.Message;
 import kr.co.seoultel.message.mt.mms.core.util.ConvertorUtil;
 import lombok.Getter;

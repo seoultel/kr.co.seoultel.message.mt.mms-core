@@ -1,9 +1,8 @@
 package kr.co.seoultel.message.mt.mms.core.messages.hist;
 
 import io.netty.buffer.ByteBuf;
-import kr.co.seoultel.message.mt.mms.core.common.exceptions.CryptoException;
 import kr.co.seoultel.message.mt.mms.core.common.interfaces.ConvertableToByteBuf;
-import kr.co.seoultel.message.mt.mms.core.encrpyt.HistEncryptor;
+import kr.co.seoultel.message.mt.mms.core.common.protocol.HistProtocol;
 import kr.co.seoultel.message.mt.mms.core.messages.Message;
 import kr.co.seoultel.message.mt.mms.core.util.ConvertorUtil;
 import lombok.Getter;

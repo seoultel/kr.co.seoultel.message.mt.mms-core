@@ -1,12 +1,10 @@
 package kr.co.seoultel.message.mt.mms.core.message.lghv.messages.link;
 
-import kr.co.seoultel.message.mt.mms.core.messages.lghv.LghvProtocol;
+import kr.co.seoultel.message.mt.mms.core.common.protocol.LghvProtocol;
 import kr.co.seoultel.message.mt.mms.core.messages.lghv.link.LghvLinkAckMessage;
-import kr.co.seoultel.message.mt.mms.core.messages.lghv.link.LghvLinkMessage;
 import org.junit.jupiter.api.Test;
 
-import static kr.co.seoultel.message.mt.mms.core.messages.lghv.LghvProtocol.LINK_ACK_MSG_TYPE;
-import static kr.co.seoultel.message.mt.mms.core.messages.lghv.LghvProtocol.LINK_MSG_TYPE;
+import static kr.co.seoultel.message.mt.mms.core.common.protocol.LghvProtocol.LINK_ACK_MSG_TYPE;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**

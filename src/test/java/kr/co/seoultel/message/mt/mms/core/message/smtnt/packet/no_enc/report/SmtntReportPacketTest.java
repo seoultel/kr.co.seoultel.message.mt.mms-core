@@ -4,14 +4,11 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import kr.co.seoultel.message.mt.mms.core.common.exceptions.CryptoException;
 import kr.co.seoultel.message.mt.mms.core.messages.smtnt.packet.SmtntPacket;
-import kr.co.seoultel.message.mt.mms.core.messages.smtnt.report.SmtntReportAckMessage;
 import kr.co.seoultel.message.mt.mms.core.messages.smtnt.report.SmtntReportMessage;
 import kr.co.seoultel.message.mt.mms.core.message.smtnt.packet.no_enc.SmtntDefaultPacketTest;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
-
-import static kr.co.seoultel.message.mt.mms.core.messages.smtnt.SmtntProtocol.*;
+import static kr.co.seoultel.message.mt.mms.core.common.protocol.SmtntProtocol.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**

@@ -1,11 +1,8 @@
 package kr.co.seoultel.message.mt.mms.core.messages.hist.cert;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufUtil;
-import kr.co.seoultel.message.mt.mms.core.common.exceptions.CryptoException;
-import kr.co.seoultel.message.mt.mms.core.encrpyt.HistEncryptor;
 import kr.co.seoultel.message.mt.mms.core.messages.hist.HistMessage;
-import kr.co.seoultel.message.mt.mms.core.messages.hist.HistProtocol;
+import kr.co.seoultel.message.mt.mms.core.common.protocol.HistProtocol;
 import kr.co.seoultel.message.mt.mms.core.util.ConvertorUtil;
 import kr.co.seoultel.message.mt.mms.core.util.ValidateUtil;
 import lombok.Builder;
@@ -14,7 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.Objects;
 
-import static kr.co.seoultel.message.mt.mms.core.messages.hist.HistProtocol.VERSION_LENGTH;
+import static kr.co.seoultel.message.mt.mms.core.common.protocol.HistProtocol.VERSION_LENGTH;
 
 @Slf4j
 @Getter

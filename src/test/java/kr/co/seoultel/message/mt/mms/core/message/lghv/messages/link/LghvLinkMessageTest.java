@@ -1,12 +1,12 @@
 package kr.co.seoultel.message.mt.mms.core.message.lghv.messages.link;
 
-import kr.co.seoultel.message.mt.mms.core.messages.lghv.LghvProtocol;
+import kr.co.seoultel.message.mt.mms.core.common.protocol.LghvProtocol;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 import kr.co.seoultel.message.mt.mms.core.messages.lghv.link.LghvLinkMessage;
-import static kr.co.seoultel.message.mt.mms.core.messages.lghv.LghvProtocol.*;
+import static kr.co.seoultel.message.mt.mms.core.common.protocol.LghvProtocol.*;
 
 /**
  * {@link LghvLinkMessage}에 대한 테스트 클래스입니다.

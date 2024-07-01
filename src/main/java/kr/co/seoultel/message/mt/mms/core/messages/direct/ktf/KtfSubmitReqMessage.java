@@ -1,59 +1,58 @@
 package kr.co.seoultel.message.mt.mms.core.messages.direct.ktf;
 
 import jakarta.xml.soap.*;
-import kr.co.seoultel.message.core.dto.MessageDelivery;
 import kr.co.seoultel.message.mt.mms.core.common.constant.Constants;
-import kr.co.seoultel.message.mt.mms.core.messages.direct.SoapMessage;
 import kr.co.seoultel.message.mt.mms.core.util.DateUtil;
 import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import javax.xml.namespace.QName;
-import java.nio.charset.Charset;
-
-import static kr.co.seoultel.message.mt.mms.core.common.constant.Constants.EUC_KR;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.Objects;
 
 @Slf4j
-@ToString
-public class KtfSubmitReqMessage extends SoapMessage {
+@Getter
+@Setter
+public class KtfSubmitReqMessage extends KtfSoapMessage {
 
-
-    protected final transient MessageFactory messageFactory;
-    protected final String serviceType = "MMSMT1";
-    protected final String mm7Version = "1.0";
-
-    protected String dstMsgId;
+    protected String tid;
     protected String vaspId;
     protected String vasId;
     protected String cpid;
+
     protected final String senderAddress = "01025971376";
     protected String callback;
     protected String receiver;
-    protected final String messageClass = "GENERAL";
+
     protected String timeStamp;
     protected String subject;
-    protected final String deliveryReport = "TRUE";
-    protected final String readReply = "TRUE";
+
     protected String resellerCode;
 
 
     public KtfSubmitReqMessage() throws SOAPException {
-        messageFactory = MessageFactory.newInstance();
+        this.localPart = KtfProtocol.SUBMIT_REQ;
+        this.timeStamp = DateUtil.getDate(0, "dd-MM-yyyy HH:mm:ss");
+    }
+
+    public KtfSubmitReqMessage(String localPart) throws SOAPException {
+        this.localPart = KtfProtocol.SUBMIT_REQ;
         this.timeStamp = DateUtil.getDate(0, "dd-MM-yyyy HH:mm:ss");
     }
 
     @Builder
-    public KtfSubmitReqMessage(String vaspId, String vasId, String cpid, String dstMsgId, String callback, String receiver, String subject, String resellerCode) throws SOAPException {
-        this.messageFactory = MessageFactory.newInstance();
-
+    public KtfSubmitReqMessage(String vaspId, String vasId, String cpid, String tid, String callback, String receiver, String subject, String resellerCode) throws SOAPException {
         this.vaspId = vaspId;
         this.vasId = vasId;
         this.cpid = cpid;
 
-        this.dstMsgId = dstMsgId;
+        this.tid = tid;
         this.callback = callback;
         this.receiver = receiver;
         this.timeStamp = DateUtil.getDate(0, "dd-MM-yyyy HH:mm:ss");
@@ -63,12 +62,8 @@ public class KtfSubmitReqMessage extends SoapMessage {
 
     @Override
     public SOAPMessage toSOAPMessage() throws SOAPException {
-
-        // Create SOAP message factory
-        MessageFactory factory = MessageFactory.newInstance();
-
-        // Create SOAP message
-        SOAPMessage soapMessage = factory.createMessage();
+        /* Create SOAP message */
+        SOAPMessage soapMessage = messageFactory.createMessage();
         soapMessage.setProperty(SOAPMessage.WRITE_XML_DECLARATION, "true");
         soapMessage.setProperty(SOAPMessage.CHARACTER_SET_ENCODING, "euc-kr");
 
@@ -87,8 +82,8 @@ public class KtfSubmitReqMessage extends SoapMessage {
         SOAPHeader soapHeader = envelope.getHeader();
         soapHeader.setPrefix("env");
         soapHeader.addHeaderElement(new QName(Constants.KTF_TRANSACTION_ID_URL, "TransactionID", "mm7"))
-                .addTextNode(dstMsgId)
-                .setAttribute("env:mustUnderstand", "1");
+                    .addTextNode(tid)
+                    .setAttribute("env:mustUnderstand", "1");
 
         /* SOAP Body */
         SOAPBody soapBody = envelope.getBody();
@@ -112,14 +107,10 @@ public class KtfSubmitReqMessage extends SoapMessage {
 
         submitReq.addChildElement("MessageClass").addTextNode(messageClass);
         submitReq.addChildElement("TimeStamp").addTextNode(timeStamp);
-        submitReq.addChildElement("Subject").addTextNode(new String(subject.getBytes(Charset.forName(EUC_KR))));
+        submitReq.addChildElement("Subject").addTextNode(subject);
         submitReq.addChildElement("DeliveryReport").addTextNode(deliveryReport);
         submitReq.addChildElement("ReadReply").addTextNode(readReply);
         submitReq.addChildElement("ResellerCode").addTextNode(resellerCode);
-
-
-        // Save changes to SOAP message
-        soapMessage.saveChanges();
 
         return soapMessage;
     }
@@ -127,6 +118,10 @@ public class KtfSubmitReqMessage extends SoapMessage {
 
     @Override
     public void fromSOAPMessage(SOAPMessage soapMessage) throws SOAPException {
+        SOAPHeader soapHeader = soapMessage.getSOAPHeader();
+        SOAPElement transactionIdElement = (SOAPElement) soapHeader.addHeaderElement(new QName(Constants.KTF_TRANSACTION_ID_URL, "TransactionID", "mm7"));
+        this.tid = transactionIdElement.getValue();
+
         SOAPBody soapBody = soapMessage.getSOAPBody();
         Document document = soapBody.extractContentAsDocument();
 
@@ -141,6 +136,36 @@ public class KtfSubmitReqMessage extends SoapMessage {
         this.receiver = getElementValue(submitReqElement, "Number");
         this.timeStamp = getElementValue(submitReqElement, "TimeStamp");
         this.subject = getElementValue(submitReqElement, "Subject");
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        KtfSubmitReqMessage that = (KtfSubmitReqMessage) object;
+        return Objects.equals(vaspId, that.vaspId) && Objects.equals(vasId, that.vasId) && Objects.equals(cpid, that.cpid) && Objects.equals(tid, that.tid) && Objects.equals(senderAddress, that.senderAddress) && Objects.equals(callback, that.callback) && Objects.equals(receiver, that.receiver) && Objects.equals(timeStamp, that.timeStamp) && Objects.equals(subject, that.subject) && Objects.equals(resellerCode, that.resellerCode);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(vaspId, vasId, cpid, tid, senderAddress, callback, receiver, timeStamp, subject, resellerCode);
+    }
+
+    @Override
+    public String toString() {
+        return "KtfSubmitReqMessage{" +
+                "vaspId='" + vaspId + '\'' +
+                ", vasId='" + vasId + '\'' +
+                ", cpid='" + cpid + '\'' +
+                ", tid='" + tid + '\'' +
+                ", senderAddress='" + senderAddress + '\'' +
+                ", callback='" + callback + '\'' +
+                ", receiver='" + receiver + '\'' +
+                ", timeStamp='" + timeStamp + '\'' +
+                ", subject='" + subject + '\'' +
+                ", resellerCode='" + resellerCode + '\'' +
+                ", localPart='" + localPart + '\'' +
+                '}';
     }
 }
 

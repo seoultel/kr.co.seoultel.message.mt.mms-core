@@ -1,10 +1,7 @@
 package kr.co.seoultel.message.mt.mms.core.messages.hist.delivery.sms;
 
-import io.netty.buffer.ByteBuf;
-import kr.co.seoultel.message.mt.mms.core.messages.hist.HistMessage;
-import kr.co.seoultel.message.mt.mms.core.messages.hist.HistProtocol;
+import kr.co.seoultel.message.mt.mms.core.common.protocol.HistProtocol;
 import kr.co.seoultel.message.mt.mms.core.messages.hist.delivery.HistDeliveryMessage;
-import kr.co.seoultel.message.mt.mms.core.util.ConvertorUtil;
 import lombok.Builder;
 
 import java.util.Objects;

@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import static kr.co.seoultel.message.mt.mms.core.common.constant.Constants.EUC_KR;
 import static org.junit.jupiter.api.Assertions.*;
 
-import kr.co.seoultel.message.mt.mms.core.messages.hist.HistProtocol;
+import kr.co.seoultel.message.mt.mms.core.common.protocol.HistProtocol;
 import kr.co.seoultel.message.mt.mms.core.messages.hist.delivery.HistDeliveryMultipartData;
 import kr.co.seoultel.message.mt.mms.core.messages.hist.delivery.mms.HistMmsDeliveryMessage;
 

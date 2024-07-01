@@ -9,7 +9,7 @@ import kr.co.seoultel.message.mt.mms.core.common.interfaces.ConvertableToByteBuf
 import kr.co.seoultel.message.mt.mms.core.common.interfaces.ConvertableToJson;
 import kr.co.seoultel.message.mt.mms.core.common.interfaces.Zipper;
 import kr.co.seoultel.message.mt.mms.core.messages.smtnt.SmtntMessage;
-import kr.co.seoultel.message.mt.mms.core.messages.smtnt.SmtntProtocol;
+import kr.co.seoultel.message.mt.mms.core.common.protocol.SmtntProtocol;
 import kr.co.seoultel.message.mt.mms.core.messages.smtnt.delivery.SmtntDeliveryAckMessage;
 import kr.co.seoultel.message.mt.mms.core.messages.smtnt.delivery.SmtntDeliveryMessage;
 import kr.co.seoultel.message.mt.mms.core.messages.smtnt.delivery.mms.upload.file.SmtntUploadFileAckMessage;

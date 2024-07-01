@@ -9,14 +9,14 @@ import java.util.Arrays;
 import java.util.Objects;
 import io.netty.buffer.ByteBuf;
 
-import kr.co.seoultel.message.mt.mms.core.messages.hist.HistProtocol;
+import kr.co.seoultel.message.mt.mms.core.common.protocol.HistProtocol;
 import kr.co.seoultel.message.mt.mms.core.common.interfaces.ConvertableToByteBuf;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import static kr.co.seoultel.message.mt.mms.core.common.constant.Constants.EUC_KR;
-import static kr.co.seoultel.message.mt.mms.core.messages.hist.HistProtocol.M_TYPE_21;
-import static kr.co.seoultel.message.mt.mms.core.messages.hist.HistProtocol.M_TYPE_23;
+import static kr.co.seoultel.message.mt.mms.core.common.protocol.HistProtocol.M_TYPE_21;
+import static kr.co.seoultel.message.mt.mms.core.common.protocol.HistProtocol.M_TYPE_23;
 
 
 @Getter

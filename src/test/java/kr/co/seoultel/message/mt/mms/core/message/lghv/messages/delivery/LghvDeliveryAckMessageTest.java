@@ -4,7 +4,7 @@ package kr.co.seoultel.message.mt.mms.core.message.lghv.messages.delivery;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-import static kr.co.seoultel.message.mt.mms.core.messages.lghv.LghvProtocol.*;
+import static kr.co.seoultel.message.mt.mms.core.common.protocol.LghvProtocol.*;
 import kr.co.seoultel.message.mt.mms.core.messages.lghv.delivery.LghvDeliveryAckMessage;
 
 /**

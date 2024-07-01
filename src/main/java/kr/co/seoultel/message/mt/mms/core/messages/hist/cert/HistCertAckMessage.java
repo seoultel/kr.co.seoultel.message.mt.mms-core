@@ -4,7 +4,7 @@ import io.netty.buffer.ByteBuf;
 import kr.co.seoultel.message.mt.mms.core.entity.ServerInfo;
 import kr.co.seoultel.message.mt.mms.core.entity.ServerType;
 import kr.co.seoultel.message.mt.mms.core.messages.hist.HistMessage;
-import kr.co.seoultel.message.mt.mms.core.messages.hist.HistProtocol;
+import kr.co.seoultel.message.mt.mms.core.common.protocol.HistProtocol;
 import kr.co.seoultel.message.mt.mms.core.util.ConvertorUtil;
 import lombok.Builder;
 import lombok.Getter;

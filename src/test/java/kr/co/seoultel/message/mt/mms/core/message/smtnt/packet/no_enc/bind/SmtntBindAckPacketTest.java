@@ -3,15 +3,13 @@ package kr.co.seoultel.message.mt.mms.core.message.smtnt.packet.no_enc.bind;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import kr.co.seoultel.message.mt.mms.core.messages.smtnt.bind.SmtntBindMessage;
 import org.junit.jupiter.api.Test;
 
-import static kr.co.seoultel.message.mt.mms.core.messages.smtnt.SmtntProtocol.*;
+import static kr.co.seoultel.message.mt.mms.core.common.protocol.SmtntProtocol.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import kr.co.seoultel.message.mt.mms.core.message.smtnt.packet.no_enc.SmtntDefaultPacketTest;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import kr.co.seoultel.message.mt.mms.core.util.ConvertorUtil;
 
 import kr.co.seoultel.message.mt.mms.core.messages.smtnt.packet.SmtntPacket;
 import kr.co.seoultel.message.mt.mms.core.common.exceptions.CryptoException;

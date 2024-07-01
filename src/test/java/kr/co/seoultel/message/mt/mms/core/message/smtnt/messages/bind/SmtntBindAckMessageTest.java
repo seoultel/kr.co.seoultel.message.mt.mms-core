@@ -3,7 +3,7 @@ package kr.co.seoultel.message.mt.mms.core.message.smtnt.messages.bind;
 import kr.co.seoultel.message.mt.mms.core.messages.smtnt.bind.SmtntBindAckMessage;
 import org.junit.jupiter.api.Test;
 
-import static kr.co.seoultel.message.mt.mms.core.messages.smtnt.SmtntProtocol.SMTNT_BIND_ACK_METHOD_HEADER;
+import static kr.co.seoultel.message.mt.mms.core.common.protocol.SmtntProtocol.SMTNT_BIND_ACK_METHOD_HEADER;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**

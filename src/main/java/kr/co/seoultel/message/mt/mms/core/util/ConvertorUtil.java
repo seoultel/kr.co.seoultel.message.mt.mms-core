@@ -7,6 +7,7 @@ import com.google.gson.ToNumberPolicy;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
 import jakarta.xml.soap.MessageFactory;
+import jakarta.xml.soap.SOAPException;
 import jakarta.xml.soap.SOAPMessage;
 import kr.co.seoultel.message.mt.mms.core.common.exceptions.message.FormatException;
 import kr.co.seoultel.message.mt.mms.core.common.exceptions.message.MessageDeserializationException;
@@ -15,21 +16,34 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Slf4j
 public class ConvertorUtil {
     protected final static Gson gson  = new GsonBuilder().setObjectToNumberStrategy(ToNumberPolicy.LONG_OR_DOUBLE).create();
 
 
-    public static SOAPMessage convertSOAPMessageToString(String soapMessageStr) throws Exception {
+    public static SOAPMessage convertStringToSOAPMessage(String soapMessageStr) throws SOAPException, IOException {
         MessageFactory factory = MessageFactory.newInstance();
         return factory.createMessage(null, new ByteArrayInputStream(soapMessageStr.getBytes()));
     }
 
+    public static String convertStringToXml(String str) {
+        String pattern = "<\\?xml[\\s\\S]*?<\\/env:Envelope>";
+        Pattern regex = Pattern.compile(pattern);
+        Matcher matcher = regex.matcher(str);
 
+        if (matcher.find()) {
+            return matcher.group();
+        } else {
+            return null; // or throw an exception if XML not found
+        }
+    }
 
 
     public static <T> T convertBytesToObject(byte[] body, Class<T> cls) throws FormatException {

@@ -2,8 +2,7 @@ package kr.co.seoultel.message.mt.mms.core.message.hist.messages.delivery.lms;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import kr.co.seoultel.message.mt.mms.core.messages.hist.HistProtocol;
-import kr.co.seoultel.message.mt.mms.core.messages.hist.delivery.HistDeliveryMessage;
+import kr.co.seoultel.message.mt.mms.core.common.protocol.HistProtocol;
 import kr.co.seoultel.message.mt.mms.core.messages.hist.delivery.HistDeliveryMultipartData;
 import kr.co.seoultel.message.mt.mms.core.messages.hist.delivery.lms.HistLmsDeliveryMessage;
 import org.junit.jupiter.api.Test;
