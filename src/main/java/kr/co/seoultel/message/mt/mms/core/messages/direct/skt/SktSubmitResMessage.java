@@ -3,8 +3,6 @@ package kr.co.seoultel.message.mt.mms.core.messages.direct.skt;
 import jakarta.xml.soap.*;
 import kr.co.seoultel.message.mt.mms.core.common.constant.Constants;
 import kr.co.seoultel.message.mt.mms.core.messages.direct.ktf.KtfProtocol;
-import kr.co.seoultel.message.mt.mms.core.messages.direct.lgt.LgtProtocol;
-import kr.co.seoultel.message.mt.mms.core.util.DateUtil;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -12,39 +10,28 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import javax.xml.namespace.QName;
-import java.io.IOException;
+import java.awt.image.DataBuffer;
+import java.util.Objects;
 
 @Slf4j
 @Getter
-public class SktDeliveryReportReqMessage extends SktSoapMessage {
+public class SktSubmitResMessage extends SktSoapMessage {
 
     protected String tid;
-    protected String messageId;
-    protected String receiver;
-    protected String senderAddress;
-    protected String timeStamp;
     protected String statusCode;
     protected String statusText;
+    protected String messageId;
 
 
-    public SktDeliveryReportReqMessage() throws SOAPException {
-
+    public SktSubmitResMessage() throws SOAPException {
     }
 
     @Builder
-    public SktDeliveryReportReqMessage(String tid, String messageId, String receiver, String senderAddress, String statusCode, String statusText) throws SOAPException {
+    public SktSubmitResMessage(String tid, String statusCode, String statusText, String messageId) throws SOAPException {
         this.tid = tid;
-        this.messageId = messageId;
-
-        /* Receiver, Callback */
-        this.receiver = receiver;
-        this.senderAddress = senderAddress;
-
-        this.timeStamp = DateUtil.getDate(0);
-
-        /* statusCode, statusText */
         this.statusCode = statusCode;
         this.statusText = statusText;
+        this.messageId = messageId;
     }
 
     @Override
@@ -54,14 +41,11 @@ public class SktDeliveryReportReqMessage extends SktSoapMessage {
         soapMessage.setProperty(SOAPMessage.WRITE_XML_DECLARATION, "true");
         soapMessage.setProperty(SOAPMessage.CHARACTER_SET_ENCODING, "euc-kr");
 
-        /* SOAP Part */
         SOAPPart soapPart = soapMessage.getSOAPPart();
 
-        /* SOAP Envelope */
         SOAPEnvelope envelope = soapPart.getEnvelope();
         envelope.removeNamespaceDeclaration("SOAP-ENV");
         envelope.setPrefix("env");
-
 
         /* SOAP Header */
         SOAPHeader soapHeader = envelope.getHeader();
@@ -74,18 +58,14 @@ public class SktDeliveryReportReqMessage extends SktSoapMessage {
         SOAPBody soapBody = envelope.getBody();
         soapBody.setPrefix("env");
 
-        SOAPBodyElement deliveryReportReq = soapBody.addBodyElement(new QName(Constants.SKT_TRANSACTION_ID_URL, SktProtocol.DELIVERY_REPORT_REQ, "mm7"));
-        deliveryReportReq.addChildElement("MM7Version").addTextNode("5.3.0");
-        deliveryReportReq.addChildElement("MessageID").addTextNode(messageId);
+        SOAPBodyElement submitRsp = soapBody.addBodyElement(new QName(Constants.SKT_TRANSACTION_ID_URL, SktProtocol.SUBMIT_RES, "mm7"));
+        submitRsp.addChildElement("MM7Version").addTextNode("5.3.0");
 
-        SOAPElement recipient = deliveryReportReq.addChildElement("Recipient").addChildElement("Number").addTextNode(receiver);
-        SOAPElement sender = deliveryReportReq.addChildElement("Sender").addTextNode(senderAddress);
-
-        deliveryReportReq.addChildElement("CalledNet").addTextNode(timeStamp);
-
-        SOAPElement status = deliveryReportReq.addChildElement("Status");
+        SOAPElement status = submitRsp.addChildElement("Status");
         status.addChildElement("StatusCode").addTextNode(statusCode);
         status.addChildElement("StatusText").addTextNode(statusText);
+
+        submitRsp.addChildElement("MessageID").addTextNode(messageId);
 
         return soapMessage;
     }
@@ -101,21 +81,11 @@ public class SktDeliveryReportReqMessage extends SktSoapMessage {
         Document document = soapBody.extractContentAsDocument();
 
         // Get mm7:SubmitReq element
-        Element deliveryReportRsqElement = (Element) document.getElementsByTagName(String.format("mm7:%s", SktProtocol.DELIVERY_REPORT_REQ)).item(0);
+        Element submitRspElement = (Element) document.getElementsByTagName(String.format("mm7:%s", SktProtocol.SUBMIT_RES)).item(0);
 
         // Extract values from mm7:SubmitReq element
-        this.messageId = getElementValue(deliveryReportRsqElement, "MessageID");
-
-        this.senderAddress = getElementValue(deliveryReportRsqElement, "Sender");
-        this.receiver = getElementValue(deliveryReportRsqElement, "Number");
-
-        this.statusCode = getElementValue(deliveryReportRsqElement, "StatusCode");
-        this.statusText = getElementValue(deliveryReportRsqElement, "StatusText");
+        this.statusCode = getElementValue(submitRspElement, "StatusCode");
+        this.statusText = getElementValue(submitRspElement, "StatusText");
+        this.messageId = getElementValue(submitRspElement, "MessageID");
     }
-
-    public boolean isTpsOver() {
-        return (statusCode.equals("4006") |
-                statusCode.equals("4008"));
-    }
-
 }

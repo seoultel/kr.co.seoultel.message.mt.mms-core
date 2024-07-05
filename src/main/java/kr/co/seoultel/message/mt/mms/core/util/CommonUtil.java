@@ -8,9 +8,13 @@ import kr.co.seoultel.message.mt.mms.core.common.exceptions.TpsOverExeption;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.Duration;
+import java.util.Random;
 
 @Slf4j
 public class CommonUtil {
+
+    private static Random random = new Random();
+
     public static RateLimiter getRateLimiter(int tps, String name) {
         RateLimiterConfig config = RateLimiterConfig.custom()
                 .limitForPeriod(tps)
@@ -36,5 +40,15 @@ public class CommonUtil {
         } catch (InterruptedException ex) {
             log.error("[SYSTEM] Failed to thread sleep[{}]", milliSec);
         }
+    }
+
+    public static String getStringConsistOfRandomNumber(int length) {
+        String str = "";
+
+        for (int i = 0; i < length; i++) {
+            str += String.valueOf(random.nextInt(10));
+        }
+
+        return str;
     }
 }

@@ -2,11 +2,9 @@ package kr.co.seoultel.message.mt.mms.core.util;
 
 import lombok.extern.slf4j.Slf4j;
 
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 @Slf4j
 public class DateUtil {
@@ -33,6 +31,18 @@ public class DateUtil {
     public static String getDate(int plusSeconds, String format) {
         LocalDateTime future = LocalDateTime.now().plusSeconds((long) plusSeconds);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
+        return future.format(formatter);
+    }
+
+
+    /*
+    * String getDate(int plusSeconds, String format) 메서드 호출 시
+    * java.time.temporal.UnsupportedTemporalTypeException: Unsupported field: OffsetSeconds 예외 발생하는 경우
+    * format 에 "Z" 가 포함된 경우 사용
+    * */
+    public static String getZoneDateTime(int plusSeconds, String format) {
+        ZonedDateTime future = ZonedDateTime.now().plusSeconds((long) plusSeconds);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format, Locale.ENGLISH);
         return future.format(formatter);
     }
 

@@ -49,17 +49,17 @@ public class KtfResMessage extends KtfSoapMessage {
     public void fromSOAPMessage(SOAPMessage soapMessage) throws SOAPException {
         switch (localPart) {
             case KtfProtocol.SUBMIT_RES:
-                injectFieldsByKtrSubmitResMessageFromSOAPMessage(soapMessage);
+                injectFieldsByKtfSubmitResMessageFromSOAPMessage(soapMessage);
                 break;
 
             case KtfProtocol.DELIVERY_REPORT_RES:
-                injectFieldsByKtrDeliveryReportResMessageFromSOAPMessage(soapMessage);
+                injectFieldsByKtfDeliveryReportResMessageFromSOAPMessage(soapMessage);
                 break;
 
 
             case KtfProtocol.RS_ERROR_RES:
             case KtfProtocol.VASP_ERROR_RES:
-                injectFieldsByKtrErrorMessageFromSOAPMessage(soapMessage);
+                injectFieldsByKtfErrorMessageFromSOAPMessage(soapMessage);
                 break;
         }
     }
@@ -201,7 +201,7 @@ public class KtfResMessage extends KtfSoapMessage {
         return soapMessage;
     }
 
-    public void injectFieldsByKtrSubmitResMessageFromSOAPMessage(SOAPMessage soapMessage) throws SOAPException {
+    public void injectFieldsByKtfSubmitResMessageFromSOAPMessage(SOAPMessage soapMessage) throws SOAPException {
         SOAPHeader soapHeader = soapMessage.getSOAPHeader();
 
         SOAPElement transactionIdElement = (SOAPElement) soapHeader.getChildElements(new QName(Constants.KTF_TRANSACTION_ID_URL, "TransactionID", "mm7")).next();
@@ -219,7 +219,7 @@ public class KtfResMessage extends KtfSoapMessage {
         this.messageId = getElementValue(submitRspElement, "MessageID");
     }
 
-    public void injectFieldsByKtrDeliveryReportResMessageFromSOAPMessage(SOAPMessage soapMessage) throws SOAPException {
+    public void injectFieldsByKtfDeliveryReportResMessageFromSOAPMessage(SOAPMessage soapMessage) throws SOAPException {
         SOAPHeader soapHeader = soapMessage.getSOAPHeader();
         SOAPElement transactionIdElement = (SOAPElement) soapHeader.getChildElements(new QName(Constants.KTF_TRANSACTION_ID_URL, "TransactionID", "mm7")).next();
         this.tid = transactionIdElement != null ? transactionIdElement.getValue() : null;
@@ -236,7 +236,7 @@ public class KtfResMessage extends KtfSoapMessage {
         this.messageId = getElementValue(submitRspElement, "MessageID");
     }
 
-    public void injectFieldsByKtrErrorMessageFromSOAPMessage(SOAPMessage soapMessage) throws SOAPException {
+    public void injectFieldsByKtfErrorMessageFromSOAPMessage(SOAPMessage soapMessage) throws SOAPException {
         SOAPHeader soapHeader = soapMessage.getSOAPHeader();
         SOAPElement transactionIdElement = (SOAPElement) soapHeader.getChildElements(new QName(Constants.KTF_TRANSACTION_ID_URL, "TransactionID", "mm7")).next();
         this.tid = transactionIdElement != null ? transactionIdElement.getValue() : null;

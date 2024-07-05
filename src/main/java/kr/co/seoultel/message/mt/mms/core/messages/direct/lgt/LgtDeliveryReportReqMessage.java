@@ -1,4 +1,4 @@
-package kr.co.seoultel.message.mt.mms.core.messages.direct.ktf;
+package kr.co.seoultel.message.mt.mms.core.messages.direct.lgt;
 
 import jakarta.xml.soap.*;
 import kr.co.seoultel.message.mt.mms.core.common.constant.Constants;
@@ -12,40 +12,35 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import javax.xml.namespace.QName;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.Objects;
 
 @Slf4j
 @Getter
-@Setter
 @ToString
-public class KtfDeliveryReportReqMessage extends KtfSoapMessage {
+public class LgtDeliveryReportReqMessage extends LgtSoapMessage {
 
     protected String tid;
     protected String messageId;
     protected String receiver;
     protected String callback;
+
+    protected String calledNet;
     protected String timeStamp;
     protected String mmStatus;
 
-
-
-
-    public KtfDeliveryReportReqMessage() throws SOAPException {
+    public LgtDeliveryReportReqMessage() throws SOAPException {
         super();
 
-        this.localPart = KtfProtocol.DELIVERY_REPORT_REQ;
+        this.timeStamp = DateUtil.getDate();
     }
 
     @Builder
-    public KtfDeliveryReportReqMessage(String tid, String messageId, String receiver, String callback, String timeStamp, String mmStatus) throws SOAPException {
-        this.localPart = KtfProtocol.DELIVERY_REPORT_REQ;
-
+    public LgtDeliveryReportReqMessage(String tid, String messageId, String receiver, String callback, String calledNet, String mmStatus) throws SOAPException {
         this.tid = tid;
         this.messageId = messageId;
         this.receiver = receiver;
         this.callback = callback;
+        this.calledNet = calledNet;
+        this.timeStamp = DateUtil.getDate();
         this.mmStatus = mmStatus;
     }
 
@@ -68,22 +63,16 @@ public class KtfDeliveryReportReqMessage extends KtfSoapMessage {
         /* SOAP Header */
         SOAPHeader soapHeader = envelope.getHeader();
         soapHeader.setPrefix("env");
-        soapHeader.addHeaderElement(new QName(Constants.KTF_TRANSACTION_ID_URL, "TransactionID", "mm7"))
-                    .addTextNode(tid)
-                    .setAttribute("env:mustUnderstand", "1");
+        soapHeader.addHeaderElement(new QName(Constants.LGT_TRANSACTION_ID_URL, "TransactionID", "mm7"))
+                .addTextNode(tid)
+                .setAttribute("env:mustUnderstand", "1");
 
         /* SOAP Body */
         SOAPBody soapBody = envelope.getBody();
         soapBody.setPrefix("env");
 
-        /*
-         * TODO : KTF-TRANSACTION_ID_URL 수정 필요할지도 모름
-         *        NOW : "http://www.3gpp.org/ftp/Specs/archive/23_series/23.140/schema/REL-5-MM7-1-2"
-         *            -> TO BE ? http://www.3gpp.org/ftp/Specs/archive/23_series/23.140/schema/REL-5-MM7-1-0
-         */
-
-        SOAPBodyElement deliveryReportReq = soapBody.addBodyElement(new QName(Constants.KTF_TRANSACTION_ID_URL, "DeliveryReportReq", "mm7"));
-        deliveryReportReq.addChildElement("MM7Version").addTextNode(mm7Version);
+        SOAPBodyElement deliveryReportReq = soapBody.addBodyElement(new QName(Constants.LGT_TRANSACTION_ID_URL, LgtProtocol.DELIVERY_REPORT_REQ, "mm7"));
+        deliveryReportReq.addChildElement("MM7Version").addTextNode("5.3.0");
         deliveryReportReq.addChildElement("MessageID").addTextNode(messageId);
 
         SOAPElement recipient = deliveryReportReq.addChildElement("Recipient");
@@ -92,12 +81,12 @@ public class KtfDeliveryReportReqMessage extends KtfSoapMessage {
         SOAPElement sender = deliveryReportReq.addChildElement("Sender");
         sender.addChildElement("Number").addTextNode(callback);
 
-        deliveryReportReq.addChildElement("TimeStamp").addTextNode(DateUtil.getDate("dd-MM-yyyy HH:mm:ss"));
+        deliveryReportReq.addChildElement("CalledNet").addTextNode(calledNet);
+        deliveryReportReq.addChildElement("TimeStamp").addTextNode(timeStamp);
         deliveryReportReq.addChildElement("MMStatus").addTextNode(mmStatus);
 
         return soapMessage;
     }
-
 
     @Override
     public void fromSOAPMessage(SOAPMessage soapMessage) throws SOAPException {
@@ -122,40 +111,14 @@ public class KtfDeliveryReportReqMessage extends KtfSoapMessage {
         Element senderNumberElement = (Element) senderElement.getElementsByTagName("Number").item(0);
         this.callback = senderNumberElement.getTextContent().trim();
 
+        this.calledNet = getElementValue(deliveryReportReqElement, "CalledNet");
         this.timeStamp = getElementValue(deliveryReportReqElement, "TimeStamp");
         this.mmStatus = getElementValue(deliveryReportReqElement, "MMStatus");
     }
 
-
-
     public boolean isTpsOver() {
-        return this.mmStatus.equals(KtfProtocol.KTF_REPORT_HUB_OVER_INTRAFFIC);
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        if (this == object) return true;
-        if (object == null || getClass() != object.getClass()) return false;
-        KtfDeliveryReportReqMessage that = (KtfDeliveryReportReqMessage) object;
-        return Objects.equals(tid, that.tid) && Objects.equals(messageId, that.messageId) && Objects.equals(receiver, that.receiver) && Objects.equals(callback, that.callback) && Objects.equals(timeStamp, that.timeStamp) && Objects.equals(mmStatus, that.mmStatus);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(tid, messageId, receiver, callback, timeStamp, mmStatus);
-    }
-
-    @Override
-    public String toString() {
-        return "KtfDeliveryReportReqMessage{" +
-                "tid='" + tid + '\'' +
-                ", messageId='" + messageId + '\'' +
-                ", receiver='" + receiver + '\'' +
-                ", callback='" + callback + '\'' +
-                ", timeStamp='" + timeStamp + '\'' +
-                ", mmStatus='" + mmStatus + '\'' +
-                ", localPart='" + localPart + '\'' +
-                '}';
+        return (mmStatus.equals(LgtProtocol.UNSUPPORTED_OPERATION) |
+                mmStatus.equals(LgtProtocol.SYSTEM_ERROR) |
+                mmStatus.equals(LgtProtocol.TRAFFIC_IS_OVER));
     }
 }
-

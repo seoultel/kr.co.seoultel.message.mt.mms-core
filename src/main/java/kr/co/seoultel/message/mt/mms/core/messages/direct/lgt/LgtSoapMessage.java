@@ -10,25 +10,10 @@ import java.io.IOException;
 
 @Slf4j
 @ToString
-public class LgtSoapMessage extends SoapMessage {
+public abstract class LgtSoapMessage extends SoapMessage {
 
     public LgtSoapMessage() throws SOAPException {
         super();
-    }
-
-    @Override
-    public SOAPMessage toSOAPMessage() throws SOAPException {
-        return null;
-    }
-
-    @Override
-    public void fromSOAPMessage(SOAPMessage soapMessage) throws SOAPException {
-
-    }
-
-    @Override
-    public String convertSOAPMessageToString() throws SOAPException, IOException {
-        return null;
     }
 }
 

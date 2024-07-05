@@ -12,7 +12,6 @@ import java.io.IOException;
 @ToString
 public abstract class SktSoapMessage extends SoapMessage {
 
-    protected String localPart;
 
     protected final String mm7Version = "5.3.0";
     protected final String messageClass = "Personal";
@@ -23,12 +22,6 @@ public abstract class SktSoapMessage extends SoapMessage {
 
     public SktSoapMessage() throws SOAPException {
         super();
-    }
-
-    public SktSoapMessage(String localPart) throws SOAPException {
-        super();
-
-        this.localPart = localPart;
     }
 }
 

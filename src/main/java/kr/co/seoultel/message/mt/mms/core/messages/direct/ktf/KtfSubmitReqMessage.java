@@ -19,6 +19,7 @@ import java.util.Objects;
 @Slf4j
 @Getter
 @Setter
+@ToString
 public class KtfSubmitReqMessage extends KtfSoapMessage {
 
     protected String tid;
