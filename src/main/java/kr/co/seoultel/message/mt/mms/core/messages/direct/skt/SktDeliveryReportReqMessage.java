@@ -2,8 +2,7 @@ package kr.co.seoultel.message.mt.mms.core.messages.direct.skt;
 
 import jakarta.xml.soap.*;
 import kr.co.seoultel.message.mt.mms.core.common.constant.Constants;
-import kr.co.seoultel.message.mt.mms.core.messages.direct.ktf.KtfProtocol;
-import kr.co.seoultel.message.mt.mms.core.messages.direct.lgt.LgtProtocol;
+import kr.co.seoultel.message.mt.mms.core.common.protocol.SktProtocol;
 import kr.co.seoultel.message.mt.mms.core.util.DateUtil;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,7 +11,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import javax.xml.namespace.QName;
-import java.io.IOException;
 
 @Slf4j
 @Getter

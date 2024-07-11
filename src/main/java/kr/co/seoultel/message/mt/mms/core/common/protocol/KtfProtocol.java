@@ -1,4 +1,4 @@
-package kr.co.seoultel.message.mt.mms.core.messages.direct.ktf;
+package kr.co.seoultel.message.mt.mms.core.common.protocol;
 
 public class KtfProtocol {
 

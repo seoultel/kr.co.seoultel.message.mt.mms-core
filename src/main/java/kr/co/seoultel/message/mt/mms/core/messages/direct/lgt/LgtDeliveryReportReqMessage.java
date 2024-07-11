@@ -2,10 +2,10 @@ package kr.co.seoultel.message.mt.mms.core.messages.direct.lgt;
 
 import jakarta.xml.soap.*;
 import kr.co.seoultel.message.mt.mms.core.common.constant.Constants;
+import kr.co.seoultel.message.mt.mms.core.common.protocol.LgtProtocol;
 import kr.co.seoultel.message.mt.mms.core.util.DateUtil;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.w3c.dom.Document;
@@ -23,7 +23,7 @@ public class LgtDeliveryReportReqMessage extends LgtSoapMessage {
     protected String receiver;
     protected String callback;
 
-    protected String calledNet;
+    // protected String calledNet;
     protected String timeStamp;
     protected String mmStatus;
 
@@ -34,12 +34,12 @@ public class LgtDeliveryReportReqMessage extends LgtSoapMessage {
     }
 
     @Builder
-    public LgtDeliveryReportReqMessage(String tid, String messageId, String receiver, String callback, String calledNet, String mmStatus) throws SOAPException {
+    public LgtDeliveryReportReqMessage(String tid, String messageId, String receiver, String callback, String mmStatus) throws SOAPException {
         this.tid = tid;
         this.messageId = messageId;
         this.receiver = receiver;
         this.callback = callback;
-        this.calledNet = calledNet;
+        // this.calledNet = calledNet;
         this.timeStamp = DateUtil.getDate();
         this.mmStatus = mmStatus;
     }
@@ -81,7 +81,7 @@ public class LgtDeliveryReportReqMessage extends LgtSoapMessage {
         SOAPElement sender = deliveryReportReq.addChildElement("Sender");
         sender.addChildElement("Number").addTextNode(callback);
 
-        deliveryReportReq.addChildElement("CalledNet").addTextNode(calledNet);
+        // deliveryReportReq.addChildElement("CalledNet").addTextNode(calledNet);
         deliveryReportReq.addChildElement("TimeStamp").addTextNode(timeStamp);
         deliveryReportReq.addChildElement("MMStatus").addTextNode(mmStatus);
 
@@ -103,15 +103,15 @@ public class LgtDeliveryReportReqMessage extends LgtSoapMessage {
         // Extract values from mm7:SubmitReq element
         this.messageId = getElementValue(deliveryReportReqElement, "MessageID");
 
-        Element recipientElement = (Element) document.getElementsByTagName("Recipient").item(0);
-        Element recipientNumberElement = (Element) recipientElement.getElementsByTagName("Number").item(0);
+        Element recipientsElement = (Element) document.getElementsByTagName("Recipients").item(0);
+        Element recipientNumberElement = (Element) recipientsElement.getElementsByTagName("Number").item(0);
         this.receiver = recipientNumberElement.getTextContent().trim();
 
         Element senderElement = (Element) document.getElementsByTagName("Sender").item(0);
         Element senderNumberElement = (Element) senderElement.getElementsByTagName("Number").item(0);
         this.callback = senderNumberElement.getTextContent().trim();
 
-        this.calledNet = getElementValue(deliveryReportReqElement, "CalledNet");
+        // this.calledNet = getElementValue(deliveryReportReqElement, "CalledNet");
         this.timeStamp = getElementValue(deliveryReportReqElement, "TimeStamp");
         this.mmStatus = getElementValue(deliveryReportReqElement, "MMStatus");
     }

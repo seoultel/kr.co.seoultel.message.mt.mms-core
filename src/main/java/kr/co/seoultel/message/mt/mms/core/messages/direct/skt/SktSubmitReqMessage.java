@@ -4,7 +4,7 @@ import javax.xml.namespace.QName;
 
 import jakarta.xml.soap.*;
 
-import kr.co.seoultel.message.mt.mms.core.util.CommonUtil;
+import kr.co.seoultel.message.mt.mms.core.common.protocol.SktProtocol;
 import kr.co.seoultel.message.mt.mms.core.util.DateUtil;
 import kr.co.seoultel.message.mt.mms.core.common.constant.Constants;
 import lombok.Builder;
@@ -13,8 +13,6 @@ import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-
-import java.io.IOException;
 
 
 @Slf4j
@@ -70,8 +68,6 @@ public class SktSubmitReqMessage extends SktSoapMessage {
 
         /* SOAP Part */
         SOAPPart soapPart = soapMessage.getSOAPPart();
-        // soapPart.setContentId("<start_MM7_SOAP>");
-        // soapPart.setMimeHeader("Content-ID", String.format("<%s>", startCID));
         soapPart.setContentId("<start_MM7_SOAP>");
 
         /* SOAP Envelope */
@@ -120,15 +116,15 @@ public class SktSubmitReqMessage extends SktSoapMessage {
 
         submitReq.addChildElement("MessageClass").addTextNode(messageClass);
         submitReq.addChildElement("TimeStamp").addTextNode(DateUtil.getZoneDateTime(0, "EEE, d MMM yyyy hh:mm:ss Z"));
-        submitReq.addChildElement("ExpiryDate").addTextNode(DateUtil.getZoneDateTime((int) (Constants.DAY * 7), "EEE, d MMM yyyy hh:mm:ss Z"));
+        submitReq.addChildElement("ExpiryDate").addTextNode(DateUtil.getZoneDateTime(604800, "EEE, d MMM yyyy hh:mm:ss Z"));
         submitReq.addChildElement("DeliveryReport").addTextNode(deliveryReport);
         submitReq.addChildElement("ReadReply").addTextNode(readReply);
         submitReq.addChildElement("Priority").addTextNode(priority);
         submitReq.addChildElement("DistributionIndicator").addTextNode(distributionIndicator);
 
-//        // 5. X-SKT
-//        SOAPElement xSktElement = submitReq.addChildElement(new QName("http://vmg.nate.com:8080/soap/skt-schema.xsd", "X-SKT", "X-SKT"));
-//        xSktElement.addChildElement("X-SKT-Alias").addTextNode(callback);
+        // 5. X-SKT
+        SOAPElement xSktElement = submitReq.addChildElement(new QName("http://vmg.nate.com:8080/soap/skt-schema.xsd", "X-SKT", "X-SKT"));
+        xSktElement.addChildElement("X-SKT-Alias").addTextNode(callback);
 
         submitReq.addChildElement("Subject").addTextNode(subject);
         submitReq.addChildElement("Content")
