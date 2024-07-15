@@ -38,7 +38,7 @@ public class KtfDeliveryReportReqMessage extends KtfSoapMessage {
     }
 
     @Builder
-    public KtfDeliveryReportReqMessage(String tid, String messageId, String receiver, String callback, String timeStamp, String mmStatus) throws SOAPException {
+    public KtfDeliveryReportReqMessage(String tid, String messageId, String receiver, String callback, String mmStatus) throws SOAPException {
         this.localPart = KtfProtocol.DELIVERY_REPORT_REQ;
 
         this.tid = tid;
@@ -46,6 +46,10 @@ public class KtfDeliveryReportReqMessage extends KtfSoapMessage {
         this.receiver = receiver;
         this.callback = callback;
         this.mmStatus = mmStatus;
+    }
+
+    public boolean isSuccess() {
+        return mmStatus.equals(KtfProtocol.KTF_REPORT_SUCCESS) || mmStatus.equals(KtfProtocol.KTF_REPORT_SUCCESS_ANSIM);
     }
 
     @Override

@@ -3,6 +3,7 @@ package kr.co.seoultel.message.mt.mms.core.messages.direct.lgt;
 import jakarta.xml.soap.*;
 import kr.co.seoultel.message.mt.mms.core.common.constant.Constants;
 import kr.co.seoultel.message.mt.mms.core.common.protocol.KtfProtocol;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -25,7 +26,13 @@ public class LgtDeliveryReportResMessage extends LgtSoapMessage {
 
     public LgtDeliveryReportResMessage() throws SOAPException {}
 
-
+    @Builder
+    public LgtDeliveryReportResMessage(String tid, String statusCode, String statusText, String messageId) throws SOAPException {
+        this.tid = tid;
+        this.statusCode = statusCode;
+        this.statusText = statusText;
+        this.messageId = messageId;
+    }
 
     @Override
     public SOAPMessage toSOAPMessage() throws SOAPException {

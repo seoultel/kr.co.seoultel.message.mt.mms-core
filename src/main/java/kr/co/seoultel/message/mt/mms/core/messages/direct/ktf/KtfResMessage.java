@@ -26,6 +26,26 @@ public class KtfResMessage extends KtfSoapMessage {
         super(localPart);
     }
 
+    public boolean isTpsOver() {
+        return statusCode.equals(KtfProtocol.KTF_SUBMIT_ACK_HUB_OVER_INTRAFFIC_RESULT);
+    }
+
+    public boolean isHubspError() {
+        return (statusCode.equals(KtfProtocol.KTF_SUBMIT_ACK_HUB_AUTH_ERROR_RESULT) ||
+        statusCode.equals(KtfProtocol.KTF_SUBMIT_ACK_HUB_NOTFOUND_RESULT) ||
+        statusCode.equals(KtfProtocol.KTF_SUBMIT_ACK_HUB_BLOCK_RESULT) ||
+        statusCode.equals(KtfProtocol.KTF_SUBMIT_ACK_HUB_EXPIRED_RESULT) ||
+        statusCode.equals(KtfProtocol.KTF_SUBMIT_ACK_HUB_IP_INVALID_RESULT) ||
+        statusCode.equals(KtfProtocol.KTF_SUBMIT_ACK_HUB_CALLBACK_INVALID_RESULT));
+    }
+
+
+    public boolean isSuccess() {
+        return statusCode.equals(KtfProtocol.KTF_SUBMIT_ACK_SUCCESS_RESULT)
+                || statusCode.equals(KtfProtocol.KTF_REPORT_SUCCESS)
+                || statusCode.equals(KtfProtocol.KTF_REPORT_SUCCESS_ANSIM);
+    }
+
     @Override
     public SOAPMessage toSOAPMessage() throws SOAPException {
         switch (localPart) {

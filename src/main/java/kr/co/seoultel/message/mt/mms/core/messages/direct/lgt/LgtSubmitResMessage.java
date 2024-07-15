@@ -3,6 +3,8 @@ package kr.co.seoultel.message.mt.mms.core.messages.direct.lgt;
 import jakarta.xml.soap.*;
 import kr.co.seoultel.message.mt.mms.core.common.constant.Constants;
 import kr.co.seoultel.message.mt.mms.core.common.protocol.KtfProtocol;
+import kr.co.seoultel.message.mt.mms.core.common.protocol.LgtProtocol;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -25,6 +27,26 @@ public class LgtSubmitResMessage extends LgtSoapMessage {
     public LgtSubmitResMessage() throws SOAPException {
     }
 
+
+    public boolean isTpsOver() {
+        return statusCode.equals(LgtProtocol.TRAFFIC_IS_OVER);
+    }
+
+    public boolean isHubspError() {
+        return statusCode.equals(LgtProtocol.INVALID_AUTH_PASSWORD) || statusCode.equals(LgtProtocol.EXPIRED_PASSWORD);
+    }
+
+    public boolean isPortOut() {
+        return statusCode.equals(LgtProtocol.ADDRESS_NOT_FOUND);
+    }
+
+    @Builder
+    public LgtSubmitResMessage(String tid, String statusCode, String statusText, String messageId) throws SOAPException {
+        this.tid = tid;
+        this.statusCode = statusCode;
+        this.statusText = statusText;
+        this.messageId = messageId;
+    }
 
     @Override
     public SOAPMessage toSOAPMessage() throws SOAPException {
@@ -79,5 +101,9 @@ public class LgtSubmitResMessage extends LgtSoapMessage {
         this.statusCode = getElementValue(submitRspElement, "StatusCode");
         this.statusText = getElementValue(submitRspElement, "StatusText");
         this.messageId = getElementValue(submitRspElement, "MessageID");
+    }
+
+    public boolean isSuccess() {
+        return statusCode.equals(LgtProtocol.SUCCESS) || statusCode.equals(LgtProtocol.PARTIAL_SUCCESS);
     }
 }

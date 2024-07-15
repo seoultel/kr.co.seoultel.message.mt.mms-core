@@ -32,6 +32,18 @@ public class SktSubmitResMessage extends SktSoapMessage {
         this.messageId = messageId;
     }
 
+    public boolean isTpsOver() {
+        return statusCode.equals(SktProtocol.EXCEED_MAX_TRANS);
+    }
+
+    public boolean isHubspError() {
+        return statusCode.equals(SktProtocol.ADDRESSS_ERROR) || statusCode.equals(SktProtocol.SERVICE_DENIED);
+    }
+
+    public boolean isSuccess() {
+        return statusCode.equals(SktProtocol.SUCCESS);
+    }
+
     @Override
     public SOAPMessage toSOAPMessage() throws SOAPException {
         // Create SOAP message

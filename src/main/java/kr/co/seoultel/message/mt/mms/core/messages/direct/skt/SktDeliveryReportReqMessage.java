@@ -116,4 +116,8 @@ public class SktDeliveryReportReqMessage extends SktSoapMessage {
                 statusCode.equals("4008"));
     }
 
+    public boolean isSuccess() {
+        return statusCode.equals(SktProtocol.SUCCESS);
+    }
+
 }

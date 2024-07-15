@@ -75,7 +75,7 @@ public class LgtDeliveryReportReqMessage extends LgtSoapMessage {
         deliveryReportReq.addChildElement("MM7Version").addTextNode("5.3.0");
         deliveryReportReq.addChildElement("MessageID").addTextNode(messageId);
 
-        SOAPElement recipient = deliveryReportReq.addChildElement("Recipient");
+        SOAPElement recipient = deliveryReportReq.addChildElement("Recipients");
         recipient.addChildElement("Number").addTextNode(receiver);
 
         SOAPElement sender = deliveryReportReq.addChildElement("Sender");
@@ -120,5 +120,9 @@ public class LgtDeliveryReportReqMessage extends LgtSoapMessage {
         return (mmStatus.equals(LgtProtocol.UNSUPPORTED_OPERATION) |
                 mmStatus.equals(LgtProtocol.SYSTEM_ERROR) |
                 mmStatus.equals(LgtProtocol.TRAFFIC_IS_OVER));
+    }
+
+    public boolean isSuccess() {
+        return mmStatus.equals(LgtProtocol.SUCCESS) || mmStatus.equals(LgtProtocol.PARTIAL_SUCCESS);
     }
 }
