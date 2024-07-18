@@ -17,16 +17,17 @@ import static kr.co.seoultel.message.mt.mms.core.common.constant.Constants.MMS_E
 @AllArgsConstructor
 public class MessageHistory {
 
-    private String umsMsgId;
+    private String messageId;
     private LocalDateTime submitTime;
 
     // public static int MSG_EXPIRED_MINUTES = 1;
     public static long EXPIRED_TIME = MMS_EXPIRE_TIME;
 
-    public MessageHistory(String umsMsgId) {
-        this.umsMsgId = umsMsgId;
+    public MessageHistory(String messageId) {
+        this.messageId = messageId;
         this.submitTime = LocalDateTime.now();
     }
+
 
     public boolean isExpire() {
         Duration duration = Duration.between(submitTime, LocalDateTime.now());
@@ -38,11 +39,11 @@ public class MessageHistory {
         if (this == object) return true;
         if (object == null || getClass() != object.getClass()) return false;
         MessageHistory that = (MessageHistory) object;
-        return Objects.equals(umsMsgId, that.umsMsgId);
+        return Objects.equals(messageId, that.messageId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(umsMsgId);
+        return Objects.hash(messageId);
     }
 }

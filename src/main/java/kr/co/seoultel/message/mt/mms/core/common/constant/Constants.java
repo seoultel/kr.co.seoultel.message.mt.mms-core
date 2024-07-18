@@ -85,6 +85,7 @@ public class Constants {
 
 
 
+    public final static String SOAP_ERROR = "SOAP_ERROR";
     public final static String FORMAT_ERROR = "FORMAT_ERROR";
     public final static String UNKNOWN_ERROR = "UNKNOWN_ERROR";
 

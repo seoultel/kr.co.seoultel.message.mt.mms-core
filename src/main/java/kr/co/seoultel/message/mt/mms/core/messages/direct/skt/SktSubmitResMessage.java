@@ -5,6 +5,7 @@ import kr.co.seoultel.message.mt.mms.core.common.constant.Constants;
 import kr.co.seoultel.message.mt.mms.core.common.protocol.SktProtocol;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -13,6 +14,7 @@ import javax.xml.namespace.QName;
 
 @Slf4j
 @Getter
+@ToString
 public class SktSubmitResMessage extends SktSoapMessage {
 
     protected String tid;

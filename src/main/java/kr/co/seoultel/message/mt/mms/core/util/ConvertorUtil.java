@@ -6,20 +6,16 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.ToNumberPolicy;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
-import jakarta.mail.internet.MimeBodyPart;
-import jakarta.mail.util.ByteArrayDataSource;
 import jakarta.xml.soap.MessageFactory;
 import jakarta.xml.soap.SOAPException;
 import jakarta.xml.soap.SOAPMessage;
-import kr.co.seoultel.message.mt.mms.core.common.exceptions.message.FormatException;
 import kr.co.seoultel.message.mt.mms.core.common.exceptions.message.MessageDeserializationException;
-import kr.co.seoultel.message.mt.mms.core.common.exceptions.message.soap.MCMPSoapCreateException;
+import kr.co.seoultel.message.mt.mms.core.common.exceptions.message.soap.MCMPSoapRenderException;
+import kr.co.seoultel.message.mt.mms.core.common.serializer.LocalDateTimeSerializer;
 import lombok.extern.slf4j.Slf4j;
 import org.w3c.dom.Document;
-import jakarta.activation.DataHandler;
 
 import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -28,39 +24,41 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static kr.co.seoultel.message.mt.mms.core.common.constant.Constants.EUC_KR;
 
 @Slf4j
 public class ConvertorUtil {
 
     protected final static TransformerFactory transformerFactory = TransformerFactory.newInstance();
-    protected final static Gson gson  = new GsonBuilder().setObjectToNumberStrategy(ToNumberPolicy.LONG_OR_DOUBLE).create();
+    protected final static Gson gson  = new GsonBuilder()
+            .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeSerializer())
+            .setObjectToNumberStrategy(ToNumberPolicy.LONG_OR_DOUBLE).create();
 
 
-    public static String convertSourceToString(boolean useXmlDeclaration, Source source) throws MCMPSoapCreateException {
-        try {
-            Transformer transformer = transformerFactory.newTransformer();
-            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, useXmlDeclaration ? "no" : "yes");
-            transformer.setOutputProperty(OutputKeys.ENCODING, "euc-kr");
-            // transformer.setOutputProperty(OutputKeys.INDENT, "yes"); // indent 사용 여부
-            // transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2"); // indent 수
+//    public static String convertSourceToString(boolean useXmlDeclaration, Source source) throws MCMPSoapCreateException {
+//        try {
+//            Transformer transformer = transformerFactory.newTransformer();
+//            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, useXmlDeclaration ? "no" : "yes");
+//            transformer.setOutputProperty(OutputKeys.ENCODING, "euc-kr");
+//            // transformer.setOutputProperty(OutputKeys.INDENT, "yes"); // indent 사용 여부
+//            // transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2"); // indent 수
+//
+//            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+//            StreamResult result = new StreamResult(outputStream);
+//            transformer.transform(source, result);
+//
+//            return outputStream.toString("euc-kr");
+//        } catch (Exception e) {
+//            throw new MCMPSoapCreateException();
+//        }
+//    }
 
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            StreamResult result = new StreamResult(outputStream);
-            transformer.transform(source, result);
-
-            return outputStream.toString("euc-kr");
-        } catch (Exception e) {
-            throw new MCMPSoapCreateException();
-        }
-    }
-
-    public static String convertDocumentToString(boolean useXmlDeclaration, Document document) throws MCMPSoapCreateException {
+    public static String convertDocumentToString(boolean useXmlDeclaration, Document document) throws MCMPSoapRenderException {
         try {
             Transformer transformer = transformerFactory.newTransformer();
             transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, useXmlDeclaration ? "no" : "yes");
@@ -75,20 +73,20 @@ public class ConvertorUtil {
 
             return outputStream.toString("euc-kr").replaceAll("><", ">\r\n<");
         } catch (Exception e) {
-            throw new MCMPSoapCreateException();
+            throw new MCMPSoapRenderException("[SOAP] Fail to create soap message", e);
         }
     }
 
-    public static MimeBodyPart convertXmlStringToMimeBodyPart(String xml) throws MCMPSoapCreateException {
-        try {
-            MimeBodyPart mimeBodyPart = new MimeBodyPart();
-            ByteArrayDataSource dataSource = new ByteArrayDataSource(xml.getBytes(EUC_KR), "text/xml; charset=UTF-8");
-            mimeBodyPart.setDataHandler(new DataHandler(dataSource));
-            return mimeBodyPart;
-        } catch (Exception e) {
-            throw new MCMPSoapCreateException();
-        }
-    }
+//    public static MimeBodyPart convertXmlStringToMimeBodyPart(String xml) throws MCMPSoapCreateException {
+//        try {
+//            MimeBodyPart mimeBodyPart = new MimeBodyPart();
+//            ByteArrayDataSource dataSource = new ByteArrayDataSource(xml.getBytes(EUC_KR), "text/xml; charset=UTF-8");
+//            mimeBodyPart.setDataHandler(new DataHandler(dataSource));
+//            return mimeBodyPart;
+//        } catch (Exception e) {
+//            throw new MCMPSoapCreateException();
+//        }
+//    }
     public static SOAPMessage convertStringToSOAPMessage(String soapMessageStr) throws SOAPException, IOException {
         MessageFactory factory = MessageFactory.newInstance();
         return factory.createMessage(null, new ByteArrayInputStream(soapMessageStr.getBytes()));
@@ -107,13 +105,15 @@ public class ConvertorUtil {
     }
 
 
-    public static <T> T convertBytesToObject(byte[] body, Class<T> cls) throws FormatException {
+    public static <T> T convertBytesToObject(byte[] body, Class<T> cls) throws MessageDeserializationException {
         try {
             return gson.fromJson(new String(body), cls);
         } catch (Exception var3) {
             throw new MessageDeserializationException("[DESERIALIZED EXCEPTION] FAILED TO byte[] to MessageDelivery.class");
         }
     }
+
+
 
     public static String convertObjectToJson(Object object) {
         return gson.toJson(object);

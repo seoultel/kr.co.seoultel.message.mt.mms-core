@@ -22,6 +22,13 @@ public abstract class FormatException extends Exception {
     }
 
 
+    public FormatException(String message, MessageDelivery messageDelivery, DeliveryType deliveryType) {
+        super(message);
+
+        this.messageDelivery = messageDelivery;
+        this.deliveryType = deliveryType;
+    }
+
     public FormatException(String message, MessageDelivery messageDelivery, String mnoResult, DeliveryType deliveryType) {
         super(message);
 

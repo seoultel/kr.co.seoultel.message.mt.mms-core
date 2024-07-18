@@ -7,29 +7,29 @@ import static org.junit.jupiter.api.Assertions.*;
 public class MessageHistoryTest {
 
     @Test
-    void testConstructorWithUmsMsgId() {
-        String umsMsgId = "12345";
-        MessageHistory messageHistory = new MessageHistory(umsMsgId);
+    void testConstructorWithmessageId() {
+        String messageId = "12345";
+        MessageHistory messageHistory = new MessageHistory(messageId);
         assertNotNull(messageHistory);
-        assertEquals(umsMsgId, messageHistory.getUmsMsgId());
+        assertEquals(messageId, messageHistory.getMessageId());
         assertNotNull(messageHistory.getSubmitTime());
     }
 
     @Test
     void testIsExpire() {
-        String umsMsgId = "12345";
-        MessageHistory messageHistory = new MessageHistory(umsMsgId);
+        String messageId = "12345";
+        MessageHistory messageHistory = new MessageHistory(messageId);
         assertFalse(messageHistory.isExpire());
     }
 
 
     @Test
     void testEqualsAndHashCode() {
-        String umsMsgId1 = "12345";
-        String umsMsgId2 = "54321";
-        MessageHistory messageHistory1 = new MessageHistory(umsMsgId1);
-        MessageHistory messageHistory2 = new MessageHistory(umsMsgId1);
-        MessageHistory messageHistory3 = new MessageHistory(umsMsgId2);
+        String messageId1 = "12345";
+        String messageId2 = "54321";
+        MessageHistory messageHistory1 = new MessageHistory(messageId1);
+        MessageHistory messageHistory2 = new MessageHistory(messageId1);
+        MessageHistory messageHistory3 = new MessageHistory(messageId2);
 
         // Check equals
         assertTrue(messageHistory1.equals(messageHistory2));
