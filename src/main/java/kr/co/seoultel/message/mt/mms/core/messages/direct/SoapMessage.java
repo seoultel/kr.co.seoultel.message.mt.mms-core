@@ -4,6 +4,7 @@ import jakarta.xml.soap.MessageFactory;
 import jakarta.xml.soap.MimeHeaders;
 import jakarta.xml.soap.SOAPException;
 import jakarta.xml.soap.SOAPMessage;
+import kr.co.seoultel.message.mt.mms.core.common.exceptions.message.soap.MCMPSoapRenderException;
 import kr.co.seoultel.message.mt.mms.core.common.interfaces.ConvertableToSOAPMessage;
 import kr.co.seoultel.message.mt.mms.core.messages.Message;
 import org.w3c.dom.Element;
@@ -17,33 +18,46 @@ public abstract class SoapMessage extends Message implements ConvertableToSOAPMe
 
     protected final transient MessageFactory messageFactory;
 
-    public SoapMessage() throws SOAPException {
-        this.messageFactory = MessageFactory.newInstance();
+    public SoapMessage() throws MCMPSoapRenderException {
+        try {
+            this.messageFactory = MessageFactory.newInstance();
+        } catch (SOAPException e) {
+            throw new MCMPSoapRenderException("[SOAP] Fail to create soap factory", e);
+        }
     }
 
 
     // Helper method to extract text content of an element by tag name
-    protected String getElementValue(Element parentElement, String tagName) {
+    public String getElementValue(Element parentElement, String tagName) throws MCMPSoapRenderException {
         NodeList nodeList = parentElement.getElementsByTagName(tagName);
         if (nodeList.getLength() > 0) {
             return nodeList.item(0).getTextContent().trim();
+        } else {
+            throw new MCMPSoapRenderException(String.format("[SOAP] Fail to find tag[%s] in element[%s]", tagName, parentElement), null);
         }
-        return null;
     }
 
-    public String convertSOAPMessageToString() throws SOAPException, IOException {
-        SOAPMessage soapMessage = toSOAPMessage();
+    public String convertSOAPMessageToString() throws MCMPSoapRenderException {
+        try {
+            SOAPMessage soapMessage = toSOAPMessage();
 
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        soapMessage.writeTo(baos);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            soapMessage.writeTo(baos);
 
-        return baos.toString();
+            return baos.toString();
+        } catch (Exception e) {
+            throw new MCMPSoapRenderException("[SOAP] Fail to create soap message", e);
+        }
     }
 
-    public SOAPMessage fromXml(String xml) throws SOAPException, IOException {
-        SOAPMessage soapMessage = messageFactory.createMessage((MimeHeaders) null, new ByteArrayInputStream(xml.getBytes()));
-        fromSOAPMessage(soapMessage);
+    public SOAPMessage fromXml(String xml) throws MCMPSoapRenderException {
+        try {
+            SOAPMessage soapMessage = messageFactory.createMessage((MimeHeaders) null, new ByteArrayInputStream(xml.getBytes()));
+            fromSOAPMessage(soapMessage);
 
-        return soapMessage;
+            return soapMessage;
+        } catch (Exception e) {
+            throw new MCMPSoapRenderException("[SOAP] Fail to create soap message", e);
+        }
     }
 }

@@ -2,6 +2,7 @@ package kr.co.seoultel.message.mt.mms.core.messages.direct.ktf;
 
 import jakarta.xml.soap.*;
 import kr.co.seoultel.message.mt.mms.core.common.constant.Constants;
+import kr.co.seoultel.message.mt.mms.core.common.exceptions.message.soap.MCMPSoapRenderException;
 import kr.co.seoultel.message.mt.mms.core.common.protocol.KtfProtocol;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,7 +23,7 @@ public class KtfResMessage extends KtfSoapMessage {
     protected String messageId;
 
 
-    public KtfResMessage(String localPart) throws SOAPException {
+    public KtfResMessage(String localPart) throws MCMPSoapRenderException {
         super(localPart);
     }
 
@@ -47,7 +48,7 @@ public class KtfResMessage extends KtfSoapMessage {
     }
 
     @Override
-    public SOAPMessage toSOAPMessage() throws SOAPException {
+    public SOAPMessage toSOAPMessage() throws MCMPSoapRenderException {
         switch (localPart) {
             case KtfProtocol.SUBMIT_RES:
                 return createSOAPMessageByKtfSubmitResMessage();
@@ -65,7 +66,7 @@ public class KtfResMessage extends KtfSoapMessage {
     }
 
     @Override
-    public void fromSOAPMessage(SOAPMessage soapMessage) throws SOAPException {
+    public void fromSOAPMessage(SOAPMessage soapMessage) throws MCMPSoapRenderException {
         switch (localPart) {
             case KtfProtocol.SUBMIT_RES:
                 injectFieldsByKtfSubmitResMessageFromSOAPMessage(soapMessage);
@@ -84,191 +85,219 @@ public class KtfResMessage extends KtfSoapMessage {
     }
 
 
-    public SOAPMessage createSOAPMessageByKtfSubmitResMessage() throws SOAPException {
-        // Create SOAP message
-        SOAPMessage soapMessage = messageFactory.createMessage();
-        soapMessage.setProperty(SOAPMessage.WRITE_XML_DECLARATION, "true");
-        soapMessage.setProperty(SOAPMessage.CHARACTER_SET_ENCODING, "euc-kr");
+    public SOAPMessage createSOAPMessageByKtfSubmitResMessage() throws MCMPSoapRenderException {
+        try {
+            // Create SOAP message
+            SOAPMessage soapMessage = messageFactory.createMessage();
+            soapMessage.setProperty(SOAPMessage.WRITE_XML_DECLARATION, "true");
+            soapMessage.setProperty(SOAPMessage.CHARACTER_SET_ENCODING, "euc-kr");
 
-        SOAPPart soapPart = soapMessage.getSOAPPart();
+            SOAPPart soapPart = soapMessage.getSOAPPart();
 
-        SOAPEnvelope envelope = soapPart.getEnvelope();
-        envelope.removeNamespaceDeclaration("SOAP-ENV");
-        envelope.setPrefix("env");
+            SOAPEnvelope envelope = soapPart.getEnvelope();
+            envelope.removeNamespaceDeclaration("SOAP-ENV");
+            envelope.setPrefix("env");
 
-        /* SOAP Header */
-        SOAPHeader soapHeader = envelope.getHeader();
-        soapHeader.setPrefix("env");
-        soapHeader.addHeaderElement(new QName(Constants.KTF_TRANSACTION_ID_URL, "TransactionID", "mm7"))
-                  .addTextNode(tid)
-                  .setAttribute("env:mustUnderstand", "1");
+            /* SOAP Header */
+            SOAPHeader soapHeader = envelope.getHeader();
+            soapHeader.setPrefix("env");
+            soapHeader.addHeaderElement(new QName(Constants.KTF_TRANSACTION_ID_URL, "TransactionID", "mm7"))
+                      .addTextNode(tid)
+                      .setAttribute("env:mustUnderstand", "1");
 
-        /* SOAP Body */
-        SOAPBody soapBody = envelope.getBody();
-        soapBody.setPrefix("env");
+            /* SOAP Body */
+            SOAPBody soapBody = envelope.getBody();
+            soapBody.setPrefix("env");
 
-        SOAPBodyElement submitRsp = soapBody.addBodyElement(new QName(Constants.KTF_TRANSACTION_ID_URL, KtfProtocol.SUBMIT_RES, "mm7"));
+            SOAPBodyElement submitRsp = soapBody.addBodyElement(new QName(Constants.KTF_TRANSACTION_ID_URL, KtfProtocol.SUBMIT_RES, "mm7"));
 
-        SOAPElement status = submitRsp.addChildElement("Status");
-        status.addChildElement("StatusCode").addTextNode(statusCode);
-        status.addChildElement("StatusText").addTextNode(statusText);
+            SOAPElement status = submitRsp.addChildElement("Status");
+            status.addChildElement("StatusCode").addTextNode(statusCode);
+            status.addChildElement("StatusText").addTextNode(statusText);
 
-        submitRsp.addChildElement("MM7Version").addTextNode(mm7Version);
-        submitRsp.addChildElement("MessageID").addTextNode(messageId);
+            submitRsp.addChildElement("MM7Version").addTextNode(mm7Version);
+            submitRsp.addChildElement("MessageID").addTextNode(messageId);
 
-        return soapMessage;
+            return soapMessage;
+        } catch (Exception e) {
+            throw new MCMPSoapRenderException("[SOAP] Fail to create KtfSubmitResMessage", e);
+        }
     }
 
 
-    public SOAPMessage createSOAPMessageByKtfDeliveryReportResMessage() throws SOAPException {
-        // Create SOAP message
-        SOAPMessage soapMessage = messageFactory.createMessage();
-        soapMessage.setProperty(SOAPMessage.WRITE_XML_DECLARATION, "true");
-        soapMessage.setProperty(SOAPMessage.CHARACTER_SET_ENCODING, "euc-kr");
+    public SOAPMessage createSOAPMessageByKtfDeliveryReportResMessage() throws MCMPSoapRenderException {
+        try {
+            // Create SOAP message
+            SOAPMessage soapMessage = messageFactory.createMessage();
+            soapMessage.setProperty(SOAPMessage.WRITE_XML_DECLARATION, "true");
+            soapMessage.setProperty(SOAPMessage.CHARACTER_SET_ENCODING, "euc-kr");
 
-        SOAPPart soapPart = soapMessage.getSOAPPart();
+            SOAPPart soapPart = soapMessage.getSOAPPart();
 
-        SOAPEnvelope envelope = soapPart.getEnvelope();
-        envelope.removeNamespaceDeclaration("SOAP-ENV");
-        envelope.setPrefix("env");
+            SOAPEnvelope envelope = soapPart.getEnvelope();
+            envelope.removeNamespaceDeclaration("SOAP-ENV");
+            envelope.setPrefix("env");
 
-        /* SOAP Header */
-        SOAPHeader soapHeader = envelope.getHeader();
-        soapHeader.setPrefix("env");
-        soapHeader.addHeaderElement(new QName(Constants.KTF_TRANSACTION_ID_URL, "TransactionID", "mm7"))
-                  .addTextNode(tid)
-                  .setAttribute("env:mustUnderstand", "1");
+            /* SOAP Header */
+            SOAPHeader soapHeader = envelope.getHeader();
+            soapHeader.setPrefix("env");
+            soapHeader.addHeaderElement(new QName(Constants.KTF_TRANSACTION_ID_URL, "TransactionID", "mm7"))
+                      .addTextNode(tid)
+                      .setAttribute("env:mustUnderstand", "1");
 
-        /* SOAP Body */
-        SOAPBody soapBody = envelope.getBody();
-        soapBody.setPrefix("env");
+            /* SOAP Body */
+            SOAPBody soapBody = envelope.getBody();
+            soapBody.setPrefix("env");
 
-        SOAPBodyElement deliveryReportRsp = soapBody.addBodyElement(new QName(Constants.KTF_TRANSACTION_ID_URL, KtfProtocol.DELIVERY_REPORT_RES, "mm7"));
+            SOAPBodyElement deliveryReportRsp = soapBody.addBodyElement(new QName(Constants.KTF_TRANSACTION_ID_URL, KtfProtocol.DELIVERY_REPORT_RES, "mm7"));
 
-        SOAPElement status = deliveryReportRsp.addChildElement("Status");
-        status.addChildElement("StatusCode").addTextNode(statusCode);
-        status.addChildElement("StatusText").addTextNode(statusText);
+            SOAPElement status = deliveryReportRsp.addChildElement("Status");
+            status.addChildElement("StatusCode").addTextNode(statusCode);
+            status.addChildElement("StatusText").addTextNode(statusText);
 
-        deliveryReportRsp.addChildElement("MM7Version").addTextNode(mm7Version);
+            deliveryReportRsp.addChildElement("MM7Version").addTextNode(mm7Version);
 
-        return soapMessage;
+            return soapMessage;
+        } catch (Exception e) {
+            throw new MCMPSoapRenderException("[SOAP] Fail to create KtfDeliveryReportResMessage", e);
+        }
     }
 
 
-    public SOAPMessage createSOAPMessageByKtfVaspErrorResMessage() throws SOAPException {
-        // Create SOAP message
-        SOAPMessage soapMessage = messageFactory.createMessage();
-        soapMessage.setProperty(SOAPMessage.WRITE_XML_DECLARATION, "true");
-        soapMessage.setProperty(SOAPMessage.CHARACTER_SET_ENCODING, "euc-kr");
+    public SOAPMessage createSOAPMessageByKtfVaspErrorResMessage() throws MCMPSoapRenderException {
+        try {
+            // Create SOAP message
+            SOAPMessage soapMessage = messageFactory.createMessage();
+            soapMessage.setProperty(SOAPMessage.WRITE_XML_DECLARATION, "true");
+            soapMessage.setProperty(SOAPMessage.CHARACTER_SET_ENCODING, "euc-kr");
 
-        SOAPPart soapPart = soapMessage.getSOAPPart();
+            SOAPPart soapPart = soapMessage.getSOAPPart();
 
-        SOAPEnvelope envelope = soapPart.getEnvelope();
-        envelope.removeNamespaceDeclaration("SOAP-ENV");
-        envelope.setPrefix("env");
+            SOAPEnvelope envelope = soapPart.getEnvelope();
+            envelope.removeNamespaceDeclaration("SOAP-ENV");
+            envelope.setPrefix("env");
 
-        /* SOAP Header */
-        SOAPHeader soapHeader = envelope.getHeader();
-        soapHeader.setPrefix("env");
-        soapHeader.addHeaderElement(new QName(Constants.KTF_TRANSACTION_ID_URL, "TransactionID", "mm7"))
-                  .setAttribute("env:mustUnderstand", "1");
+            /* SOAP Header */
+            SOAPHeader soapHeader = envelope.getHeader();
+            soapHeader.setPrefix("env");
+            soapHeader.addHeaderElement(new QName(Constants.KTF_TRANSACTION_ID_URL, "TransactionID", "mm7"))
+                      .setAttribute("env:mustUnderstand", "1");
 
-        /* SOAP Body */
-        SOAPBody soapBody = envelope.getBody();
-        soapBody.setPrefix("env");
+            /* SOAP Body */
+            SOAPBody soapBody = envelope.getBody();
+            soapBody.setPrefix("env");
 
-        SOAPBodyElement rsErrorRsp = soapBody.addBodyElement(new QName(Constants.KTF_TRANSACTION_ID_URL, KtfProtocol.VASP_ERROR_RES, "mm7"));
-        rsErrorRsp.addChildElement("MM7Version").addTextNode(mm7Version);
+            SOAPBodyElement rsErrorRsp = soapBody.addBodyElement(new QName(Constants.KTF_TRANSACTION_ID_URL, KtfProtocol.VASP_ERROR_RES, "mm7"));
+            rsErrorRsp.addChildElement("MM7Version").addTextNode(mm7Version);
 
-        SOAPElement status = rsErrorRsp.addChildElement("Status");
-        status.addChildElement("StatusCode").addTextNode(statusCode);
-        status.addChildElement("StatusText").addTextNode(statusText);
+            SOAPElement status = rsErrorRsp.addChildElement("Status");
+            status.addChildElement("StatusCode").addTextNode(statusCode);
+            status.addChildElement("StatusText").addTextNode(statusText);
 
-        return soapMessage;
+            return soapMessage;
+        } catch (Exception e) {
+            throw new MCMPSoapRenderException("[SOAP] Fail to create KtfVaspErrorResMessage", e);
+        }
     }
 
-    public SOAPMessage createSOAPMessageByKtfRsErrorResMessage() throws SOAPException {
-        // Create SOAP message
-        SOAPMessage soapMessage = messageFactory.createMessage();
-        soapMessage.setProperty(SOAPMessage.WRITE_XML_DECLARATION, "true");
-        soapMessage.setProperty(SOAPMessage.CHARACTER_SET_ENCODING, "euc-kr");
+    public SOAPMessage createSOAPMessageByKtfRsErrorResMessage() throws MCMPSoapRenderException {
+        try {
+            // Create SOAP message
+            SOAPMessage soapMessage = messageFactory.createMessage();
+            soapMessage.setProperty(SOAPMessage.WRITE_XML_DECLARATION, "true");
+            soapMessage.setProperty(SOAPMessage.CHARACTER_SET_ENCODING, "euc-kr");
 
-        SOAPPart soapPart = soapMessage.getSOAPPart();
+            SOAPPart soapPart = soapMessage.getSOAPPart();
 
-        SOAPEnvelope envelope = soapPart.getEnvelope();
-        envelope.removeNamespaceDeclaration("SOAP-ENV");
-        envelope.setPrefix("env");
+            SOAPEnvelope envelope = soapPart.getEnvelope();
+            envelope.removeNamespaceDeclaration("SOAP-ENV");
+            envelope.setPrefix("env");
 
-        /* SOAP Header */
-        SOAPHeader soapHeader = envelope.getHeader();
-        soapHeader.setPrefix("env");
-        soapHeader.addHeaderElement(new QName(Constants.KTF_TRANSACTION_ID_URL, "TransactionID", "mm7"))
-                  .setAttribute("env:mustUnderstand", "1");
+            /* SOAP Header */
+            SOAPHeader soapHeader = envelope.getHeader();
+            soapHeader.setPrefix("env");
+            soapHeader.addHeaderElement(new QName(Constants.KTF_TRANSACTION_ID_URL, "TransactionID", "mm7"))
+                      .setAttribute("env:mustUnderstand", "1");
 
-        /* SOAP Body */
-        SOAPBody soapBody = envelope.getBody();
-        soapBody.setPrefix("env");
+            /* SOAP Body */
+            SOAPBody soapBody = envelope.getBody();
+            soapBody.setPrefix("env");
 
-        SOAPBodyElement rsErrorRsp = soapBody.addBodyElement(new QName(Constants.KTF_TRANSACTION_ID_URL, KtfProtocol.RS_ERROR_RES, "mm7"));
-        rsErrorRsp.addChildElement("MM7Version").addTextNode(mm7Version);
+            SOAPBodyElement rsErrorRsp = soapBody.addBodyElement(new QName(Constants.KTF_TRANSACTION_ID_URL, KtfProtocol.RS_ERROR_RES, "mm7"));
+            rsErrorRsp.addChildElement("MM7Version").addTextNode(mm7Version);
 
-        SOAPElement status = rsErrorRsp.addChildElement("Status");
-        status.addChildElement("StatusCode").addTextNode(statusCode);
-        status.addChildElement("StatusText").addTextNode(statusText);
+            SOAPElement status = rsErrorRsp.addChildElement("Status");
+            status.addChildElement("StatusCode").addTextNode(statusCode);
+            status.addChildElement("StatusText").addTextNode(statusText);
 
 
-        return soapMessage;
+            return soapMessage;
+        } catch (Exception e) {
+            throw new MCMPSoapRenderException("[SOAP] Fail to create KtfRsErrorResMessage", e);
+        }
     }
 
-    public void injectFieldsByKtfSubmitResMessageFromSOAPMessage(SOAPMessage soapMessage) throws SOAPException {
-        SOAPHeader soapHeader = soapMessage.getSOAPHeader();
+    public void injectFieldsByKtfSubmitResMessageFromSOAPMessage(SOAPMessage soapMessage) throws MCMPSoapRenderException {
+        try {
+            SOAPHeader soapHeader = soapMessage.getSOAPHeader();
 
-        SOAPElement transactionIdElement = (SOAPElement) soapHeader.getChildElements(new QName(Constants.KTF_TRANSACTION_ID_URL, "TransactionID", "mm7")).next();
-        this.tid = transactionIdElement != null ? transactionIdElement.getValue() : null;
+            SOAPElement transactionIdElement = (SOAPElement) soapHeader.getChildElements(new QName(Constants.KTF_TRANSACTION_ID_URL, "TransactionID", "mm7")).next();
+            this.tid = transactionIdElement != null ? transactionIdElement.getValue() : null;
 
-        SOAPBody soapBody = soapMessage.getSOAPBody();
-        Document document = soapBody.extractContentAsDocument();
+            SOAPBody soapBody = soapMessage.getSOAPBody();
+            Document document = soapBody.extractContentAsDocument();
 
-        // Get mm7:SubmitReq element
-        Element submitRspElement = (Element) document.getElementsByTagName("mm7:SubmitRsp").item(0);
+            // Get mm7:SubmitReq element
+            Element submitRspElement = (Element) document.getElementsByTagName("mm7:SubmitRsp").item(0);
 
-        // Extract values from mm7:SubmitReq element
-        this.statusCode = getElementValue(submitRspElement, "StatusCode");
-        this.statusText = getElementValue(submitRspElement, "StatusText");
-        this.messageId = getElementValue(submitRspElement, "MessageID");
+            // Extract values from mm7:SubmitReq element
+            this.statusCode = getElementValue(submitRspElement, "StatusCode");
+            this.statusText = getElementValue(submitRspElement, "StatusText");
+            this.messageId = getElementValue(submitRspElement, "MessageID");
+        } catch (Exception e) {
+            throw new MCMPSoapRenderException("[SOAP] Fail to create KtfSubmitResMessage from SOAPMessage", e);
+        }
     }
 
-    public void injectFieldsByKtfDeliveryReportResMessageFromSOAPMessage(SOAPMessage soapMessage) throws SOAPException {
-        SOAPHeader soapHeader = soapMessage.getSOAPHeader();
-        SOAPElement transactionIdElement = (SOAPElement) soapHeader.getChildElements(new QName(Constants.KTF_TRANSACTION_ID_URL, "TransactionID", "mm7")).next();
-        this.tid = transactionIdElement != null ? transactionIdElement.getValue() : null;
+    public void injectFieldsByKtfDeliveryReportResMessageFromSOAPMessage(SOAPMessage soapMessage) throws MCMPSoapRenderException {
+        try {
+            SOAPHeader soapHeader = soapMessage.getSOAPHeader();
+            SOAPElement transactionIdElement = (SOAPElement) soapHeader.getChildElements(new QName(Constants.KTF_TRANSACTION_ID_URL, "TransactionID", "mm7")).next();
+            this.tid = transactionIdElement != null ? transactionIdElement.getValue() : null;
 
-        SOAPBody soapBody = soapMessage.getSOAPBody();
-        Document document = soapBody.extractContentAsDocument();
+            SOAPBody soapBody = soapMessage.getSOAPBody();
+            Document document = soapBody.extractContentAsDocument();
 
-        // Get mm7:SubmitReq element
-        Element submitRspElement = (Element) document.getElementsByTagName("mm7:SubmitRsp").item(0);
+            // Get mm7:SubmitReq element
+            Element submitRspElement = (Element) document.getElementsByTagName("mm7:SubmitRsp").item(0);
 
-        // Extract values from mm7:SubmitReq element
-        this.statusCode = getElementValue(submitRspElement, "StatusCode");
-        this.statusText = getElementValue(submitRspElement, "StatusText");
-        this.messageId = getElementValue(submitRspElement, "MessageID");
+            // Extract values from mm7:SubmitReq element
+            this.statusCode = getElementValue(submitRspElement, "StatusCode");
+            this.statusText = getElementValue(submitRspElement, "StatusText");
+            this.messageId = getElementValue(submitRspElement, "MessageID");
+        } catch (Exception e) {
+            throw new MCMPSoapRenderException("[SOAP] Fail to create KtfDeliveryReportResMessage from SOAPMessage", e);
+        }
     }
 
-    public void injectFieldsByKtfErrorMessageFromSOAPMessage(SOAPMessage soapMessage) throws SOAPException {
-        SOAPHeader soapHeader = soapMessage.getSOAPHeader();
-        SOAPElement transactionIdElement = (SOAPElement) soapHeader.getChildElements(new QName(Constants.KTF_TRANSACTION_ID_URL, "TransactionID", "mm7")).next();
-        this.tid = transactionIdElement != null ? transactionIdElement.getValue() : null;
+    public void injectFieldsByKtfErrorMessageFromSOAPMessage(SOAPMessage soapMessage) throws MCMPSoapRenderException {
+        try {
+            SOAPHeader soapHeader = soapMessage.getSOAPHeader();
+            SOAPElement transactionIdElement = (SOAPElement) soapHeader.getChildElements(new QName(Constants.KTF_TRANSACTION_ID_URL, "TransactionID", "mm7")).next();
+            this.tid = transactionIdElement != null ? transactionIdElement.getValue() : null;
 
-        SOAPBody soapBody = soapMessage.getSOAPBody();
-        Document document = soapBody.extractContentAsDocument();
+            SOAPBody soapBody = soapMessage.getSOAPBody();
+            Document document = soapBody.extractContentAsDocument();
 
-        // Get mm7:SubmitReq element
-        Element submitRspElement = (Element) document.getElementsByTagName("mm7:SubmitRsp").item(0);
+            // Get mm7:SubmitReq element
+            Element submitRspElement = (Element) document.getElementsByTagName("mm7:SubmitRsp").item(0);
 
-        // Extract values from mm7:SubmitReq element
-        this.statusCode = getElementValue(submitRspElement, "StatusCode");
-        this.statusText = getElementValue(submitRspElement, "StatusText");
+            // Extract values from mm7:SubmitReq element
+            this.statusCode = getElementValue(submitRspElement, "StatusCode");
+            this.statusText = getElementValue(submitRspElement, "StatusText");
+        } catch (Exception e) {
+            throw new MCMPSoapRenderException("[SOAP] Fail to create KtfErrorMessage from SOAPMessage", e);
+        }
     }
 
     @Override

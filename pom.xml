@@ -24,6 +24,14 @@
   </repositories>
 
   <dependencies>
+    <!-- Maven dependency -->
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-inline</artifactId>
+      <version>4.0.0</version>
+      <scope>test</scope>
+    </dependency>
+
     <!-- https://mvnrepository.com/artifact/io.github.resilience4j/resilience4j-spring-boot2 -->
     <dependency>
       <groupId>io.github.resilience4j</groupId>

@@ -71,5 +71,4 @@ public class DateUtil {
 
         return nextSecondTime - currentTime;
     }
-
 }

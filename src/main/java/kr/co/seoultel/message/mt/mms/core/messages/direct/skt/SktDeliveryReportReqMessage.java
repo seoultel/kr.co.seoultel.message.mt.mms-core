@@ -2,6 +2,7 @@ package kr.co.seoultel.message.mt.mms.core.messages.direct.skt;
 
 import jakarta.xml.soap.*;
 import kr.co.seoultel.message.mt.mms.core.common.constant.Constants;
+import kr.co.seoultel.message.mt.mms.core.common.exceptions.message.soap.MCMPSoapRenderException;
 import kr.co.seoultel.message.mt.mms.core.common.protocol.SktProtocol;
 import kr.co.seoultel.message.mt.mms.core.util.DateUtil;
 import lombok.Builder;
@@ -22,17 +23,16 @@ public class SktDeliveryReportReqMessage extends SktSoapMessage {
     protected String messageId;
     protected String receiver;
     protected String senderAddress;
-    protected String timeStamp;
     protected String statusCode;
     protected String statusText;
 
 
-    public SktDeliveryReportReqMessage() throws SOAPException {
+    public SktDeliveryReportReqMessage() throws MCMPSoapRenderException {
 
     }
 
     @Builder
-    public SktDeliveryReportReqMessage(String tid, String messageId, String receiver, String senderAddress, String statusCode, String statusText) throws SOAPException {
+    public SktDeliveryReportReqMessage(String tid, String messageId, String receiver, String senderAddress, String statusCode, String statusText) throws MCMPSoapRenderException {
         this.tid = tid;
         this.messageId = messageId;
 
@@ -40,77 +40,83 @@ public class SktDeliveryReportReqMessage extends SktSoapMessage {
         this.receiver = receiver;
         this.senderAddress = senderAddress;
 
-        this.timeStamp = DateUtil.getDate(0);
-
         /* statusCode, statusText */
         this.statusCode = statusCode;
         this.statusText = statusText;
     }
 
     @Override
-    public SOAPMessage toSOAPMessage() throws SOAPException {
-        // Create SOAP message
-        SOAPMessage soapMessage = messageFactory.createMessage();
-        soapMessage.setProperty(SOAPMessage.WRITE_XML_DECLARATION, "true");
-        soapMessage.setProperty(SOAPMessage.CHARACTER_SET_ENCODING, "euc-kr");
+    public SOAPMessage toSOAPMessage() throws MCMPSoapRenderException {
+        try {
+            // Create SOAP message
+            SOAPMessage soapMessage = messageFactory.createMessage();
+            soapMessage.setProperty(SOAPMessage.WRITE_XML_DECLARATION, "true");
+            soapMessage.setProperty(SOAPMessage.CHARACTER_SET_ENCODING, "euc-kr");
 
-        /* SOAP Part */
-        SOAPPart soapPart = soapMessage.getSOAPPart();
+            /* SOAP Part */
+            SOAPPart soapPart = soapMessage.getSOAPPart();
 
-        /* SOAP Envelope */
-        SOAPEnvelope envelope = soapPart.getEnvelope();
-        envelope.removeNamespaceDeclaration("SOAP-ENV");
-        envelope.setPrefix("env");
+            /* SOAP Envelope */
+            SOAPEnvelope envelope = soapPart.getEnvelope();
+            envelope.removeNamespaceDeclaration("SOAP-ENV");
+            envelope.setPrefix("env");
 
 
-        /* SOAP Header */
-        SOAPHeader soapHeader = envelope.getHeader();
-        soapHeader.setPrefix("env");
-        soapHeader.addHeaderElement(new QName(Constants.SKT_TRANSACTION_ID_URL, "TransactionID", "mm7"))
-                .addTextNode(tid)
-                .setAttribute("env:mustUnderstand", "1");
+            /* SOAP Header */
+            SOAPHeader soapHeader = envelope.getHeader();
+            soapHeader.setPrefix("env");
+            soapHeader.addHeaderElement(new QName(Constants.SKT_TRANSACTION_ID_URL, "TransactionID", "mm7"))
+                    .addTextNode(tid)
+                    .setAttribute("env:mustUnderstand", "1");
 
-        /* SOAP Body */
-        SOAPBody soapBody = envelope.getBody();
-        soapBody.setPrefix("env");
+            /* SOAP Body */
+            SOAPBody soapBody = envelope.getBody();
+            soapBody.setPrefix("env");
 
-        SOAPBodyElement deliveryReportReq = soapBody.addBodyElement(new QName(Constants.SKT_TRANSACTION_ID_URL, SktProtocol.DELIVERY_REPORT_REQ, "mm7"));
-        deliveryReportReq.addChildElement("MM7Version").addTextNode("5.3.0");
-        deliveryReportReq.addChildElement("MessageID").addTextNode(messageId);
+            SOAPBodyElement deliveryReportReq = soapBody.addBodyElement(new QName(Constants.SKT_TRANSACTION_ID_URL, SktProtocol.DELIVERY_REPORT_REQ, "mm7"));
+            deliveryReportReq.addChildElement("MM7Version").addTextNode("5.3.0");
+            deliveryReportReq.addChildElement("MessageID").addTextNode(messageId);
 
-        SOAPElement recipient = deliveryReportReq.addChildElement("Recipient").addChildElement("Number").addTextNode(receiver);
-        SOAPElement sender = deliveryReportReq.addChildElement("Sender").addTextNode(senderAddress);
+            SOAPElement recipient = deliveryReportReq.addChildElement("Recipient").addChildElement("Number").addTextNode(receiver);
+            SOAPElement sender = deliveryReportReq.addChildElement("Sender").addTextNode(senderAddress);
 
-        deliveryReportReq.addChildElement("CalledNet").addTextNode(timeStamp);
+            deliveryReportReq.addChildElement("CalledNet").addTextNode(DateUtil.getDate(0));
 
-        SOAPElement status = deliveryReportReq.addChildElement("Status");
-        status.addChildElement("StatusCode").addTextNode(statusCode);
-        status.addChildElement("StatusText").addTextNode(statusText);
+            SOAPElement status = deliveryReportReq.addChildElement("Status");
+            status.addChildElement("StatusCode").addTextNode(statusCode);
+            status.addChildElement("StatusText").addTextNode(statusText);
 
-        return soapMessage;
+            return soapMessage;
+        } catch (Exception e) {
+            throw new MCMPSoapRenderException("[SOAP] Fail to create SktDeliveryReportReqMessage", e);
+        }
     }
 
     @Override
-    public void fromSOAPMessage(SOAPMessage soapMessage) throws SOAPException {
-        SOAPHeader soapHeader = soapMessage.getSOAPHeader();
+    public void fromSOAPMessage(SOAPMessage soapMessage) throws MCMPSoapRenderException {
+        try {
+            SOAPHeader soapHeader = soapMessage.getSOAPHeader();
 
-        SOAPElement transactionIdElement = (SOAPElement) soapHeader.getChildElements(new QName(Constants.SKT_TRANSACTION_ID_URL, "TransactionID", "mm7")).next();
-        this.tid = transactionIdElement != null ? transactionIdElement.getValue() : null;
+            SOAPElement transactionIdElement = (SOAPElement) soapHeader.getChildElements(new QName(Constants.SKT_TRANSACTION_ID_URL, "TransactionID", "mm7")).next();
+            this.tid = transactionIdElement != null ? transactionIdElement.getValue() : null;
 
-        SOAPBody soapBody = soapMessage.getSOAPBody();
-        Document document = soapBody.extractContentAsDocument();
+            SOAPBody soapBody = soapMessage.getSOAPBody();
+            Document document = soapBody.extractContentAsDocument();
 
-        // Get mm7:SubmitReq element
-        Element deliveryReportRsqElement = (Element) document.getElementsByTagName(String.format("mm7:%s", SktProtocol.DELIVERY_REPORT_REQ)).item(0);
+            // Get mm7:SubmitReq element
+            Element deliveryReportRsqElement = (Element) document.getElementsByTagName(String.format("mm7:%s", SktProtocol.DELIVERY_REPORT_REQ)).item(0);
 
-        // Extract values from mm7:SubmitReq element
-        this.messageId = getElementValue(deliveryReportRsqElement, "MessageID");
+            // Extract values from mm7:SubmitReq element
+            this.messageId = getElementValue(deliveryReportRsqElement, "MessageID");
 
-        this.senderAddress = getElementValue(deliveryReportRsqElement, "Sender");
-        this.receiver = getElementValue(deliveryReportRsqElement, "Number");
+            this.senderAddress = getElementValue(deliveryReportRsqElement, "Sender");
+            this.receiver = getElementValue(deliveryReportRsqElement, "Number");
 
-        this.statusCode = getElementValue(deliveryReportRsqElement, "StatusCode");
-        this.statusText = getElementValue(deliveryReportRsqElement, "StatusText");
+            this.statusCode = getElementValue(deliveryReportRsqElement, "StatusCode");
+            this.statusText = getElementValue(deliveryReportRsqElement, "StatusText");
+        } catch (Exception e) {
+            throw new MCMPSoapRenderException("[SOAP] Fail to create SktDeliveryReportReqMessage from SOAPMessage", e);
+        }
     }
 
     public boolean isTpsOver() {

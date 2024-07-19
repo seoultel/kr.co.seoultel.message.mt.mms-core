@@ -2,6 +2,7 @@ package kr.co.seoultel.message.mt.mms.core.messages.direct.lgt;
 
 import jakarta.xml.soap.*;
 import kr.co.seoultel.message.mt.mms.core.common.constant.Constants;
+import kr.co.seoultel.message.mt.mms.core.common.exceptions.message.soap.MCMPSoapRenderException;
 import kr.co.seoultel.message.mt.mms.core.common.protocol.LgtProtocol;
 import kr.co.seoultel.message.mt.mms.core.util.DateUtil;
 import lombok.Builder;
@@ -28,12 +29,12 @@ public class LgtSubmitReqMessage extends LgtSoapMessage {
     protected String subject;
     protected String originCode;
 
-    public LgtSubmitReqMessage() throws SOAPException {
+    public LgtSubmitReqMessage() throws MCMPSoapRenderException {
         super();
     }
 
     @Builder
-    public LgtSubmitReqMessage(String tid, String vaspId, String vasId, String callback, String receiver, String subject, String originCode) throws SOAPException {
+    public LgtSubmitReqMessage(String tid, String vaspId, String vasId, String callback, String receiver, String subject, String originCode) throws MCMPSoapRenderException {
         this.tid = tid;
         this.vaspId = vaspId;
         this.vasId = vasId;
@@ -46,84 +47,92 @@ public class LgtSubmitReqMessage extends LgtSoapMessage {
     }
 
     @Override
-    public SOAPMessage toSOAPMessage() throws SOAPException {
-        SOAPMessage soapMessage = messageFactory.createMessage();
-        soapMessage.setProperty(SOAPMessage.WRITE_XML_DECLARATION, "true");
-        soapMessage.setProperty(SOAPMessage.CHARACTER_SET_ENCODING, "euc-kr");
+    public SOAPMessage toSOAPMessage() throws MCMPSoapRenderException {
+        try {
+            SOAPMessage soapMessage = messageFactory.createMessage();
+            soapMessage.setProperty(SOAPMessage.WRITE_XML_DECLARATION, "true");
+            soapMessage.setProperty(SOAPMessage.CHARACTER_SET_ENCODING, "euc-kr");
 
-        /* SOAP Part */
-        SOAPPart soapPart = soapMessage.getSOAPPart();
-        soapPart.setContentId(Constants.LGT_CONTENT_ID);
-        soapPart.setMimeHeader("Content-Transfer-Encoding", "8bit");
+            /* SOAP Part */
+            SOAPPart soapPart = soapMessage.getSOAPPart();
+            soapPart.setContentId(Constants.LGT_CONTENT_ID);
+            soapPart.setMimeHeader("Content-Transfer-Encoding", "8bit");
 
-        /* SOAP Envelope */
-        SOAPEnvelope envelope = soapPart.getEnvelope();
-        envelope.removeNamespaceDeclaration("SOAP-ENV");
-        envelope.setPrefix("env");
+            /* SOAP Envelope */
+            SOAPEnvelope envelope = soapPart.getEnvelope();
+            envelope.removeNamespaceDeclaration("SOAP-ENV");
+            envelope.setPrefix("env");
 
-        /* SOAP Header */
-        SOAPHeader soapHeader = envelope.getHeader();
-        soapHeader.setPrefix("env");
-        soapHeader.addHeaderElement(new QName(Constants.LGT_TRANSACTION_ID_URL, "TransactionID", "mm7"))
-                .addTextNode(this.tid)
-                .setAttribute("env:mustUnderstand", "1");
+            /* SOAP Header */
+            SOAPHeader soapHeader = envelope.getHeader();
+            soapHeader.setPrefix("env");
+            soapHeader.addHeaderElement(new QName(Constants.LGT_TRANSACTION_ID_URL, "TransactionID", "mm7"))
+                    .addTextNode(this.tid)
+                    .setAttribute("env:mustUnderstand", "1");
 
-        /* SOAP Body */
-        SOAPBody soapBody = envelope.getBody();
-        soapBody.setPrefix("env");
+            /* SOAP Body */
+            SOAPBody soapBody = envelope.getBody();
+            soapBody.setPrefix("env");
 
-        SOAPBodyElement submitReq = soapBody.addBodyElement(new QName(Constants.KTF_TRANSACTION_ID_URL, LgtProtocol.SUBMIT_REQ, "mm7"));
-        submitReq.addChildElement("MM7Version").addTextNode("5.3.0");
+            SOAPBodyElement submitReq = soapBody.addBodyElement(new QName(Constants.KTF_TRANSACTION_ID_URL, LgtProtocol.SUBMIT_REQ, "mm7"));
+            submitReq.addChildElement("MM7Version").addTextNode("5.3.0");
 
-        SOAPElement senderIdentification = submitReq.addChildElement("SenderIdentification");
-        senderIdentification.addChildElement("VASPID").addTextNode(vaspId);
-        senderIdentification.addChildElement("VASID").addTextNode(vasId); // LGU+에서 발급한 문자열, CID 개념
-        senderIdentification.addChildElement("SenderAddress").addTextNode("01083025800"); // 송신자 정보(과금 번호)
-        senderIdentification.addChildElement("CallBack").addTextNode(callback);
+            SOAPElement senderIdentification = submitReq.addChildElement("SenderIdentification");
+            senderIdentification.addChildElement("VASPID").addTextNode(vaspId);
+            senderIdentification.addChildElement("VASID").addTextNode(vasId); // LGU+에서 발급한 문자열, CID 개념
+            senderIdentification.addChildElement("SenderAddress").addTextNode("01083025800"); // 송신자 정보(과금 번호)
+            senderIdentification.addChildElement("CallBack").addTextNode(callback);
 
-        submitReq.addChildElement("Recipients")
-                 .addChildElement("To")
-                 .addChildElement("Number")
-                 .addTextNode(receiver);
+            submitReq.addChildElement("Recipients")
+                     .addChildElement("To")
+                     .addChildElement("Number")
+                     .addTextNode(receiver);
 
-        submitReq.addChildElement("TimeStamp").addTextNode(timeStamp);
+            submitReq.addChildElement("TimeStamp").addTextNode(timeStamp);
 
-        /*
-         * -> 현재 미처리 필드
-         * submitReq.addChildElement("ServiceCode").addTextNode("0000");
-         * submitReq.addChildElement("MessageClass").addTextNode("137");
-         * submitReq.addChildElement("EarliestDeliveryTime").addTextNode(DateUtil.getDate(0, "dd-MM-yyyy HH:mm:ss")); // 현재 미처리
-         * submitReq.addChildElement("DeliveryReport").addTextNode("TRUE");
-         * submitReq.addChildElement("ReadReply").addTextNode("FALSE");
-         * submitReq.addChildElement("ChargedParty").addTextNode("Sender");
-         * submitReq.addChildElement("DistributionIndicator").addTextNode("0000"); // Content 가 메시지에 포함된 용도와 파일 이름을 포함
-         */
+            /*
+             * -> 현재 미처리 필드
+             * submitReq.addChildElement("ServiceCode").addTextNode("0000");
+             * submitReq.addChildElement("MessageClass").addTextNode("137");
+             * submitReq.addChildElement("EarliestDeliveryTime").addTextNode(DateUtil.getDate(0, "dd-MM-yyyy HH:mm:ss")); // 현재 미처리
+             * submitReq.addChildElement("DeliveryReport").addTextNode("TRUE");
+             * submitReq.addChildElement("ReadReply").addTextNode("FALSE");
+             * submitReq.addChildElement("ChargedParty").addTextNode("Sender");
+             * submitReq.addChildElement("DistributionIndicator").addTextNode("0000"); // Content 가 메시지에 포함된 용도와 파일 이름을 포함
+             */
 
-        submitReq.addChildElement("KisaOrigCode").addTextNode(originCode);
-        submitReq.addChildElement("Subject").addTextNode(subject);
+            submitReq.addChildElement("KisaOrigCode").addTextNode(originCode);
+            submitReq.addChildElement("Subject").addTextNode(subject);
 
-        return soapMessage;
+            return soapMessage;
+        } catch (Exception e) {
+            throw new MCMPSoapRenderException("[SOAP] Fail to create LgtSubmitReqMessage", e);
+        }
     }
 
     @Override
-    public void fromSOAPMessage(SOAPMessage soapMessage) throws SOAPException {
-        SOAPHeader soapHeader = soapMessage.getSOAPHeader();
+    public void fromSOAPMessage(SOAPMessage soapMessage) throws MCMPSoapRenderException {
+        try {
+            SOAPHeader soapHeader = soapMessage.getSOAPHeader();
 
-        SOAPElement transactionIdElement = (SOAPElement) soapHeader.getChildElements(new QName(Constants.KTF_TRANSACTION_ID_URL, "TransactionID", "mm7")).next();
-        this.tid = transactionIdElement != null ? transactionIdElement.getValue() : null;
+            SOAPElement transactionIdElement = (SOAPElement) soapHeader.getChildElements(new QName(Constants.KTF_TRANSACTION_ID_URL, "TransactionID", "mm7")).next();
+            this.tid = transactionIdElement != null ? transactionIdElement.getValue() : null;
 
-        SOAPBody soapBody = soapMessage.getSOAPBody();
-        Document document = soapBody.extractContentAsDocument();
+            SOAPBody soapBody = soapMessage.getSOAPBody();
+            Document document = soapBody.extractContentAsDocument();
 
-        // Get mm7:SubmitReq element
-        Element submitReqElement = (Element) document.getElementsByTagName("mm7:SubmitReq").item(0);
+            // Get mm7:SubmitReq element
+            Element submitReqElement = (Element) document.getElementsByTagName("mm7:SubmitReq").item(0);
 
-        // Extract values from mm7:SubmitReq element
-        this.vaspId = getElementValue(submitReqElement, "VASPID");
-        this.vasId = getElementValue(submitReqElement, "VASID");
-        this.callback = getElementValue(submitReqElement, "CallBack");
-        this.receiver = getElementValue(submitReqElement, "Number");
-        this.originCode = getElementValue(submitReqElement, "KisaOrigCode");
-        this.subject = getElementValue(submitReqElement, "Subject");
+            // Extract values from mm7:SubmitReq element
+            this.vaspId = getElementValue(submitReqElement, "VASPID");
+            this.vasId = getElementValue(submitReqElement, "VASID");
+            this.callback = getElementValue(submitReqElement, "CallBack");
+            this.receiver = getElementValue(submitReqElement, "Number");
+            this.originCode = getElementValue(submitReqElement, "KisaOrigCode");
+            this.subject = getElementValue(submitReqElement, "Subject");
+        } catch (Exception e) {
+            throw new MCMPSoapRenderException("[SOAP] Fail to create LgtSubmitReqMessage from SOAPMessage", e);
+        }
     }
 }

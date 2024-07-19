@@ -3,6 +3,7 @@ package kr.co.seoultel.message.mt.mms.core.messages.direct.ktf;
 import jakarta.xml.soap.MessageFactory;
 import jakarta.xml.soap.SOAPException;
 import jakarta.xml.soap.SOAPMessage;
+import kr.co.seoultel.message.mt.mms.core.common.exceptions.message.soap.MCMPSoapRenderException;
 import kr.co.seoultel.message.mt.mms.core.messages.direct.SoapMessage;
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,15 +24,13 @@ public abstract class KtfSoapMessage extends SoapMessage {
     protected final String deliveryReport = "TRUE";
     protected final String readReply = "TRUE";
 
-    public KtfSoapMessage() throws SOAPException {
+    public KtfSoapMessage() throws MCMPSoapRenderException {
         super();
     }
 
-    public KtfSoapMessage(String localPart) throws SOAPException {
+    public KtfSoapMessage(String localPart) throws MCMPSoapRenderException {
         super();
 
         this.localPart = localPart;
     }
-
-
 }

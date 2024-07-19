@@ -2,6 +2,7 @@ package kr.co.seoultel.message.mt.mms.core.messages.direct.skt;
 
 import jakarta.xml.soap.SOAPException;
 import jakarta.xml.soap.SOAPMessage;
+import kr.co.seoultel.message.mt.mms.core.common.exceptions.message.soap.MCMPSoapRenderException;
 import kr.co.seoultel.message.mt.mms.core.messages.direct.SoapMessage;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +21,7 @@ public abstract class SktSoapMessage extends SoapMessage {
     protected final String priority = "Normal";
     protected final String distributionIndicator = "False";
 
-    public SktSoapMessage() throws SOAPException {
+    public SktSoapMessage() throws MCMPSoapRenderException {
         super();
     }
 }

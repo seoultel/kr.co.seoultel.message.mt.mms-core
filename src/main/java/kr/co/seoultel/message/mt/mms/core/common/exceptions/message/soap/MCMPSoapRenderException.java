@@ -10,12 +10,27 @@ import lombok.extern.slf4j.Slf4j;
 public class MCMPSoapRenderException extends Exception {
 
     protected final Exception origin;
+
+    protected String xml;
+    protected byte[] bytes;
+
     protected final String mnoMessage = Constants.SOAP_ERROR;
     protected final String mnoResult = Constants.FAILED_TO_CREATE_SOAP_MNO_RESULT;
 
     public MCMPSoapRenderException(String message, Exception origin) {
-        super(message);
+        super(message + ", cause : " + origin.getCause());
         this.origin = origin;
     }
 
+    public MCMPSoapRenderException(String message, String xml, Exception origin) {
+        super(message);
+        this.xml = xml;
+        this.origin = origin;
+    }
+
+    public MCMPSoapRenderException(String message, byte[] bytes, Exception origin) {
+        super(message);
+        this.bytes = bytes;
+        this.origin = origin;
+    }
 }

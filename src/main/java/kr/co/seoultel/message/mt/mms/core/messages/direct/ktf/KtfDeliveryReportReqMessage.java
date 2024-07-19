@@ -2,6 +2,7 @@ package kr.co.seoultel.message.mt.mms.core.messages.direct.ktf;
 
 import jakarta.xml.soap.*;
 import kr.co.seoultel.message.mt.mms.core.common.constant.Constants;
+import kr.co.seoultel.message.mt.mms.core.common.exceptions.message.soap.MCMPSoapRenderException;
 import kr.co.seoultel.message.mt.mms.core.common.protocol.KtfProtocol;
 import kr.co.seoultel.message.mt.mms.core.util.DateUtil;
 import lombok.Builder;
@@ -31,14 +32,14 @@ public class KtfDeliveryReportReqMessage extends KtfSoapMessage {
 
 
 
-    public KtfDeliveryReportReqMessage() throws SOAPException {
+    public KtfDeliveryReportReqMessage() throws MCMPSoapRenderException {
         super();
 
         this.localPart = KtfProtocol.DELIVERY_REPORT_REQ;
     }
 
     @Builder
-    public KtfDeliveryReportReqMessage(String tid, String messageId, String receiver, String callback, String mmStatus) throws SOAPException {
+    public KtfDeliveryReportReqMessage(String tid, String messageId, String receiver, String callback, String mmStatus) throws MCMPSoapRenderException {
         this.localPart = KtfProtocol.DELIVERY_REPORT_REQ;
 
         this.tid = tid;
@@ -53,80 +54,88 @@ public class KtfDeliveryReportReqMessage extends KtfSoapMessage {
     }
 
     @Override
-    public SOAPMessage toSOAPMessage() throws SOAPException {
-        // Create SOAP message
-        SOAPMessage soapMessage = messageFactory.createMessage();
-        soapMessage.setProperty(SOAPMessage.WRITE_XML_DECLARATION, "true");
-        soapMessage.setProperty(SOAPMessage.CHARACTER_SET_ENCODING, "euc-kr");
+    public SOAPMessage toSOAPMessage() throws MCMPSoapRenderException {
+        try {
+            // Create SOAP message
+            SOAPMessage soapMessage = messageFactory.createMessage();
+            soapMessage.setProperty(SOAPMessage.WRITE_XML_DECLARATION, "true");
+            soapMessage.setProperty(SOAPMessage.CHARACTER_SET_ENCODING, "euc-kr");
 
-        /* SOAP Part */
-        SOAPPart soapPart = soapMessage.getSOAPPart();
+            /* SOAP Part */
+            SOAPPart soapPart = soapMessage.getSOAPPart();
 
-        /* SOAP Envelope */
-        SOAPEnvelope envelope = soapPart.getEnvelope();
-        envelope.removeNamespaceDeclaration("SOAP-ENV");
-        envelope.setPrefix("env");
+            /* SOAP Envelope */
+            SOAPEnvelope envelope = soapPart.getEnvelope();
+            envelope.removeNamespaceDeclaration("SOAP-ENV");
+            envelope.setPrefix("env");
 
 
-        /* SOAP Header */
-        SOAPHeader soapHeader = envelope.getHeader();
-        soapHeader.setPrefix("env");
-        soapHeader.addHeaderElement(new QName(Constants.KTF_TRANSACTION_ID_URL, "TransactionID", "mm7"))
-                    .addTextNode(tid)
-                    .setAttribute("env:mustUnderstand", "1");
+            /* SOAP Header */
+            SOAPHeader soapHeader = envelope.getHeader();
+            soapHeader.setPrefix("env");
+            soapHeader.addHeaderElement(new QName(Constants.KTF_TRANSACTION_ID_URL, "TransactionID", "mm7"))
+                        .addTextNode(tid)
+                        .setAttribute("env:mustUnderstand", "1");
 
-        /* SOAP Body */
-        SOAPBody soapBody = envelope.getBody();
-        soapBody.setPrefix("env");
+            /* SOAP Body */
+            SOAPBody soapBody = envelope.getBody();
+            soapBody.setPrefix("env");
 
-        /*
-         * TODO : KTF-TRANSACTION_ID_URL 수정 필요할지도 모름
-         *        NOW : "http://www.3gpp.org/ftp/Specs/archive/23_series/23.140/schema/REL-5-MM7-1-2"
-         *            -> TO BE ? http://www.3gpp.org/ftp/Specs/archive/23_series/23.140/schema/REL-5-MM7-1-0
-         */
+            /*
+             * TODO : KTF-TRANSACTION_ID_URL 수정 필요할지도 모름
+             *        NOW : "http://www.3gpp.org/ftp/Specs/archive/23_series/23.140/schema/REL-5-MM7-1-2"
+             *            -> TO BE ? http://www.3gpp.org/ftp/Specs/archive/23_series/23.140/schema/REL-5-MM7-1-0
+             */
 
-        SOAPBodyElement deliveryReportReq = soapBody.addBodyElement(new QName(Constants.KTF_TRANSACTION_ID_URL, "DeliveryReportReq", "mm7"));
-        deliveryReportReq.addChildElement("MM7Version").addTextNode(mm7Version);
-        deliveryReportReq.addChildElement("MessageID").addTextNode(messageId);
+            SOAPBodyElement deliveryReportReq = soapBody.addBodyElement(new QName(Constants.KTF_TRANSACTION_ID_URL, "DeliveryReportReq", "mm7"));
+            deliveryReportReq.addChildElement("MM7Version").addTextNode(mm7Version);
+            deliveryReportReq.addChildElement("MessageID").addTextNode(messageId);
 
-        SOAPElement recipient = deliveryReportReq.addChildElement("Recipient");
-        recipient.addChildElement("Number").addTextNode(receiver);
+            SOAPElement recipient = deliveryReportReq.addChildElement("Recipient");
+            recipient.addChildElement("Number").addTextNode(receiver);
 
-        SOAPElement sender = deliveryReportReq.addChildElement("Sender");
-        sender.addChildElement("Number").addTextNode(callback);
+            SOAPElement sender = deliveryReportReq.addChildElement("Sender");
+            sender.addChildElement("Number").addTextNode(callback);
 
-        deliveryReportReq.addChildElement("TimeStamp").addTextNode(DateUtil.getDate("dd-MM-yyyy HH:mm:ss"));
-        deliveryReportReq.addChildElement("MMStatus").addTextNode(mmStatus);
+            deliveryReportReq.addChildElement("TimeStamp").addTextNode(DateUtil.getDate("dd-MM-yyyy HH:mm:ss"));
+            deliveryReportReq.addChildElement("MMStatus").addTextNode(mmStatus);
 
-        return soapMessage;
+            return soapMessage;
+        } catch (Exception e) {
+            throw new MCMPSoapRenderException("[SOAP] Fail to create KtfDeliveryReportReqMessage", e);
+        }
     }
 
 
     @Override
-    public void fromSOAPMessage(SOAPMessage soapMessage) throws SOAPException {
-        SOAPHeader soapHeader = soapMessage.getSOAPHeader();
-        SOAPElement transactionIdElement = (SOAPElement) soapHeader.getChildElements(new QName(Constants.KTF_TRANSACTION_ID_URL, "TransactionID", "mm7")).next();
-        this.tid = transactionIdElement != null ? transactionIdElement.getValue() : null;
+    public void fromSOAPMessage(SOAPMessage soapMessage) throws MCMPSoapRenderException {
+        try {
+            SOAPHeader soapHeader = soapMessage.getSOAPHeader();
+            SOAPElement transactionIdElement = (SOAPElement) soapHeader.getChildElements(new QName(Constants.KTF_TRANSACTION_ID_URL, "TransactionID", "mm7")).next();
+            this.tid = transactionIdElement != null ? transactionIdElement.getValue() : null;
 
-        SOAPBody soapBody = soapMessage.getSOAPBody();
-        Document document = soapBody.extractContentAsDocument();
+            SOAPBody soapBody = soapMessage.getSOAPBody();
+            Document document = soapBody.extractContentAsDocument();
 
-        // Get mm7:SubmitReq element
-        Element deliveryReportReqElement = (Element) document.getElementsByTagName("mm7:DeliveryReportReq").item(0);
+            // Get mm7:SubmitReq element
+            Element deliveryReportReqElement = (Element) document.getElementsByTagName("mm7:DeliveryReportReq").item(0);
 
-        // Extract values from mm7:SubmitReq element
-        this.messageId = getElementValue(deliveryReportReqElement, "MessageID");
+            // Extract values from mm7:SubmitReq element
+            this.messageId = getElementValue(deliveryReportReqElement, "MessageID");
 
-        Element recipientElement = (Element) document.getElementsByTagName("Recipient").item(0);
-        Element recipientNumberElement = (Element) recipientElement.getElementsByTagName("Number").item(0);
-        this.receiver = recipientNumberElement.getTextContent().trim();
+            Element recipientElement = (Element) document.getElementsByTagName("Recipient").item(0);
+            Element recipientNumberElement = (Element) recipientElement.getElementsByTagName("Number").item(0);
+            this.receiver = recipientNumberElement.getTextContent().trim();
 
-        Element senderElement = (Element) document.getElementsByTagName("Sender").item(0);
-        Element senderNumberElement = (Element) senderElement.getElementsByTagName("Number").item(0);
-        this.callback = senderNumberElement.getTextContent().trim();
+            Element senderElement = (Element) document.getElementsByTagName("Sender").item(0);
+            Element senderNumberElement = (Element) senderElement.getElementsByTagName("Number").item(0);
+            this.callback = senderNumberElement.getTextContent().trim();
 
-        this.timeStamp = getElementValue(deliveryReportReqElement, "TimeStamp");
-        this.mmStatus = getElementValue(deliveryReportReqElement, "MMStatus");
+            this.timeStamp = getElementValue(deliveryReportReqElement, "TimeStamp");
+            this.mmStatus = getElementValue(deliveryReportReqElement, "MMStatus");
+        } catch (Exception e) {
+            throw new MCMPSoapRenderException("[SOAP] Fail to create KtfDeliveryReportReqMessage from SOAPMessage", e);
+        }
     }
 
 

@@ -31,8 +31,13 @@ public class MessageHistory {
 
     public boolean isExpire() {
         Duration duration = Duration.between(submitTime, LocalDateTime.now());
-        return duration.toMinutes() >= EXPIRED_TIME;
+        return duration.toSeconds() >= 15;
     }
+
+//    public boolean isExpire() {
+//        Duration duration = Duration.between(submitTime, LocalDateTime.now());
+//        return duration.toMinutes() >= EXPIRED_TIME;
+//    }
 
     @Override
     public boolean equals(Object object) {

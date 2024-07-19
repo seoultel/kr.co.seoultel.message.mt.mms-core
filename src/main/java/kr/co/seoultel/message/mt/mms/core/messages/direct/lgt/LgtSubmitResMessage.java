@@ -2,6 +2,7 @@ package kr.co.seoultel.message.mt.mms.core.messages.direct.lgt;
 
 import jakarta.xml.soap.*;
 import kr.co.seoultel.message.mt.mms.core.common.constant.Constants;
+import kr.co.seoultel.message.mt.mms.core.common.exceptions.message.soap.MCMPSoapRenderException;
 import kr.co.seoultel.message.mt.mms.core.common.protocol.KtfProtocol;
 import kr.co.seoultel.message.mt.mms.core.common.protocol.LgtProtocol;
 import lombok.Builder;
@@ -24,7 +25,7 @@ public class LgtSubmitResMessage extends LgtSoapMessage {
     protected String statusCode;
     protected String statusText;
     protected String messageId;
-    public LgtSubmitResMessage() throws SOAPException {
+    public LgtSubmitResMessage() throws MCMPSoapRenderException {
     }
 
 
@@ -41,7 +42,7 @@ public class LgtSubmitResMessage extends LgtSoapMessage {
     }
 
     @Builder
-    public LgtSubmitResMessage(String tid, String statusCode, String statusText, String messageId) throws SOAPException {
+    public LgtSubmitResMessage(String tid, String statusCode, String statusText, String messageId) throws MCMPSoapRenderException {
         this.tid = tid;
         this.statusCode = statusCode;
         this.statusText = statusText;
@@ -49,58 +50,67 @@ public class LgtSubmitResMessage extends LgtSoapMessage {
     }
 
     @Override
-    public SOAPMessage toSOAPMessage() throws SOAPException {
-        // Create SOAP message
-        SOAPMessage soapMessage = messageFactory.createMessage();
-        soapMessage.setProperty(SOAPMessage.WRITE_XML_DECLARATION, "true");
-        soapMessage.setProperty(SOAPMessage.CHARACTER_SET_ENCODING, "euc-kr");
+    public SOAPMessage toSOAPMessage() throws MCMPSoapRenderException {
+        try {
 
-        SOAPPart soapPart = soapMessage.getSOAPPart();
+            // Create SOAP message
+            SOAPMessage soapMessage = messageFactory.createMessage();
+            soapMessage.setProperty(SOAPMessage.WRITE_XML_DECLARATION, "true");
+            soapMessage.setProperty(SOAPMessage.CHARACTER_SET_ENCODING, "euc-kr");
 
-        SOAPEnvelope envelope = soapPart.getEnvelope();
-        envelope.removeNamespaceDeclaration("SOAP-ENV");
-        envelope.setPrefix("env");
+            SOAPPart soapPart = soapMessage.getSOAPPart();
 
-        /* SOAP Header */
-        SOAPHeader soapHeader = envelope.getHeader();
-        soapHeader.setPrefix("env");
-        soapHeader.addHeaderElement(new QName(Constants.KTF_TRANSACTION_ID_URL, "TransactionID", "mm7"))
-                .addTextNode(tid)
-                .setAttribute("env:mustUnderstand", "1");
+            SOAPEnvelope envelope = soapPart.getEnvelope();
+            envelope.removeNamespaceDeclaration("SOAP-ENV");
+            envelope.setPrefix("env");
 
-        /* SOAP Body */
-        SOAPBody soapBody = envelope.getBody();
-        soapBody.setPrefix("env");
+            /* SOAP Header */
+            SOAPHeader soapHeader = envelope.getHeader();
+            soapHeader.setPrefix("env");
+            soapHeader.addHeaderElement(new QName(Constants.KTF_TRANSACTION_ID_URL, "TransactionID", "mm7"))
+                    .addTextNode(tid)
+                    .setAttribute("env:mustUnderstand", "1");
 
-        SOAPBodyElement submitRsp = soapBody.addBodyElement(new QName(Constants.KTF_TRANSACTION_ID_URL, KtfProtocol.SUBMIT_RES, "mm7"));
+            /* SOAP Body */
+            SOAPBody soapBody = envelope.getBody();
+            soapBody.setPrefix("env");
 
-        SOAPElement status = submitRsp.addChildElement("Status");
-        status.addChildElement("StatusCode").addTextNode(statusCode);
-        status.addChildElement("StatusText").addTextNode(statusText);
+            SOAPBodyElement submitRsp = soapBody.addBodyElement(new QName(Constants.KTF_TRANSACTION_ID_URL, KtfProtocol.SUBMIT_RES, "mm7"));
 
-        submitRsp.addChildElement("MM7Version").addTextNode("5.3.0");
-        submitRsp.addChildElement("MessageID").addTextNode(messageId);
+            SOAPElement status = submitRsp.addChildElement("Status");
+            status.addChildElement("StatusCode").addTextNode(statusCode);
+            status.addChildElement("StatusText").addTextNode(statusText);
 
-        return soapMessage;
+            submitRsp.addChildElement("MM7Version").addTextNode("5.3.0");
+            submitRsp.addChildElement("MessageID").addTextNode(messageId);
+
+            return soapMessage;
+        } catch (Exception e) {
+            throw new MCMPSoapRenderException("[SOAP] Fail to create LgtSubmitResMessage from SOAPMessage", e);
+        }
     }
 
     @Override
-    public void fromSOAPMessage(SOAPMessage soapMessage) throws SOAPException {
-        SOAPHeader soapHeader = soapMessage.getSOAPHeader();
+    public void fromSOAPMessage(SOAPMessage soapMessage) throws MCMPSoapRenderException {
+        try {
+            SOAPHeader soapHeader = soapMessage.getSOAPHeader();
 
-        SOAPElement transactionIdElement = (SOAPElement) soapHeader.getChildElements(new QName(Constants.KTF_TRANSACTION_ID_URL, "TransactionID", "mm7")).next();
-        this.tid = transactionIdElement != null ? transactionIdElement.getValue() : null;
+            SOAPElement transactionIdElement = (SOAPElement) soapHeader.getChildElements(new QName(Constants.KTF_TRANSACTION_ID_URL, "TransactionID", "mm7")).next();
+            this.tid = transactionIdElement != null ? transactionIdElement.getValue() : null;
 
-        SOAPBody soapBody = soapMessage.getSOAPBody();
-        Document document = soapBody.extractContentAsDocument();
+            SOAPBody soapBody = soapMessage.getSOAPBody();
+            Document document = soapBody.extractContentAsDocument();
 
-        // Get mm7:SubmitReq element
-        Element submitRspElement = (Element) document.getElementsByTagName("mm7:SubmitRsp").item(0);
+            // Get mm7:SubmitReq element
+            Element submitRspElement = (Element) document.getElementsByTagName("mm7:SubmitRsp").item(0);
 
-        // Extract values from mm7:SubmitReq element
-        this.statusCode = getElementValue(submitRspElement, "StatusCode");
-        this.statusText = getElementValue(submitRspElement, "StatusText");
-        this.messageId = getElementValue(submitRspElement, "MessageID");
+            // Extract values from mm7:SubmitReq element
+            this.statusCode = getElementValue(submitRspElement, "StatusCode");
+            this.statusText = getElementValue(submitRspElement, "StatusText");
+            this.messageId = getElementValue(submitRspElement, "MessageID");
+        } catch (Exception e) {
+            throw new MCMPSoapRenderException("[SOAP] Fail to create LgtSubmitResMessage from SOAPMessage", e);
+        }
     }
 
     public boolean isSuccess() {
